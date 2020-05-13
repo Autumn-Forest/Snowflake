@@ -83,6 +83,7 @@ export class Client extends BaseClient {
             delete require.cache[path];
             amount++;
         });
+        this.on('error', this.handleError);
         console.log(`Loaded ${amount} listeners!`);
     }
 
@@ -92,7 +93,7 @@ export class Client extends BaseClient {
         return channel;
     }
 
-    handleError(err: Error, message?: Message) {
+    async handleError(err: Error, message?: Message) {
         console.error(err);
 
         const channel = this.getChannel('errors');
@@ -101,18 +102,23 @@ export class Client extends BaseClient {
             .setColor(this.colours.ERROR)
             .setTitle(err.name)
             .setDescription(this.helpers.util.codeBlock(this.helpers.util.trimString(err.stack || 'No Error.', 2048), 'js'));
-        if (message)
+        if (message) {
             errorEmbed.addFields([
                 { name: 'Message', value: this.helpers.util.codeBlock(this.helpers.util.trimString(message!.content, 1024)) },
                 {
                     name: 'Message Info',
                     value: stripIndents`
                 Guild: ${message.guild ? `${message.guild.name} (${message.guild.id})` : '-'}\n
-                Author: ${message.author.tag} (${message.author.username})`
+                Author: ${message.author.tag} (${message.author.id})`
                 }
             ]);
-
-        return channel.send(errorEmbed);
+            message.reply(
+                new MessageEmbed()
+                    .setColor(this.colours.ERROR)
+                    .setDescription('Sadly, an error internal occurred. There is no need to report this, as all errors will automatically notify my devs!')
+            );
+        }
+        return channel.send((await Promise.all(this.config.developers.map(d => this.users.fetch(d)))).join(' '), errorEmbed);
     }
 
     missingPermissions(message: Message, permissions: PermissionString[], member?: GuildMember) {
@@ -153,10 +159,11 @@ export interface Command {
     name: string;
     category: string;
     aliases: string[];
+    args: number;
+    usage: string;
     devOnly: boolean;
     guildOnly: boolean;
     nsfw: boolean;
-    args: number;
     memberPermission: PermissionString[];
     botPermission: PermissionString[];
     callback(message: Message, args: string[]): Promise<BaseMessage | void>;

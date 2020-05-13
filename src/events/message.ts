@@ -20,6 +20,14 @@ export const listener = async (client: Client, message: Message) => {
     const command = client.getCommand(commandName);
     if (!command) return;
 
+    if (command.devOnly && !message.client.config.developers.includes(message.author.id)) return;
+    if (command.guildOnly && !message.guild) return message.channel.send(`\`${prefix}${command.name}\` can only be used on a server!`);
+    if (args.length < command.args)
+        return message.client.helpers.util.wrongsyntax(
+            message,
+            `This command requires ${command.args} arguments, but you only provided ${args.length}.\nPlease use it like this: \`${prefix}${command.name} ${command.usage}\``
+        );
+
     command
         .callback(message, args)
         //@ts-ignore
