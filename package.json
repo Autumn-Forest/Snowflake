@@ -7,7 +7,7 @@
         "pm2": "pm2 start --name Neptune npm -- run dev --watch --ignore-watch dist/*",
         "production": "npm run build && export NODE_ENV=production && npm run start",
         "test": "tsc -p tsconfig.test.json && npm run lint",
-        "lint": "eslint ./src/**/*.ts",
+        "lint": "eslint ./src/**/*.ts --fix",
         "clean": "rm -rf dist/*",
         "reinstall": "npm run cleanCache && npm run deleteModules && npm run deleteLock && npm run installModules",
         "build": "tsc",
@@ -32,10 +32,12 @@
         "node": "13.6.0"
     },
     "dependencies": {
+        "common-tags": "^1.8.0",
         "discord.js": "^12.2.0",
         "mongoose": "^5.9.13"
     },
     "devDependencies": {
+        "@types/common-tags": "^1.8.0",
         "@types/mongoose": "^5.7.18",
         "@types/node": "^13.13.5",
         "@types/ws": "^7.2.4",

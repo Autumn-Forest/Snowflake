@@ -5,14 +5,17 @@ import {
     Collection,
     PermissionString,
     GuildMember,
-    DMChannel
+    DMChannel,
+    TextChannel,
+    MessageEmbed
 } from 'discord.js';
 import { config } from '../config';
 import { constants } from '../constants';
 import { database } from '../database';
 import { join } from 'path';
 import { readdirSync } from 'fs';
-// import { helpers } from './Helpers';
+import { ClientHelpers } from './Helpers';
+import { stripIndents } from 'common-tags';
 
 const BaseClientOptions: BaseClientOptions = {
     disableMentions: 'everyone',
@@ -43,6 +46,7 @@ export class Client extends BaseClient {
     debug = false;
     config = config;
     constants = constants;
+    helpers = ClientHelpers;
     database = database;
     commands: Collection<string, Command> = new Collection();
     colours: { [key in ClientColours]: string } = {
@@ -58,7 +62,7 @@ export class Client extends BaseClient {
     initCommands() {
         let amount = 0;
         readdirSync(this.paths.commands).forEach(dir => {
-            readdirSync(dir).forEach(file => {
+            readdirSync(join(this.paths.commands, dir)).forEach(file => {
                 const path = join(this.paths.commands, dir, file);
                 const command: Command = require(path).command;
                 this.commands.set(command.name, command);
@@ -71,17 +75,44 @@ export class Client extends BaseClient {
 
     initListeners() {
         let amount = 0;
-        readdirSync(this.paths.listeners).forEach(dir => {
-            readdirSync(dir).forEach(file => {
-                const path = join(this.paths.listeners, dir, file);
-                const listener = require(path).default;
-                const listenerName = file.replace('.js', '');
-                this.on(listenerName as any, listener.bind(null, this));
-                delete require.cache[path];
-                amount++;
-            });
+        readdirSync(this.paths.listeners).forEach(file => {
+            const path = join(this.paths.listeners, file);
+            const listener = require(path).listener;
+            const listenerName = file.replace('.js', '');
+            this.on(listenerName as any, listener.bind(null, this));
+            delete require.cache[path];
+            amount++;
         });
         console.log(`Loaded ${amount} listeners!`);
+    }
+
+    getChannel(chan: 'info' | 'errors') {
+        const channel = this.channels.cache.get(this.config.channels[chan]);
+        if (!channel || !(channel instanceof TextChannel)) throw new Error(`Invalid ${chan}-channel provided or not reachable.`);
+        return channel;
+    }
+
+    handleError(err: Error, message?: Message) {
+        console.error(err);
+
+        const channel = this.getChannel('errors');
+
+        const errorEmbed = new MessageEmbed()
+            .setColor(this.colours.ERROR)
+            .setTitle(err.name)
+            .setDescription(this.helpers.util.codeBlock(this.helpers.util.trimString(err.stack || 'No Error.', 2048), 'js'));
+        if (message)
+            errorEmbed.addFields([
+                { name: 'Message', value: this.helpers.util.codeBlock(this.helpers.util.trimString(message!.content, 1024)) },
+                {
+                    name: 'Message Info',
+                    value: stripIndents`
+                Guild: ${message.guild ? `${message.guild.name} (${message.guild.id})` : '-'}\n
+                Author: ${message.author.tag} (${message.author.username})`
+                }
+            ]);
+
+        return channel.send(errorEmbed);
     }
 
     missingPermissions(message: Message, permissions: PermissionString[], member?: GuildMember) {
@@ -121,12 +152,12 @@ export interface Message extends BaseMessage {
 export interface Command {
     name: string;
     category: string;
-    aliases: string;
+    aliases: string[];
     devOnly: boolean;
     guildOnly: boolean;
     nsfw: boolean;
     args: number;
     memberPermission: PermissionString[];
     botPermission: PermissionString[];
-    callback(message: Message, args: string[]): Promise<Message | void>;
+    callback(message: Message, args: string[]): Promise<BaseMessage | void>;
 }
