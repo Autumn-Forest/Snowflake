@@ -21,5 +21,10 @@
             "import { Command, Message } from '../../Client';\n\nconst callback = async (message: Message, args: string[]) => {};\n\nexport const command: Command = {\n    name: '',\n    category: '',\n    aliases: [],\n    usage: '',\n    args: 0,\n    devOnly: false,\n    guildOnly: false,\n    nsfw: false,\n    memberPermission: [],\n    botPermission: [],\n    callback: callback\n};"
         ],
         "description": "Insert the basic command structure"
+    },
+    "Create basic eventHandler stcuture": {
+        "prefix": "eventHandlerStructure",
+        "body": ["import { Client } from '../interfaces/Client';\n\nexport default async (client: Client) => {}"],
+        "description": "This will automatically insert the basic event handler structure"
     }
 }
