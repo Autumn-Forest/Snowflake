@@ -1,60 +1,60 @@
 {
-    "name": "venus-ts",
-    "version": "1.0.0",
-    "main": "dist/src/index.js",
-    "author": "Autumn Forest (https://github.com/Autumn-Forest)",
-    "contributors": [
-        "VenNeptury <sgtmattis@gmail.com> (https://github.com/Mattis6666)",
-        "GwenBebe <tooHorribleEmailToBePutHere> (https://github.com/GwenBebe)",
-        "Naia-love <love.naia@protonmail.com> (https://github.com/Naia-love)"
-    ],
-    "license": "AGPL-3.0",
-    "engines": {
-        "node": "13.6.0"
-    },
-    "eslintIgnore": [
-        "dist",
-        ".vscode"
-    ],
-    "scripts": {
-        "dev": "npm run build && export NODE_ENV=development && npm run start",
-        "pm2": "pm2 start --name Neptune npm -- run dev --watch --ignore-watch dist/*",
-        "production": "npm run build && export NODE_ENV=production && npm run start",
-        "test": "tsc -p tsconfig.test.json && npm run lint",
-        "lint": "eslint ./src/**/*.ts --fix",
-        "clean": "rm -rf dist/*",
-        "reinstall": "npm run cleanCache && npm run deleteModules && npm run deleteLock && npm run installModules",
-        "build": "tsc",
-        "start": "node dist/index",
-        "cleanCache": "npm cache clean --force",
-        "deleteModules": "rm -rf node_modules/*",
-        "deleteLock": "rm yarn.lock",
-        "installModules": "yarn install"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "precise-commits && npm run lint"
-        }
-    },
-    "dependencies": {
-        "common-tags": "^1.8.0",
-        "discord.js": "^12.2.0",
-        "mongoose": "^5.9.13"
-    },
-    "devDependencies": {
-        "@types/common-tags": "^1.8.0",
-        "@types/mongoose": "^5.7.18",
-        "@types/node": "^13.13.5",
-        "@types/node-fetch": "^2.5.7",
-        "@types/ws": "^7.2.4",
-        "@typescript-eslint/eslint-plugin": "2.31.0",
-        "@typescript-eslint/parser": "2.31.0",
-        "eslint": "^7.0.0",
-        "eslint-config-prettier": "^6.11.0",
-        "eslint-plugin-prettier": "^3.1.3",
-        "husky": "^4.2.5",
-        "precise-commits": "^1.0.2",
-        "prettier": "^2.0.5",
-        "typescript": "^3.8.3"
-    }
+	"name": "venus-ts",
+	"version": "1.0.0",
+	"main": "dist/src/index.js",
+	"author": "Autumn Forest (https://github.com/Autumn-Forest)",
+	"contributors": [
+		"VenNeptury <sgtmattis@gmail.com> (https://github.com/Mattis6666)",
+		"GwenBebe <tooHorribleEmailToBePutHere> (https://github.com/GwenBebe)",
+		"Naia-love <love.naia@protonmail.com> (https://github.com/Naia-love)"
+	],
+	"license": "AGPL-3.0",
+	"engines": {
+		"node": "13.6.0"
+	},
+	"eslintIgnore": [
+		"dist",
+		".vscode"
+	],
+	"scripts": {
+		"dev": "npm run build && export NODE_ENV=development && npm run start",
+		"pm2": "pm2 start --name Neptune npm -- run dev --watch --ignore-watch dist/*",
+		"production": "npm run build && export NODE_ENV=production && npm run start",
+		"test": "tsc -p tsconfig.test.json && npm run lint",
+		"lint": "eslint ./src/**/*.ts --fix",
+		"clean": "rm -rf dist/*",
+		"reinstall": "npm run cleanCache && npm run deleteModules && npm run deleteLock && npm run installModules",
+		"build": "tsc",
+		"start": "node dist/index",
+		"cleanCache": "npm cache clean --force",
+		"deleteModules": "rm -rf node_modules/*",
+		"deleteLock": "rm yarn.lock",
+		"installModules": "yarn install"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "precise-commits && npm run test"
+		}
+	},
+	"dependencies": {
+		"common-tags": "^1.8.0",
+		"discord.js": "^12.2.0",
+		"mongoose": "^5.9.13"
+	},
+	"devDependencies": {
+		"@types/common-tags": "^1.8.0",
+		"@types/mongoose": "^5.7.18",
+		"@types/node": "^13.13.5",
+		"@types/node-fetch": "^2.5.7",
+		"@types/ws": "^7.2.4",
+		"@typescript-eslint/eslint-plugin": "2.31.0",
+		"@typescript-eslint/parser": "2.31.0",
+		"eslint": "^7.0.0",
+		"eslint-config-prettier": "^6.11.0",
+		"eslint-plugin-prettier": "^3.1.3",
+		"husky": "^4.2.5",
+		"precise-commits": "^1.0.2",
+		"prettier": "^2.0.5",
+		"typescript": "^3.8.3"
+	}
 }

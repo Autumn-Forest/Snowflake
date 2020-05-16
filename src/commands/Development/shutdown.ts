@@ -2,7 +2,6 @@ import { Message, Command } from '../../Client';
 
 const callback = async (msg: Message, _args: string[]) => {
 	await msg.channel.send('Okay, shutting down!');
-	process.exit();
 };
 
 export const command: Command = {
