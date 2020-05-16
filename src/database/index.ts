@@ -17,3 +17,6 @@ db.once('open', () => console.log(`Connected to MongoDB Atlas at ${db.name}!`));
 export const database = {
 	guildSettings: guildSettings
 };
+export const getGuildSettings = async (guildId: string) => {
+	return (await guildSettings.findOne({ guild: guildId })) || (await guildSettings.create({ guild: guildId }));
+};
