@@ -2,6 +2,20 @@
     "name": "venus-ts",
     "version": "1.0.0",
     "main": "dist/src/index.js",
+    "author": "Autumn Forest (https://github.com/Autumn-Forest)",
+    "contributors": [
+        "VenNeptury <sgtmattis@gmail.com> (https://github.com/Mattis6666)",
+        "GwenBebe <tooHorribleEmailToBePutHere> (https://github.com/GwenBebe)",
+        "Naia-love <love.naia@protonmail.com> (https://github.com/Naia-love)"
+    ],
+    "license": "AGPL-3.0",
+    "engines": {
+        "node": "13.6.0"
+    },
+    "eslintIgnore": [
+        "dist",
+        ".vscode"
+    ],
     "scripts": {
         "dev": "npm run build && export NODE_ENV=development && npm run start",
         "pm2": "pm2 start --name Neptune npm -- run dev --watch --ignore-watch dist/*",
@@ -17,19 +31,10 @@
         "deleteLock": "rm yarn.lock",
         "installModules": "yarn install"
     },
-    "author": "VenNeptury <https://github.com/Mattis6666>, GwenBebe <https://github.com/GwenBebe>",
-    "license": "AGPL-3.0",
     "husky": {
         "hooks": {
             "pre-commit": "precise-commits && npm run lint"
         }
-    },
-    "eslintIgnore": [
-        "dist",
-        ".vscode"
-    ],
-    "engines": {
-        "node": "13.6.0"
     },
     "dependencies": {
         "common-tags": "^1.8.0",

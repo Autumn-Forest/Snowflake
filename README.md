@@ -5,8 +5,8 @@
 ## License
 
 ```
-    A Discord Bot powered by Discord.js written in typescript by GwenBebe and VenNeptury
-    Copyright (C) 2020 Promise-pending
+    Snowflake, a Discord bot written in Typescript
+    Copyright (C) 2020 Autumn Forest
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published
