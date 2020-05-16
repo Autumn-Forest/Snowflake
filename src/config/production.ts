@@ -1,4 +1,5 @@
 export default {
+    defaultPrefix: '',
     token: '',
     mongoString: '',
     developers: [],

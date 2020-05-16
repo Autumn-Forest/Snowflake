@@ -87,10 +87,18 @@ export class Client extends BaseClient {
         console.log(`Loaded ${amount} listeners!`);
     }
 
+    newEmbed(type?: 'INFO' | 'ERROR' | 'BASIC') {
+        return new MessageEmbed().setTimestamp().setColor(type ? this.colours[type] : 'RANDOM');
+    }
+
     getChannel(chan: 'info' | 'errors') {
         const channel = this.channels.cache.get(this.config.channels[chan]);
         if (!channel || !(channel instanceof TextChannel)) throw new Error(`Invalid ${chan}-channel provided or not reachable.`);
         return channel;
+    }
+
+    redactCredentials(text: string) {
+        return text.replace(this.config.token, '[REDACTED]').replace(this.config.mongoString, '[REDACTED]');
     }
 
     async handleError(err: Error, message?: Message) {
@@ -108,7 +116,7 @@ export class Client extends BaseClient {
                 {
                     name: 'Message Info',
                     value: stripIndents`
-                Guild: ${message.guild ? `${message.guild.name} (${message.guild.id})` : '-'}\n
+                Guild: ${message.guild ? `${message.guild.name} (${message.guild.id})` : '-'}
                 Author: ${message.author.tag} (${message.author.id})`
                 }
             ]);

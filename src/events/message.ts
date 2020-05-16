@@ -3,7 +3,8 @@ import { Client, Message } from '../Client';
 export const listener = async (client: Client, message: Message) => {
     if (message.author.bot) return;
 
-    if (message.partial) message = (await message.fetch()) as Message;
+    if (message.partial) message = (await message.fetch().catch(() => null)) as Message;
+    if (!message) return;
 
     const guildPrefix = await client.getPrefix(message);
     const prefixRegex = new RegExp(`^(<@!?${client.user!.id}>|${guildPrefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})\\s*`);
