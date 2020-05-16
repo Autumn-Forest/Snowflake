@@ -7,7 +7,7 @@ const callback = async (msg: Message, _args: string[]) => {
 		.setDescription(
 			`[Click here to add me to you server ;D](https://discordapp.com/oauth2/authorize?client_id=${msg.client.user!.id}&permissions=1580592383&scope=bot)`
 		);
-	msg.channel.send(ee);
+	return msg.channel.send(ee);
 };
 
 export const command: Command = {
