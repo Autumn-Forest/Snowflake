@@ -1,8 +1,9 @@
 import { exec } from 'child_process';
 import { Message, Command } from '../../Client';
 
-let msg: Message;
+let message: Message;
 const callback = async (msg: Message, args: string[]) => {
+	message = msg;
 	exec(args.join(' '), async (err, stdout, stderr) => {
 		if (err) msg.channel.send(await sendLongText(err.stack!), { code: 'xl' });
 		if (stderr) msg.channel.send(await sendLongText(stderr), { code: 'xl' });
@@ -24,4 +25,4 @@ export const command: Command = {
 	callback: callback
 };
 
-const sendLongText = async (text: string) => (text.length > 2000 ? await msg.client.helpers.util.uploadHaste(text) : text);
+const sendLongText = async (text: string) => (text.length > 2000 ? await message.client.helpers.util.uploadHaste(text) : text);
