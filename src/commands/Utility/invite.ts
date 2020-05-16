@@ -1,7 +1,13 @@
 import { Command, Message } from '../../Client';
 
-const callback = async (message: Message, _args: string[]) => {
-	message.channel.send(`https://discordapp.com/oauth2/authorize?client_id=${message.client.user!.id}&permissions=1580592383&scope=bot`);
+const callback = async (msg: Message, _args: string[]) => {
+	const ee = msg.client
+		.newEmbed('INFO')
+		.setTitle('Invite me!')
+		.setDescription(
+			`[Click here to add me to you server ;D](https://discordapp.com/oauth2/authorize?client_id=${msg.client.user!.id}&permissions=1580592383&scope=bot)`
+		);
+	return msg.channel.send(ee);
 };
 
 export const command: Command = {
