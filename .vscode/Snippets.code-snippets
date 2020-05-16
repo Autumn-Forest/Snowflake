@@ -24,7 +24,7 @@
     },
     "Create basic eventHandler stcuture": {
         "prefix": "eventHandlerStructure",
-        "body": ["import { Client } from '../interfaces/Client';\n\nexport default async (client: Client) => {}"],
+        "body": ["import { Client } from '../Client';\n\nexport const listener = (client: Client) => {}"],
         "description": "This will automatically insert the basic event handler structure"
     }
 }
