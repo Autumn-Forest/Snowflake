@@ -1,8 +1,8 @@
 import { Command, Message } from '../../Client';
 
-const callback = async (message: Message, _args: string[]) => {
-	const msg = await message.channel.send('Pinging...');
-	return msg.edit(`Pong! Took \`${msg.createdTimestamp - message.createdTimestamp}ms\`. Ayy it worked!`);
+const callback = async (msg: Message, _args: string[]) => {
+	const sentmsg = await msg.channel.send('Pinging...');
+	return sentmsg.edit(`Pong! Took \`${msg.createdTimestamp - msg.createdTimestamp}ms\`. Ayy it worked!`);
 };
 
 export const command: Command = {
