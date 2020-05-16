@@ -1,33 +1,26 @@
 import { Message, Command } from '../../Client';
 import { MessageEmbed } from 'discord.js';
 
-const callback = async (message: Message, args: string[]) => {
+const callback = async (msg: Message, args: string[]) => {
 	// @ts-ignore
-	const [client, commands, database, msg, guild, channel] = [
-		message.client,
-		message.client.commands,
-		message.client.database,
-		message,
-		message.guild,
-		message.channel
-	];
+	const [client, commands, database, guild, channel] = [msg.client, msg.client.commands, msg.client.database, msg.guild, msg.channel];
 
 	const embed = new MessageEmbed()
-		.setColor(message.client.colours.BASIC)
+		.setColor(msg.client.colours.BASIC)
 		.setTimestamp()
-		.setAuthor('eval', message.client.user!.displayAvatarURL())
-		.addField('Input', message.client.helpers.util.codeBlock(message.client.helpers.util.trimString(args.join(' '), 1024), 'js'));
+		.setAuthor('eval', msg.client.user!.displayAvatarURL())
+		.addField('Input', msg.client.helpers.util.codeBlock(msg.client.helpers.util.trimString(args.join(' '), 1024), 'js'));
 
 	try {
 		let output = await eval(args.join(' '));
 
 		if (typeof output !== 'string') output = require('util').inspect(output);
-		if (output.length > 2000) return sendOutput(message, embed, await client.helpers.util.uploadHaste(msg.client.redactCredentials(output)));
+		if (output.length > 2000) return sendOutput(msg, embed, await client.helpers.util.uploadHaste(msg.client.redactCredentials(output)));
 
-		return sendOutput(message, embed, output);
+		return sendOutput(msg, embed, output);
 	} catch (err) {
 		if (typeof err !== 'string') err = require('util').inspect(err);
-		return sendOutput(message, embed, err);
+		return sendOutput(msg, embed, err);
 	}
 };
 
