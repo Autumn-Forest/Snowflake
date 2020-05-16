@@ -1,8 +1,8 @@
 {
-    "editor.formatOnPaste": true,
-    "editor.formatOnSave": true,
-    "editor.formatOnType": true,
-    "prettier.useTabs": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "files.autoSave": "afterDelay"
+	"editor.formatOnPaste": true,
+	"editor.formatOnSave": true,
+	"editor.formatOnType": true,
+	"prettier.useTabs": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"files.autoSave": "afterDelay"
 }
