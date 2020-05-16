@@ -1,5 +1,5 @@
 import { Message, MessageEmbed } from 'discord.js';
-import { Command, Client } from '../../interfaces/Client';
+import { Command, Client } from '../../Client';
 
 const callback = async (msg: Message, args: string[]) => {
 	// Get the guild's settings if on a guild and determine the prefix that needs to be used in the help
@@ -53,10 +53,11 @@ export const command: Command = {
 	aliases: ['h'],
 	description: 'Get a list of all commands or info on a specific command',
 	usage: '[command name]',
-	requiresArgs: 0,
+	args: 0,
 	devOnly: false,
 	guildOnly: false,
-	userPermissions: '',
-	botPermissions: '',
+	nsfw: false,
+	memberPermission: [],
+	botPermission: [],
 	callback: callback
 };

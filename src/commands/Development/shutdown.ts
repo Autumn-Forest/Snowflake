@@ -8,6 +8,7 @@ export const command: Command = {
 	name: 'shutdown',
 	category: 'Dev',
 	aliases: ['exit', 'goodnight'],
+	description: '~~Kill~~ I mean, make the bot sleep.',
 	usage: '',
 	devOnly: true,
 	nsfw: false,

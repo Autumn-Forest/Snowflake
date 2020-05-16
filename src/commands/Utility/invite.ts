@@ -14,6 +14,7 @@ export const command: Command = {
 	name: 'invite',
 	category: 'Utility',
 	aliases: ['inv'],
+	description: 'Invite the bot',
 	usage: '',
 	args: 0,
 	devOnly: false,

@@ -170,6 +170,7 @@ export interface Command {
 	name: string;
 	category: string;
 	aliases: string[];
+	description: string;
 	args: number;
 	usage: string;
 	devOnly: boolean;

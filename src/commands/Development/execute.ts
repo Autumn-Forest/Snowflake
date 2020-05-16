@@ -14,6 +14,7 @@ export const command: Command = {
 	name: 'execute',
 	category: 'Dev',
 	aliases: ['exec', 'exe', 'exc'],
+	description: 'Execute bash',
 	usage: '',
 	devOnly: true,
 	nsfw: false,
