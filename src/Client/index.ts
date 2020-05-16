@@ -93,7 +93,10 @@ export class Client extends BaseClient {
 
     getChannel(chan: 'info' | 'errors') {
         const channel = this.channels.cache.get(this.config.channels[chan]);
-        if (!channel || !(channel instanceof TextChannel)) throw new Error(`Invalid ${chan}-channel provided or not reachable.`);
+        if (!channel || !(channel instanceof TextChannel)) {
+            console.log(`Invalid ${chan}-channel provided or not reachable.`);
+            process.exit(1);
+        }
         return channel;
     }
 

@@ -17,7 +17,7 @@ export const listener = (client: Client) => {
     console.info(`Connected to Discord as ${client.user.tag} - ${client.user.id}\n` + info.map(obj => `${obj.key}: ${obj.val}`).join('\n'));
     channel.send(
         client
-            .newEmbed()
+            .newEmbed('INFO')
             .setTitle("I'M ALIIIIIVEEEEEE d-(^_^)-b")
             .setDescription(info.map(obj => `**${obj.key}:** \`${obj.val}\``).join('\n'))
     );

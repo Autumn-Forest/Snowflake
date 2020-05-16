@@ -33,7 +33,7 @@ const callback = async (message: Message, args: string[]) => {
 
 export const command: Command = {
     name: 'eval',
-    category: 'DEVELOPMENT',
+    category: 'Dev',
     aliases: [],
     usage: '',
     devOnly: true,

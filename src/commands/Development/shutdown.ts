@@ -7,7 +7,7 @@ const callback = async (message: Message, _args: string[]) => {
 
 export const command: Command = {
     name: 'shutdown',
-    category: 'DEVELOPMENT',
+    category: 'Dev',
     aliases: ['exit', 'goodnight'],
     usage: '',
     devOnly: true,
