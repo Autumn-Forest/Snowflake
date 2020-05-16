@@ -28,6 +28,7 @@ export const command: Command = {
 	name: 'eval',
 	category: 'Dev',
 	aliases: [],
+	description: 'Eval script',
 	usage: '',
 	devOnly: true,
 	nsfw: false,

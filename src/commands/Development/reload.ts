@@ -13,6 +13,7 @@ export const command: Command = {
 	name: 'reload',
 	category: 'Dev',
 	aliases: [],
+	description: 'Reload the command and listener',
 	usage: '',
 	args: 0,
 	devOnly: true,
