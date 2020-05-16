@@ -1,7 +1,7 @@
 {
 	"name": "venus-ts",
 	"version": "1.0.0",
-	"main": "dist/src/index.js",
+	"main": "dist/index.js",
 	"author": "Autumn Forest (https://github.com/Autumn-Forest)",
 	"contributors": [
 		"VenNeptury <sgtmattis@gmail.com> (https://github.com/Mattis6666)",
@@ -17,15 +17,15 @@
 		".vscode"
 	],
 	"scripts": {
-		"dev": "npm run build && export NODE_ENV=development && npm run start",
-		"pm2": "pm2 start --name Neptune npm -- run dev --watch --ignore-watch dist/*",
-		"production": "npm run build && export NODE_ENV=production && npm run start",
+		"dev": "npm run build && export NODE_ENV=development && node .",
+		"prod": "npm run build && export NODE_ENV=production && node .",
+		"start": "pm2 start --name Snowflake npm -- run prod",
+		"pm2": "pm2 start --name Snowflake npm -- run dev --ignore-watch dist/*",
 		"test": "tsc -p tsconfig.test.json && npm run lint",
 		"lint": "eslint ./src/**/*.ts --fix",
 		"clean": "rm -rf dist/*",
 		"reinstall": "npm run cleanCache && npm run deleteModules && npm run deleteLock && npm run installModules",
 		"build": "tsc",
-		"start": "node dist/index",
 		"cleanCache": "npm cache clean --force",
 		"deleteModules": "rm -rf node_modules/*",
 		"deleteLock": "rm yarn.lock",
