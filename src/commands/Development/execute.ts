@@ -1,6 +1,7 @@
 import { exec } from 'child_process';
 import { Message, Command } from '../../Client';
 
+let msg: Message;
 const callback = async (msg: Message, args: string[]) => {
 	exec(args.join(' '), async (err, stdout, stderr) => {
 		if (err) msg.channel.send(await sendLongText(err.stack!), { code: 'xl' });
