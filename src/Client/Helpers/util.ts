@@ -3,8 +3,8 @@ import nodeFetch, { RequestInfo, RequestInit } from 'node-fetch';
 import { BaseClass } from '.';
 
 export class Util extends BaseClass {
-	async wrongSyntax(message: Message, text: string, del = false) {
-		const msg = await message.reply(text);
+	async wrongSyntax(message: Message, del = false) {
+		const msg = await message.reply('text');
 		if (!msg.guild || !del) return;
 
 		msg.delete({ timeout: 1000 * 10 }).catch(() => null);

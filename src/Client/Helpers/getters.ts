@@ -1,7 +1,109 @@
 import { Util } from './util';
-
+import { Collection, Snowflake, Role, User, GuildMember } from 'discord.js';
+import { Message } from '../../Client';
 export class Getters extends Util {
-	// Add the functions here
+	getUser = async (message: Message, args: string[], spot?: number) => {
+		if (message.guild) return (await this.getMember(message, args))?.user;
+
+		const input = spot ? args[spot].toLowerCase() : args.join(' ').toLowerCase();
+
+		const user = message.mentions.users?.first() || message.client.users.cache.get(input) || (await message.client.users.fetch(input).catch(() => null));
+		if (user) return user;
+
+		const userSearch = message.client.users.cache.filter(user => user.tag.toLowerCase().includes(input));
+
+		if (userSearch.size === 0) {
+			this.wrongSyntax(message);
+			return null;
+		} else if (userSearch.size === 1) {
+			return userSearch.first();
+		} else if (userSearch.size < 11) {
+			return (await this.chooseOne(message, userSearch)) as User;
+		} else {
+			this.wrongSyntax(message, false);
+			return null;
+		}
+	};
+
+	getMember = async (message: Message, args: string[], spot?: number) => {
+		if (!message.guild) throw new SyntaxError('getMember was used in a DmChannel.');
+
+		const input = spot || spot === 0 ? args[spot].toLowerCase() : args.join(' ').toLowerCase();
+
+		const member =
+			message.mentions.members?.first() || message.guild.members.cache.get(input) || (await message.guild.members.fetch(input).catch(() => null));
+		if (member) return member;
+
+		const memberSearch = message.guild.members.cache.filter(
+			member => member.displayName.toLowerCase().includes(input) || member.user.tag.toLowerCase().includes(input)
+		);
+
+		if (memberSearch.size === 0) {
+			this.wrongSyntax(message);
+			return null;
+		} else if (memberSearch.size === 1) {
+			return memberSearch.first();
+		} else if (memberSearch.size < 11) {
+			return (await this.chooseOne(message, memberSearch)) as GuildMember;
+		} else {
+			this.wrongSyntax(message, false);
+			return null;
+		}
+	};
+
+	getRole = async (message: Message, args: string[], spot?: number) => {
+		if (!message.guild) throw new SyntaxError('getRole was used in a DmChannel.');
+
+		const input = spot ? args[spot].toLowerCase() : args.join(' ').toLowerCase();
+
+		const role = message.mentions.roles?.first() || message.guild.roles.cache.get(input);
+		if (role) return role;
+
+		const roleSearch = message.guild.roles.cache.filter(role => role.name.toLowerCase().includes(input));
+
+		if (roleSearch.size === 0) {
+			this.wrongSyntax(message);
+			return null;
+		} else if (roleSearch.size === 1) {
+			return roleSearch.first();
+		} else if (roleSearch.size < 11) {
+			return (await this.chooseOne(message, roleSearch)) as Role;
+		} else {
+			this.wrongSyntax(message, false);
+			return null;
+		}
+	};
+
+	getName = (thing: Role | User | GuildMember) => (thing instanceof Role ? thing.name : thing instanceof User ? thing.tag : thing.user.tag);
+
+	chooseOne = async (message: Message, choices: Collection<Snowflake, Role | User | GuildMember>) => {
+		let i = 0;
+		const options = choices.map(choice => {
+			return { index: ++i, choice: choice };
+		});
+
+		const msg = await message.reply(`\`\`\`${options.map(o => `${o.index} | ${this.getName(o.choice)}`).join('\n')}\`\`\``);
+
+		const choice = (
+			await message.channel.awaitMessages(m => m.author.id === message.author.id, { max: 1, time: 1000 * 30, errors: ['time'] }).catch(() => null)
+		)?.first();
+
+		if (!choice) return this.wrongSyntax(message, false);
+
+		const result = options.find(o => o.index === parseInt(choice.content));
+		if (!result) this.wrongSyntax(message, false);
+
+		msg.delete().catch(() => null);
+		choice.delete().catch(() => null);
+
+		return result?.choice;
+	};
+
+	getStrings = async () => {
+		// const guildSettings = await message.client.getSettings(message);
+		const strings = 'en_GB';
+		return strings;
+	}; // Add the functions here
 }
 
 /*import { wrongSyntax } from './Util';
