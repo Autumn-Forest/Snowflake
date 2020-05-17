@@ -1,3 +1,13 @@
+import { Client } from '..';
+
+export default class Getters {
+	constructor(client: Client) {
+		this.client = client;
+	}
+	client: Client;
+	// Add the functions here
+}
+
 /*import { wrongSyntax } from './Util';
 import { Message } from '../Client';
 import { Collection, Snowflake, Role, User, GuildMember } from 'discord.js';
