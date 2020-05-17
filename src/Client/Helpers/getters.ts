@@ -1,3 +1,9 @@
+import { Util } from './util';
+
+export class Getters extends Util {
+	// Add the functions here
+}
+
 /*import { wrongSyntax } from './Util';
 import { Message } from '../Client';
 import { Collection, Snowflake, Role, User, GuildMember } from 'discord.js';

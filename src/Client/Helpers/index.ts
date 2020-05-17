@@ -1,5 +1,3 @@
-import * as util from './util';
+import { Util } from './util';
 
-export const ClientHelpers = {
-	util
-};
+export default Util;
