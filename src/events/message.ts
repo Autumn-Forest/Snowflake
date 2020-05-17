@@ -64,4 +64,5 @@ export const listener = async (client: Client, message: Message) => {
 		//@ts-ignore
 		.then(() => client.emit('commandUsed', message, command))
 		.catch(err => client.handleError(err, message));
+	return;
 };
