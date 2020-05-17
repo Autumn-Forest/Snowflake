@@ -1,10 +1,6 @@
-import { Client } from '..';
+import { Util } from './util';
 
-export default class Getters {
-	constructor(client: Client) {
-		this.client = client;
-	}
-	client: Client;
+export class Getters extends Util {
 	// Add the functions here
 }
 
