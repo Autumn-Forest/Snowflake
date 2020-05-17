@@ -6,7 +6,8 @@ import {
 	PermissionString,
 	GuildMember,
 	TextChannel,
-	MessageEmbed
+	MessageEmbed,
+	User
 } from 'discord.js';
 import { config } from '../config';
 import { constants } from '../constants';
@@ -139,9 +140,18 @@ export class Client extends BaseClient {
 					(await this.database.guildSettings.create({ guild: identifier.guild.id }))
 			: null;
 	}
+	async getUserSettings(user: User) {
+		return (await this.database.userSettings.findOne({ user: user.id })) || (await this.database.userSettings.create({ user: user.id }));
+	}
 
 	async getPrefix(identifier: Message | GuildMember) {
 		return (await this.getSettings(identifier))?.settings.prefix || this.config.defaultPrefix;
+	}
+	async getPrefixes(identifier: Message | GuildMember) {
+		return (await this.getSettings(identifier))?.settings.prefixes;
+	}
+	async getUserPrefixes(user: User) {
+		return (await this.getUserSettings(user)).prefixes;
 	}
 
 	getCommand(commandName: string) {
@@ -159,7 +169,8 @@ export interface Message extends BaseMessage {
 	client: Client;
 }
 
-export type CommandCategories = 'Dev' | 'Fun' | 'Utility';
+export type CommandCategories = 'Dev' | 'Fun' | 'Utility' | 'Settings';
+
 export interface Command {
 	name: string;
 	category: CommandCategories;
