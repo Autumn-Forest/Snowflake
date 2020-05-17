@@ -1,6 +1,7 @@
 import { Command, Message } from '../../Client';
 
 const callback = async (msg: Message, args: string[]) => {
+	msg.delete();
 	return msg.client.nekos.sendImage(msg, args, 'hug', '{{USER}} hugs {{MEMBER}}');
 };
 
