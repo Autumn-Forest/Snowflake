@@ -5,7 +5,7 @@ export class Webhooks extends Util {
 	sendFirst = async (msg: Message, text: string, channel?: TextChannel, name?: string, pfp?: string) => {
 		if (msg.channel.type !== 'text') return;
 		if (!channel) channel = msg.channel;
-		if (!name) name = msg.member.displayName;
+		if (!name) name = msg.member?.displayName || msg.author.username;
 		if (!pfp) pfp = msg.author.displayAvatarURL();
 
 		const webhook = await this.fetchFirst(channel);
@@ -39,7 +39,7 @@ export class Webhooks extends Util {
 	create = async (msg: Message, channel?: TextChannel, name?: string, pfp?: string, reason?: string) => {
 		if (msg.channel.type !== 'text') return;
 		if (!channel) channel = msg.channel;
-		if (!name) name = msg.member.displayName;
+		if (!name) name = msg.member?.displayName || msg.author.username;
 		if (!pfp) pfp = msg.author.displayAvatarURL();
 
 		const webhook = await channel.createWebhook(name, { avatar: pfp, reason });
