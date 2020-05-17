@@ -3,7 +3,7 @@ import { Command, Message } from '../../Client';
 const callback = async (msg: Message, args: string[]) => {
 	const owo = await msg.client.nekos.OwOify(args.join(' '));
 	if (!owo) return msg.client.helpers.wrongSyntax(msg, `You did not use this command correctly. The correct usage is ${command.usage}.`, true);
-	msg.delete();
+	msg.delete().catch(() => null);
 	return msg.client.webhooks.sendFirst(msg, owo);
 };
 
