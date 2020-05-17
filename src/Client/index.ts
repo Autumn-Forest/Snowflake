@@ -154,14 +154,14 @@ export interface ClientOptions {
 }
 
 export type ClientColours = 'ERROR' | 'INFO' | 'BASIC';
-
 export interface Message extends BaseMessage {
 	client: Client;
 }
 
+export type CommandCategories = 'Dev' | 'Fun' | 'Utility';
 export interface Command {
 	name: string;
-	category: string;
+	category: CommandCategories;
 	aliases: string[];
 	description: string;
 	args: number;
