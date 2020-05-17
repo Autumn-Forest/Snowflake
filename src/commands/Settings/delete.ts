@@ -22,7 +22,7 @@ const callback = async (msg: Message, args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'cmddelete',
+	name: 'deletecommandtriggers',
 	category: 'Settings',
 	aliases: ['commandedelete', 'triggerdelete', 'trgdelete', 'cmddel', 'trgdel'],
 	description: 'Delete the triggers of the commands.',
