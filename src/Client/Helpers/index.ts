@@ -1,3 +1,3 @@
-import { Util } from './util';
+import { Getters } from './getters';
 
-export default Util;
+export default Getters;
