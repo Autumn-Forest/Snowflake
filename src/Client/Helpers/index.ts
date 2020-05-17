@@ -1,3 +1,4 @@
 import { Getters } from './getters';
+import { Nekos } from './nekos';
 
-export default Getters;
+export { Getters, Nekos };

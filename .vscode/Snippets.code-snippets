@@ -18,7 +18,7 @@
 	"Basic Command structure": {
 		"prefix": ["commandstructure", "cmdstruct"],
 		"body": [
-			"import { Command, Message } from '../../Client';\n\nconst callback = async (message: Message, args: string[]) => {};\n\nexport const command: Command = {\n    name: '',\n    category: '',\n    aliases: [],\n    description: '',\n    usage: '',\n    args: 0,\n    devOnly: false,\n    guildOnly: false,\n    nsfw: false,\n    memberPermission: [],\n    botPermission: [],\n    callback: callback\n};"
+			"import { Command, Message } from '../../Client';\n\nconst callback = async (msg: Message, args: string[]) => {\n};\n\nexport const command: Command = {\n    name: '',\n    category: '',\n    aliases: [],\n    description: '',\n    usage: '',\n    args: 0,\n    devOnly: false,\n    guildOnly: false,\n    nsfw: false,\n    memberPermission: [],\n    botPermission: [],\n    callback: callback\n};"
 		],
 		"description": "Insert the basic command structure"
 	},

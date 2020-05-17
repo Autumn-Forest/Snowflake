@@ -13,7 +13,7 @@ import { constants } from '../constants';
 import { database } from '../database';
 import { join } from 'path';
 import { readdirSync } from 'fs';
-import ClientHelpers from './Helpers';
+import { Getters, Nekos } from './Helpers';
 import { stripIndents } from 'common-tags';
 
 const BaseClientOptions: BaseClientOptions = {
@@ -45,7 +45,8 @@ export class Client extends BaseClient {
 	debug = false;
 	config = config;
 	constants = constants;
-	helpers = new ClientHelpers(this);
+	nekos = new Nekos(this);
+	helpers = new Getters(this);
 	database = database;
 	commands: Collection<string, Command> = new Collection();
 	colours: { [key in ClientColours]: string } = {
