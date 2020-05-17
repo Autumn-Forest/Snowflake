@@ -13,7 +13,7 @@ import { constants } from '../constants';
 import { database } from '../database';
 import { join } from 'path';
 import { readdirSync } from 'fs';
-import { Getters, Nekos } from './Helpers';
+import { Getters, Nekos, Webhooks } from './Helpers';
 import { stripIndents } from 'common-tags';
 
 const BaseClientOptions: BaseClientOptions = {
@@ -46,13 +46,14 @@ export class Client extends BaseClient {
 	config = config;
 	constants = constants;
 	nekos = new Nekos(this);
+	webhooks = new Webhooks(this);
 	helpers = new Getters(this);
 	database = database;
 	commands: Collection<string, Command> = new Collection();
 	colours: { [key in ClientColours]: string } = {
 		ERROR: 'FF403C',
 		INFO: '0D7DFF',
-		BASIC: '7729597'
+		BASIC: '75F1BD'
 	};
 	paths = {
 		listeners: join(__dirname, '../events'),
@@ -154,14 +155,14 @@ export interface ClientOptions {
 }
 
 export type ClientColours = 'ERROR' | 'INFO' | 'BASIC';
-
 export interface Message extends BaseMessage {
 	client: Client;
 }
 
+export type CommandCategories = 'Dev' | 'Fun' | 'Utility';
 export interface Command {
 	name: string;
-	category: string;
+	category: CommandCategories;
 	aliases: string[];
 	description: string;
 	args: number;
