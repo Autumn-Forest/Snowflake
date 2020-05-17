@@ -1,5 +1,5 @@
 import { Getters } from './getters';
 import { Nekos } from './nekos';
-import { Webhooks } from './webhooks';
+import { WebhookManager } from './webhooks';
 
-export { Getters, Nekos, Webhooks };
+export { Getters, Nekos, WebhookManager };

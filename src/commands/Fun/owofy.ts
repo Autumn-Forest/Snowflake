@@ -2,10 +2,9 @@ import { Command, Message } from '../../Client';
 
 const callback = async (msg: Message, args: string[]) => {
 	const owo = await msg.client.nekos.OwOify(args.join(' '));
-	if (!owo) return msg.client.helpers.wrongSyntax(msg, 'You did not use this command correctly. The correct usage is `{USAGE}`.');
+	if (!owo) return msg.client.helpers.wrongSyntax(msg, `You did not use this command correctly. The correct usage is ${command.usage}.`, true);
 	msg.delete();
-	const ee = msg.client.newEmbed('BASIC').setTitle(`${msg.author.tag} said:`).setDescription(owo);
-	return msg.channel.send(ee);
+	return msg.client.webhooks.sendFirst(msg, owo);
 };
 
 export const command: Command = {

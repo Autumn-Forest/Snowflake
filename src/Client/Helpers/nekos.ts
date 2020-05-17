@@ -1,5 +1,5 @@
 import NekoClient from 'nekos.life';
-import { NekoSfwImageOptions, NekoNsfwImageOptions } from './NekoOptions';
+import { NekoSfwImageOptions, NekoNsfwImageOptions } from '../../interfaces/NekoOptions';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { Message, Client } from '../../Client';
 const neko = new NekoClient();

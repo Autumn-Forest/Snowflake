@@ -13,7 +13,7 @@ import { constants } from '../constants';
 import { database } from '../database';
 import { join } from 'path';
 import { readdirSync } from 'fs';
-import { Getters, Nekos, Webhooks } from './Helpers';
+import { Getters, Nekos, WebhookManager } from './Helpers';
 import { stripIndents } from 'common-tags';
 
 const BaseClientOptions: BaseClientOptions = {
@@ -46,7 +46,7 @@ export class Client extends BaseClient {
 	config = config;
 	constants = constants;
 	nekos = new Nekos(this);
-	webhooks = new Webhooks(this);
+	webhooks = new WebhookManager(this);
 	helpers = new Getters(this);
 	database = database;
 	commands: Collection<string, Command> = new Collection();
