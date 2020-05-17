@@ -8,7 +8,7 @@ export class Webhooks extends Util {
 		if (!name) name = msg.author.username;
 		if (!pfp) pfp = msg.author.displayAvatarURL();
 
-		const webhook = (await this.fetchFirst(channel)).first();
+		const webhook = await this.fetchFirst(channel);
 		return webhook?.send(text, {
 			username: name,
 			avatarURL: pfp
@@ -16,11 +16,11 @@ export class Webhooks extends Util {
 	};
 
 	fetchFirst = async (channel: TextChannel) => {
-		let webhooks = await channel.fetchWebhooks();
+		const webhooks = await channel.fetchWebhooks();
+		let webhook;
 		if (!webhooks.first()) {
-			await channel.createWebhook('owo');
-			webhooks = await channel.fetchWebhooks();
-		}
-		return webhooks;
+			webhook = await channel.createWebhook('owo');
+		} else webhook = webhooks.first();
+		return webhook;
 	};
 }
