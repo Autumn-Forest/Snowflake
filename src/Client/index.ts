@@ -52,7 +52,7 @@ export class Client extends BaseClient {
 	colours: { [key in ClientColours]: string } = {
 		ERROR: 'FF403C',
 		INFO: '0D7DFF',
-		BASIC: 'A630FF'
+		BASIC: '75F1BD'
 	};
 	paths = {
 		listeners: join(__dirname, '../events'),
