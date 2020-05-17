@@ -8,7 +8,6 @@ export const listener = async (client: Client, message: Message) => {
 
 	const guildPrefix = await client.getPrefix(message);
 	const prefixRegex = new RegExp(`^(<@!?${client.user!.id}>|${guildPrefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})\\s*`);
-	if (!prefixRegex.test(message.content)) return;
 
 	const matched = message.content.match(prefixRegex);
 	const prefix = matched ? matched[0] : null;
