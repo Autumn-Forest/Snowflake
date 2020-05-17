@@ -1,3 +1,4 @@
+[![Join our Discord](https://img.shields.io/discord/711227640144723968.svg)](https://discord.gg/89uQ6cJ)
 [![Build Status](https://travis-ci.org/Autumn-Forest/Snowflake.svg?branch=master)](https://travis-ci.org/Autumn-Forest/Snowflake)
 [![License](https://img.shields.io/github/license/Autumn-Forest/Snowflake.svg)](https://github.com/Autumn-Forest/Snowflake/blob/master/LICENSE)
 
