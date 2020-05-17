@@ -13,14 +13,14 @@ export class Getters extends Util {
 		const userSearch = message.client.users.cache.filter(user => user.tag.toLowerCase().includes(input));
 
 		if (userSearch.size === 0) {
-			this.wrongSyntax(message);
+			this.wrongSyntax(message, 'You did not provide a valid user. Please run the command again and provide one.');
 			return null;
 		} else if (userSearch.size === 1) {
 			return userSearch.first();
 		} else if (userSearch.size < 11) {
 			return (await this.chooseOne(message, userSearch)) as User;
 		} else {
-			this.wrongSyntax(message, false);
+			this.wrongSyntax(message, `I found multiple users matching your input: ${userSearch.size}`, false);
 			return null;
 		}
 	};
@@ -39,14 +39,14 @@ export class Getters extends Util {
 		);
 
 		if (memberSearch.size === 0) {
-			this.wrongSyntax(message);
+			this.wrongSyntax(message, 'You did not provide a valid member. Please run the command again and provide one.');
 			return null;
 		} else if (memberSearch.size === 1) {
 			return memberSearch.first();
 		} else if (memberSearch.size < 11) {
 			return (await this.chooseOne(message, memberSearch)) as GuildMember;
 		} else {
-			this.wrongSyntax(message, false);
+			this.wrongSyntax(message, `I found multiple users matching your input: ${memberSearch.size}`, false);
 			return null;
 		}
 	};
@@ -62,14 +62,14 @@ export class Getters extends Util {
 		const roleSearch = message.guild.roles.cache.filter(role => role.name.toLowerCase().includes(input));
 
 		if (roleSearch.size === 0) {
-			this.wrongSyntax(message);
+			this.wrongSyntax(message, 'You did not provide a valid role. Please run the command again and provide one.');
 			return null;
 		} else if (roleSearch.size === 1) {
 			return roleSearch.first();
 		} else if (roleSearch.size < 11) {
 			return (await this.chooseOne(message, roleSearch)) as Role;
 		} else {
-			this.wrongSyntax(message, false);
+			this.wrongSyntax(message, `I found multiple roles matching your input: ${roleSearch.size}`, false);
 			return null;
 		}
 	};
@@ -88,10 +88,10 @@ export class Getters extends Util {
 			await message.channel.awaitMessages(m => m.author.id === message.author.id, { max: 1, time: 1000 * 30, errors: ['time'] }).catch(() => null)
 		)?.first();
 
-		if (!choice) return this.wrongSyntax(message, false);
+		if (!choice) return this.wrongSyntax(message, 'I found multiple matches but the prompt to select one ran out. Please run the command again!', false);
 
 		const result = options.find(o => o.index === parseInt(choice.content));
-		if (!result) this.wrongSyntax(message, false);
+		if (!result) this.wrongSyntax(message, 'That was not a valid choice! Please run the command again.', false);
 
 		msg.delete().catch(() => null);
 		choice.delete().catch(() => null);
