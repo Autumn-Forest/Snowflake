@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/Promise-pending/change-this.svg?branch=master)](https://travis-ci.org/Promise-pending/change-this)
+[![Build Status](https://travis-ci.org/Autumn-Forest/Snowflake.svg?branch=master)](https://travis-ci.org/Autumn-Forest/Snowflake)
 
 <center> <h1>Very epic bot!</h1> </center>
 
