@@ -46,7 +46,7 @@ export class Client extends BaseClient {
 	debug = false;
 	config = config;
 	constants = constants;
-	helpers = ClientHelpers;
+	helpers = new ClientHelpers(this);
 	database = database;
 	commands: Collection<string, Command> = new Collection();
 	colours: { [key in ClientColours]: string } = {
@@ -91,10 +91,10 @@ export class Client extends BaseClient {
 		return new MessageEmbed().setTimestamp().setColor(type ? this.colours[type] : 'RANDOM');
 	}
 
-	getChannel(chan: 'info' | 'errors') {
-		const channel = this.channels.cache.get(this.config.channels[chan]);
+	getChannel(channelType: 'info' | 'errors') {
+		const channel = this.channels.cache.get(this.config.channels[channelType]);
 		if (!channel || !(channel instanceof TextChannel)) {
-			console.log(`Invalid ${chan}-channel provided or not reachable.`);
+			console.log(`Invalid ${channelType}-channel provided or not reachable.`);
 			process.exit(1);
 		}
 		return channel;
@@ -112,10 +112,10 @@ export class Client extends BaseClient {
 		const errorEmbed = new MessageEmbed()
 			.setColor(this.colours.ERROR)
 			.setTitle(err.name)
-			.setDescription(this.helpers.util.codeBlock(this.helpers.util.trimString(err.stack || 'No Error.', 2048), 'js'));
+			.setDescription(this.helpers.codeBlock(this.helpers.trimString(err.stack || 'No Error.', 2048), 'js'));
 		if (message) {
 			errorEmbed.addFields([
-				{ name: 'Message', value: this.helpers.util.codeBlock(this.helpers.util.trimString(message!.content, 1024)) },
+				{ name: 'Message', value: this.helpers.codeBlock(this.helpers.trimString(message!.content, 1024)) },
 				{
 					name: 'Message Info',
 					value: stripIndents`
