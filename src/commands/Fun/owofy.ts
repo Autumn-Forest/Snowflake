@@ -8,7 +8,7 @@ const callback = async (msg: Message, args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'OwOfy',
+	name: 'owofy',
 	category: 'Fun',
 	aliases: ['owo'],
 	description: 'OwOfy youw text uwu',
