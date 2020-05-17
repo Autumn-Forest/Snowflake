@@ -53,7 +53,7 @@ export class Client extends BaseClient {
 	colours: { [key in ClientColours]: string } = {
 		ERROR: 'FF403C',
 		INFO: '0D7DFF',
-		BASIC: 'A630FF'
+		BASIC: '75F1BD'
 	};
 	paths = {
 		listeners: join(__dirname, '../events'),
@@ -155,14 +155,14 @@ export interface ClientOptions {
 }
 
 export type ClientColours = 'ERROR' | 'INFO' | 'BASIC';
-
 export interface Message extends BaseMessage {
 	client: Client;
 }
 
+export type CommandCategories = 'Dev' | 'Fun' | 'Utility';
 export interface Command {
 	name: string;
-	category: string;
+	category: CommandCategories;
 	aliases: string[];
 	description: string;
 	args: number;
