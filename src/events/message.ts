@@ -1,4 +1,5 @@
 import { Client, Message } from '../Client';
+import { stripIndents } from 'common-tags';
 
 export const listener = async (client: Client, message: Message) => {
 	if (message.author.bot) return;
@@ -7,14 +8,23 @@ export const listener = async (client: Client, message: Message) => {
 	if (!message) return;
 
 	const guildPrefix = await client.getPrefix(message);
-	const prefixRegex = new RegExp(`^(<@!?${client.user!.id}>|${guildPrefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})\\s*`);
+	const guildPrefixes = await client.getPrefixes(message);
+	const userPrefixes = await client.getUserPrefixes(message.author);
+
+	let prefixes = [guildPrefix];
+	if (guildPrefixes) prefixes = prefixes.concat(guildPrefixes);
+	if (userPrefixes) prefixes = prefixes.concat(userPrefixes);
+
+	const prefixRegex = new RegExp(`^(<@!?${client.user!.id}>|${prefixes.map(p => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\s*`);
 
 	const matched = message.content.match(prefixRegex);
 	const prefix = matched ? matched[0] : null;
 	if (!prefix || !message.content.startsWith(prefix)) return;
 
-	if (!message.content.replace(prefix, '').length)
-		return message.channel.send(`My prefix is \`${guildPrefix}\`\nFor a list of commands, type \`${guildPrefix}help\``);
+	if (!message.content.replace(new RegExp(`<@!?${client.user!.id}>`), '').length)
+		return message.channel.send(stripIndents`
+		My prefix is \`${guildPrefix}\`
+		For a list of commands, type \`${guildPrefix}help\``);
 
 	const args = message.content.slice(prefix.length).trim().split(/ +/);
 	const commandName = args.shift();
