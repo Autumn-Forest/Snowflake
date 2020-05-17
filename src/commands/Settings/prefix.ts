@@ -24,6 +24,9 @@ const callback = async (msg: Message, args: string[]) => {
 		);
 
 	if (scope.toLowerCase() === 'server') {
+		if (msg.client.helpers.missingPermissions(msg, ['MANAGE_GUILD']))
+			return msg.client.helpers.wrongSyntax(msg, 'You require the `Manage Server` Permission to do this.');
+
 		const settings = await msg.client.getSettings(msg);
 		if (!settings) return msg.client.helpers.wrongSyntax(msg, 'You can only do this on a server.');
 
