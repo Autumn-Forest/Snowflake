@@ -1,7 +1,7 @@
 import { Message } from '../../Client';
 import { Util } from './util';
 import { TextChannel } from 'discord.js';
-export class Webhooks extends Util {
+export class WebhookManager extends Util {
 	sendFirst = async (msg: Message, text: string, channel?: TextChannel, name?: string, pfp?: string) => {
 		if (msg.channel.type !== 'text') return;
 		if (!channel) channel = msg.channel;
@@ -17,15 +17,12 @@ export class Webhooks extends Util {
 
 	fetchFirst = async (channel: TextChannel) => {
 		const webhooks = await channel.fetchWebhooks();
-		let webhook;
-		if (!webhooks.first()) webhook = await channel.createWebhook('basic', { reason: 'Automatic creation' });
-		else webhook = webhooks.first();
+		const webhook = webhooks.first() || (await channel.createWebhook('basic', { reason: 'Automatic creation' }));
 		return webhook;
 	};
 
 	channelFetch = async (channel: TextChannel) => {
-		const webhooks = await channel.fetchWebhooks();
-		return webhooks;
+		return await channel.fetchWebhooks();
 	};
 
 	send = async (id: string, text: string, name?: string, pfp?: string) => {
@@ -48,6 +45,6 @@ export class Webhooks extends Util {
 
 	delete = async (id: string, reason?: string) => {
 		const webhook = await this.client.fetchWebhook(id);
-		webhook.delete(reason);
+		webhook.delete(reason).catch(() => null);
 	};
 }
