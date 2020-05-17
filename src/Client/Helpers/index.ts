@@ -1,12 +1,8 @@
-import { Message, Client } from '..';
+import { Message } from '..';
+import Getters from './getters';
 import nodeFetch, { RequestInfo, RequestInit } from 'node-fetch';
 
-export class ClientHelpers {
-	constructor(client: Client) {
-		this.client = client;
-	}
-	client: Client;
-
+export class ClientHelpers extends Getters {
 	async wrongSyntax(message: Message, text: string, del = false) {
 		const msg = await message.reply(text);
 		if (!msg.guild || !del) return;
