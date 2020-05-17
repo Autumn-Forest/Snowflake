@@ -1,8 +1,13 @@
-import { Message } from '..';
+import { Message, Client } from '..';
 import nodeFetch, { RequestInfo, RequestInit } from 'node-fetch';
-import { BaseClass } from '.';
+import { PermissionString, GuildMember } from 'discord.js';
 
-export class Util extends BaseClass {
+export class Util {
+	constructor(client: Client) {
+		this.client = client;
+	}
+	client: Client;
+
 	async wrongSyntax(message: Message, text: string, del = false) {
 		const msg = await message.reply(text);
 		if (!msg.guild || !del) return;
@@ -38,5 +43,27 @@ export class Util extends BaseClass {
 			redirect: 'follow'
 		});
 		return result?.key ? `https://hasteb.in/${result.key}` : 'Failed to upload to hastebin!';
+	}
+
+	async isNSFW(message: Message) {
+		if (message.channel.type !== 'text') return false;
+
+		const settings = await this.client.getSettings(message);
+		return settings?.settings.nsfw === true;
+	}
+
+	missingPermissions(message: Message, permissions: PermissionString[], member?: GuildMember | 'self') {
+		if (message.channel.type === 'dm') return;
+		const targetMember = member === 'self' ? message.guild!.me! : member || message.member!;
+		const allPermissions = message.channel.permissionsFor(targetMember) || targetMember.permissions;
+		const missing = permissions.filter(p => !allPermissions?.has(p));
+		return missing.length ? missing : undefined;
+	}
+
+	nicerPermissions(perm: PermissionString) {
+		return perm
+			.split('_')
+			.map(word => word.charAt(0) + word.slice(1).toLowerCase())
+			.join(' ');
 	}
 }

@@ -5,7 +5,6 @@ import {
 	Collection,
 	PermissionString,
 	GuildMember,
-	DMChannel,
 	TextChannel,
 	MessageEmbed
 } from 'discord.js';
@@ -14,7 +13,7 @@ import { constants } from '../constants';
 import { database } from '../database';
 import { join } from 'path';
 import { readdirSync } from 'fs';
-import { ClientHelpers } from './Helpers';
+import ClientHelpers from './Helpers';
 import { stripIndents } from 'common-tags';
 
 const BaseClientOptions: BaseClientOptions = {
@@ -130,13 +129,6 @@ export class Client extends BaseClient {
 			);
 		}
 		return channel.send((await Promise.all(this.config.developers.map(d => this.users.fetch(d)))).join(' '), errorEmbed);
-	}
-
-	missingPermissions(message: Message, permissions: PermissionString[], member?: GuildMember) {
-		if (message.channel instanceof DMChannel) return;
-		const allPermissions = message.channel.permissionsFor(member || message.guild!.me!);
-		const missing = permissions.filter(p => allPermissions?.has(p));
-		return missing.length ? missing : undefined;
 	}
 
 	async getSettings(identifier: Message | GuildMember) {
