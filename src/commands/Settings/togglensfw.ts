@@ -7,18 +7,18 @@ const callback = async (msg: Message, args: string[]) => {
 	const arg = args[0].toLowerCase() === 'on';
 	settings.settings.nsfw = arg;
 	settings.save();
-	return msg.channel.send(`NSFW commands are now ${arg ? 'allowed' : 'disalowed'} !`);
+	return msg.channel.send(`Successfully ${arg ? 'enabled' : 'disabled'} NSFW commands!`);
 };
 
 export const command: Command = {
 	name: 'togglensfw',
 	category: 'Settings',
 	aliases: ['nsfw'],
-	description: 'Activate or not every NSFW commands in your server.',
+	description: 'Toggle NSFW commands',
 	usage: '',
 	args: 0,
 	devOnly: false,
-	guildOnly: false,
+	guildOnly: true,
 	nsfw: false,
 	memberPermission: ['MANAGE_GUILD', 'MANAGE_CHANNELS'],
 	botPermission: [],
