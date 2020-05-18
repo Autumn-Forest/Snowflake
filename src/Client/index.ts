@@ -10,7 +10,7 @@ import {
 	User
 } from 'discord.js';
 import { config } from '../config';
-import { constants } from '../constants';
+import constants from '../constants';
 import { database } from '../database';
 import { join } from 'path';
 import { readdirSync } from 'fs';
