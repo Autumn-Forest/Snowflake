@@ -25,7 +25,6 @@ export class CacheManager {
 
 		let cache = this.guildCache.get(id);
 		if (!cache) {
-			console.log('UNCACHED GUILD');
 			cache = (await this.client.database.guildSettings.findOne({ guild: id })) || (await this.client.database.guildSettings.create({ guild: id }));
 			this.guildCache.set(id, cache);
 		}
