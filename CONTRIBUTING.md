@@ -1,12 +1,9 @@
-You want to contribute to our wonderful project?
-We will accept any kind of help with pleasure!
+If you would like to contribute, we will accept any kind of help with pleasure!
 
 You should just respect those guidelines:
 
-1. Do not add any dependencies (modules, in case of dependency you write yourself, it's oki), if needed ask first explaining why we should add this module to the project.
-2. Respect our code style, use the same prettier/eslint rules, or stricter one.
-3. You should always justify any change, and think to comment as much possible.
-4. You must not do any troll PR!
-5. You shouldn't delete any functions/commands except with a good justification, we will accept only new functionality.
-6. It's preferable to do a pull request per new functionality, or everything in the PR should be linked.
-7. The main dev (actually GwenBebe, Mattis6666 and Naia-love) can refuse any PR for any reason.
+1. Do not add any dependencies without good reasoning.
+2. Respect our code style and follow the eslint and prettier rules that are already set up.
+3. You should always explain any change, and leave comments on why you think this change matters.
+4. You should not remove or alter any functionality without good reasoning.
+5. Make one PR per change, not one big PR.

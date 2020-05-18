@@ -2,7 +2,8 @@
 [![Build Status](https://travis-ci.org/Autumn-Forest/Snowflake.svg?branch=master)](https://travis-ci.org/Autumn-Forest/Snowflake)
 [![License](https://img.shields.io/github/license/Autumn-Forest/Snowflake.svg)](https://github.com/Autumn-Forest/Snowflake/blob/master/LICENSE)
 [![CodeFactor](https://www.codefactor.io/repository/github/autumn-forest/snowflake/badge)](https://www.codefactor.io/repository/github/autumn-forest/snowflake)
-<center> <h1>Very epic bot!</h1> </center>
+
+<center> <h1>Snowflake</h1> </center>
 
 ## License
 
