@@ -27,7 +27,7 @@ const callback = async (msg: Message, args: string[]) => {
 		if (msg.client.helpers.missingPermissions(msg, ['MANAGE_GUILD']))
 			return msg.client.helpers.wrongSyntax(msg, 'You require the `Manage Server` Permission to do this.');
 
-		const settings = await msg.client.getSettings(msg);
+		const settings = await msg.client.cache.getGuild(msg);
 		if (!settings) return msg.client.helpers.wrongSyntax(msg, 'You can only do this on a server.');
 
 		switch (action.toLowerCase()) {
@@ -49,7 +49,7 @@ const callback = async (msg: Message, args: string[]) => {
 		}
 		settings.save();
 	} else {
-		const settings = await msg.client.getUserSettings(msg.author);
+		const settings = await msg.client.cache.getUser(msg.author);
 
 		switch (action.toLowerCase()) {
 			case 'set':
