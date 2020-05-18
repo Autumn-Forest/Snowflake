@@ -52,7 +52,7 @@ export class Util {
 		if (message.channel.type !== 'text') return false;
 
 		const settings = await this.client.cache.getGuild(message);
-		return settings?.settings.nsfw === true && message.channel.nsfw;
+		return settings?.settings.nsfw && message.channel.nsfw;
 	}
 
 	missingPermissions(message: Message, permissions: PermissionString[], member?: GuildMember | 'self') {
@@ -76,5 +76,9 @@ export class Util {
 
 	numToMonth(num: number) {
 		return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][num];
+	}
+
+	isImageUrl(str: string) {
+		return this.client.constants.linkRegex.test(str) && str.match(/.(png|jpe?g|gif|web[pm])(?:\?.*)?$/i) !== null;
 	}
 }

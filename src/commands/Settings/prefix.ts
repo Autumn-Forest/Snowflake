@@ -2,7 +2,18 @@ import { Command, Message } from '../../Client';
 import { stripIndents } from 'common-tags';
 
 const callback = async (msg: Message, args: string[]) => {
-	const [scope, action, prefix] = args;
+	let [scope, action, prefix] = args;
+	if (!action) {
+		prefix = scope;
+		scope = 'server';
+		action = 'set';
+	}
+
+	if (!prefix)
+		return msg.client.helpers.wrongSyntax(
+			msg,
+			`This command requires ${command.args} arguments, but you only provided ${args.length}.\nPlease use it like this: \`${prefix}${command.name} ${command.usage}\``
+		);
 
 	if (!['server', 'user'].includes(scope.toLowerCase()))
 		return msg.client.helpers.wrongSyntax(
@@ -75,10 +86,10 @@ const callback = async (msg: Message, args: string[]) => {
 export const command: Command = {
 	name: 'prefix',
 	category: 'Settings',
-	aliases: ['p', 'setprefix'],
-	description: 'Set my prefix. You can either set it for a server or only for yourself.',
+	aliases: ['p', 'pref', 'setprefix'],
+	description: 'Set my prefix. You can either set it for a server or only for yourself',
 	usage: '<Server | User> <set | add | remove> <prefix>',
-	args: 3,
+	args: 1,
 	devOnly: false,
 	guildOnly: false,
 	nsfw: false,
