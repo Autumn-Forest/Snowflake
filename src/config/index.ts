@@ -5,6 +5,7 @@ interface Config {
 	mongoString: string;
 	defaultPrefix: string;
 	developers: string[];
+	gelbooruAPI: string;
 	channels: {
 		info: string;
 		errors: string;
