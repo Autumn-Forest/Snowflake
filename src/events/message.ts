@@ -39,7 +39,7 @@ export const listener = async (client: Client, message: Message) => {
 		if (command.guildOnly && !message.guild)
 			return message.client.helpers.wrongSyntax(message, `\`${prefix}${command.name}\` can only be used on a server!`);
 
-		if (command.nsfw && message.client.helpers.isNSFW(message))
+		if (command.nsfw && !message.client.helpers.isNSFW(message))
 			return message.client.helpers.wrongSyntax(message, `\`${prefix}${command.name}\` can only be used in a NSFW channel!`);
 
 		if (command.memberPermission.length && message.client.helpers.missingPermissions(message, command.memberPermission))
