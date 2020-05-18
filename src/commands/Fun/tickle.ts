@@ -1,15 +1,15 @@
 import { Command, Message } from '../../Client';
 
 const callback = async (msg: Message, args: string[]) => {
-	const hugs = msg.client.constants.stringsHugs;
-	return msg.client.nekos.sendImage(msg, args, 'hug', hugs[Math.floor(Math.random() * hugs.length)]);
+	const tickles = msg.client.constants.stringsTickles;
+	return msg.client.nekos.sendImage(msg, args, 'tickle', tickles[Math.floor(Math.random() * tickles.length)]);
 };
 
 export const command: Command = {
-	name: 'hug',
+	name: 'tickle',
 	category: 'Fun',
-	aliases: ['huggu', 'hugs'],
-	description: 'Hugs your friends!',
+	aliases: ['tickles'],
+	description: 'Tickle your friends :P',
 	usage: '<@member|nickname>',
 	args: 1,
 	devOnly: false,
