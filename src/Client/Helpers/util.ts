@@ -48,7 +48,7 @@ export class Util {
 	async isNSFW(message: Message) {
 		if (message.channel.type !== 'text') return false;
 
-		const settings = await this.client.getSettings(message);
+		const settings = await this.client.cache.getGuild(message);
 		return settings?.settings.nsfw === true;
 	}
 

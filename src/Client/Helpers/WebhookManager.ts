@@ -1,6 +1,7 @@
-import { Message } from '../../Client';
+import { Message } from '..';
 import { Util } from './util';
 import { TextChannel } from 'discord.js';
+
 export class WebhookManager extends Util {
 	sendFirst = async (msg: Message, text: string, channel?: TextChannel, name?: string, pfp?: string) => {
 		if (msg.channel.type !== 'text') return;

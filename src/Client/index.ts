@@ -16,6 +16,7 @@ import { join } from 'path';
 import { readdirSync } from 'fs';
 import { Getters, Nekos, WebhookManager } from './Helpers';
 import { stripIndents } from 'common-tags';
+import { CacheManager } from './Helpers/CacheManager';
 
 const BaseClientOptions: BaseClientOptions = {
 	disableMentions: 'everyone',
@@ -33,7 +34,8 @@ export class Client extends BaseClient {
 	constructor(options?: ClientOptions) {
 		super(BaseClientOptions);
 		if (options) {
-			this.debug = options.debug === true;
+			this.debug = options.debug || this.debug;
+			this.flushTime = options.flushTime || this.flushTime;
 			if (options.colours)
 				Object.keys(options.colours).forEach(
 					key => (this.colours[key as ClientColours] = options.colours![key as ClientColours] || this.colours[key as ClientColours])
@@ -44,12 +46,14 @@ export class Client extends BaseClient {
 	}
 
 	debug = false;
+	flushTime = 1000 * 60 * 30;
 	config = config;
 	constants = constants;
 	nekos = new Nekos(this);
 	webhooks = new WebhookManager(this);
 	helpers = new Getters(this);
 	database = database;
+	cache = new CacheManager(this);
 	commands: Collection<string, Command> = new Collection();
 	colours: { [key in ClientColours]: string } = {
 		ERROR: 'FF403C',
@@ -134,24 +138,14 @@ export class Client extends BaseClient {
 		return channel.send((await Promise.all(this.config.developers.map(d => this.users.fetch(d)))).join(' '), errorEmbed);
 	}
 
-	async getSettings(identifier: Message | GuildMember) {
-		return identifier.guild
-			? (await this.database.guildSettings.findOne({ guild: identifier.guild.id })) ||
-					(await this.database.guildSettings.create({ guild: identifier.guild.id }))
-			: null;
-	}
-	async getUserSettings(user: User) {
-		return (await this.database.userSettings.findOne({ user: user.id })) || (await this.database.userSettings.create({ user: user.id }));
-	}
-
 	async getPrefix(identifier: Message | GuildMember) {
-		return (await this.getSettings(identifier))?.settings.prefix || this.config.defaultPrefix;
+		return (await this.cache.getGuild(identifier))?.settings.prefix || this.config.defaultPrefix;
 	}
 	async getPrefixes(identifier: Message | GuildMember) {
-		return (await this.getSettings(identifier))?.settings.prefixes;
+		return (await this.cache.getGuild(identifier))?.settings.prefixes;
 	}
 	async getUserPrefixes(user: User) {
-		return (await this.getUserSettings(user)).prefixes;
+		return (await this.cache.getUser(user)).prefixes;
 	}
 
 	getCommand(commandName: string) {
@@ -162,6 +156,7 @@ export class Client extends BaseClient {
 export interface ClientOptions {
 	colours?: { [key in ClientColours]?: string };
 	debug?: boolean;
+	flushTime?: number;
 }
 
 export type ClientColours = 'ERROR' | 'INFO' | 'BASIC';
