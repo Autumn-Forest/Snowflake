@@ -25,6 +25,7 @@ export class Nekos extends NekoClient {
 		return (await neko.sfw.fact()).fact;
 	};
 	spoiler = async (text: string) => {
+		if (text.length >= 400) return;
 		return (await neko.sfw.spoiler({ text: text }))?.owo;
 	};
 	sendImage = async (message: Message, args: string[], type: NekoSfwImageOptions, description: string) => {
@@ -44,7 +45,12 @@ export class Nekos extends NekoClient {
 
 		if (!member) return message.channel.send(output);
 
-		output.setDescription(`*${description.replace('{{USER}}', `**${message.member!.displayName}**`).replace('{{MEMBER}}', `**${member.displayName}**`)}*`);
+		output.setDescription(
+			// eslint-disable-next-line prettier/prettier
+			`*${description
+				.replace('{{USER}}', `**${message.member!.displayName.replace(/\*/g, '*')}**`)
+				.replace('{{MEMBER}}', `**${member.displayName.replace(/\*/g, '*')}**`)}*`
+		);
 		return message.channel.send(output);
 	};
 

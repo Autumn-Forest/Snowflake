@@ -39,8 +39,11 @@ export const listener = async (client: Client, message: Message) => {
 		if (command.guildOnly && !message.guild)
 			return message.client.helpers.wrongSyntax(message, `\`${prefix}${command.name}\` can only be used on a server!`);
 
-		if (command.nsfw && message.client.helpers.isNSFW(message))
-			return message.client.helpers.wrongSyntax(message, `\`${prefix}${command.name}\` can only be used in a NSFW channel!`, true);
+		if (command.nsfw && !message.client.helpers.isNSFW(message))
+			return message.client.helpers.wrongSyntax(
+				message,
+				`You cannot use this command, because you are either not in a NSFW-channel, or because NSFW-commands are not enabled on this server.`
+			);
 
 		if (command.memberPermission.length && message.client.helpers.missingPermissions(message, command.memberPermission))
 			return message.client.helpers.wrongSyntax(
@@ -48,8 +51,7 @@ export const listener = async (client: Client, message: Message) => {
 				`You require the following permissions to use this command: ${message.client.helpers
 					.missingPermissions(message, command.memberPermission)!
 					.map(perm => message.client.helpers.nicerPermissions(perm))
-					.join(', ')}`,
-				true
+					.join(', ')}`
 			);
 		if (command.botPermission.length && message.client.helpers.missingPermissions(message, command.botPermission, 'self'))
 			return message.client.helpers.wrongSyntax(
@@ -57,8 +59,7 @@ export const listener = async (client: Client, message: Message) => {
 				`I require the following permissions to run this command: ${message.client.helpers
 					.missingPermissions(message, command.botPermission, 'self')!
 					.map(perm => message.client.helpers.nicerPermissions(perm))
-					.join(', ')}`,
-				false
+					.join(', ')}`
 			);
 
 		if (args.length < command.args)

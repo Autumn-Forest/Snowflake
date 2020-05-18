@@ -20,7 +20,7 @@ export class Getters extends Util {
 		} else if (userSearch.size < 11) {
 			return (await this.chooseOne(message, userSearch)) as User;
 		} else {
-			this.wrongSyntax(message, `I found multiple users matching your input: ${userSearch.size}`, false);
+			this.wrongSyntax(message, `I found multiple users matching your input: ${userSearch.size}`);
 			return null;
 		}
 	};
@@ -46,7 +46,7 @@ export class Getters extends Util {
 		} else if (memberSearch.size < 11) {
 			return (await this.chooseOne(message, memberSearch)) as GuildMember;
 		} else {
-			this.wrongSyntax(message, `I found multiple users matching your input: ${memberSearch.size}`, false);
+			this.wrongSyntax(message, `I found multiple users matching your input: ${memberSearch.size}`);
 			return null;
 		}
 	};
@@ -69,7 +69,7 @@ export class Getters extends Util {
 		} else if (roleSearch.size < 11) {
 			return (await this.chooseOne(message, roleSearch)) as Role;
 		} else {
-			this.wrongSyntax(message, `I found multiple roles matching your input: ${roleSearch.size}`, false);
+			this.wrongSyntax(message, `I found multiple roles matching your input: ${roleSearch.size}`);
 			return null;
 		}
 	};
@@ -88,10 +88,10 @@ export class Getters extends Util {
 			await message.channel.awaitMessages(m => m.author.id === message.author.id, { max: 1, time: 1000 * 30, errors: ['time'] }).catch(() => null)
 		)?.first();
 
-		if (!choice) return this.wrongSyntax(message, 'I found multiple matches but the prompt to select one ran out. Please run the command again!', false);
+		if (!choice) return this.wrongSyntax(message, 'I found multiple matches but the prompt to select one ran out. Please run the command again!');
 
 		const result = options.find(o => o.index === parseInt(choice.content));
-		if (!result) this.wrongSyntax(message, 'That was not a valid choice! Please run the command again.', false);
+		if (!result) this.wrongSyntax(message, 'That was not a valid choice! Please run the command again.');
 
 		msg.delete().catch(() => null);
 		choice.delete().catch(() => null);

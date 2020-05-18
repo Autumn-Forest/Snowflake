@@ -5,22 +5,22 @@ const callback = async (msg: Message, args: string[]) => {
 	if (!settings) return;
 	if (!args[0]) args = ['false'];
 	const arg = args[0].toLowerCase() === 'on';
-	settings.settings.deleteCommandTriggers = arg;
+	settings.settings.nsfw = arg;
 	settings.save();
-	return msg.channel.send(`I will ${arg ? 'now' : 'no longer'} delete command triggers :D`);
+	return msg.channel.send(`Successfully ${arg ? 'enabled' : 'disabled'} NSFW commands!`);
 };
 
 export const command: Command = {
-	name: 'cmddelete',
+	name: 'togglensfw',
 	category: 'Settings',
-	aliases: ['commandedelete', 'triggerdelete', 'trgdelete', 'cmddel', 'trgdel'],
-	description: 'Delete the triggers of the commands.',
+	aliases: ['nsfw'],
+	description: 'Toggle NSFW commands',
 	usage: '',
 	args: 0,
 	devOnly: false,
 	guildOnly: true,
 	nsfw: false,
-	memberPermission: ['MANAGE_GUILD', 'MANAGE_MESSAGES'],
-	botPermission: ['MANAGE_MESSAGES'],
+	memberPermission: ['MANAGE_GUILD', 'MANAGE_CHANNELS'],
+	botPermission: [],
 	callback: callback
 };

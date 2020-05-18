@@ -164,7 +164,7 @@ export interface Message extends BaseMessage {
 	client: Client;
 }
 
-export type CommandCategories = 'Dev' | 'Fun' | 'Utility' | 'Settings';
+export type CommandCategories = 'Dev' | 'Fun' | 'Utility' | 'Settings' | 'NSFW';
 
 export interface Command {
 	name: string;
