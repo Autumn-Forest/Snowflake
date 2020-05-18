@@ -18,6 +18,6 @@ export const command: Command = {
 	guildOnly: false,
 	nsfw: false,
 	memberPermission: [],
-	botPermission: [],
+	botPermission: ['MANAGE_WEBHOOKS'],
 	callback: callback
 };

@@ -1,6 +1,6 @@
 import NekoClient from 'nekos.life';
 import { NekoSfwImageOptions, NekoNsfwImageOptions } from '../../interfaces/NekoOptions';
-import { MessageEmbed, TextChannel } from 'discord.js';
+import { TextChannel } from 'discord.js';
 import { Message, Client } from '../../Client';
 const neko = new NekoClient();
 export class Nekos extends NekoClient {
@@ -25,7 +25,7 @@ export class Nekos extends NekoClient {
 		return (await neko.sfw.fact()).fact;
 	};
 	spoiler = async (text: string) => {
-		return await neko.sfw.spoiler({ text: text });
+		return (await neko.sfw.spoiler({ text: text }))?.owo;
 	};
 	sendImage = async (message: Message, args: string[], type: NekoSfwImageOptions, description: string) => {
 		let member;
@@ -37,9 +37,8 @@ export class Nekos extends NekoClient {
 		const url = await this.getImage(type);
 		if (!url) return; // TODO ERROR HERE
 
-		const output = new MessageEmbed()
-			.setTimestamp()
-			.setColor('RANDOM')
+		const output = message.client
+			.newEmbed('BASIC')
 			.setImage(url)
 			.setAuthor(message.author.tag, message.author.displayAvatarURL({ size: 256, dynamic: true }));
 
@@ -55,9 +54,8 @@ export class Nekos extends NekoClient {
 		const url = await this.getHentai(type);
 		if (!url) return;
 
-		const output = new MessageEmbed()
-			.setTimestamp()
-			.setColor('RANDOM')
+		const output = message.client
+			.newEmbed('BASIC')
 			.setImage(url)
 			.setAuthor(`So naughty, ${message.author.username}~`, message.author.displayAvatarURL({ size: 256, dynamic: true }));
 
