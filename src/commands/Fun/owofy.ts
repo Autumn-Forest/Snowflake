@@ -2,7 +2,7 @@ import { Command, Message } from '../../Client';
 
 const callback = async (msg: Message, args: string[]) => {
 	const owo = await msg.client.nekos.OwOify(args.join(' '));
-	if (!owo) return msg.client.helpers.wrongSyntax(msg, `"Your massage could not be owofied. Please try again."`);
+	if (!owo) return msg.client.helpers.wrongSyntax(msg, `"Your message could not be owofied. Please try again."`);
 	msg.delete().catch(() => null);
 	return msg.client.webhooks.sendFirst(msg, owo);
 };
