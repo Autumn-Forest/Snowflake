@@ -13,7 +13,7 @@ export const command: Command = {
 	category: 'Fun',
 	aliases: ['spoilers'],
 	description: 'Transform your boring text into some beautifull spoiled text :P',
-	usage: '<text>',
+	usage: '<text:1-400>',
 	args: 1,
 	devOnly: false,
 	guildOnly: false,
