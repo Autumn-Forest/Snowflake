@@ -7,14 +7,14 @@ const callback = async (msg: Message, args: string[]) => {
 	const arg = args[0].toLowerCase() === 'on';
 	settings.settings.deleteFailedCommands = arg;
 	settings.save();
-	return msg.channel.send(`I will ${arg ? 'now' : 'no longer'} delete command triggers and their outputs on errors.`);
+	return msg.channel.send(`I will ${arg ? 'now' : 'no longer'} delete failed commands.`);
 };
 
 export const command: Command = {
 	name: 'deleteerrors',
 	category: 'Settings',
 	aliases: ['errordel'],
-	description: 'Delete the triggers of the commands and the output on errors',
+	description: 'Delete failed commands',
 	usage: '',
 	args: 0,
 	devOnly: false,
