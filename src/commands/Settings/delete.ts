@@ -1,13 +1,13 @@
 import { Command, Message } from '../../Client';
 
 const callback = async (msg: Message, args: string[]) => {
-	const settings = await msg.client.getSettings(msg);
+	const settings = await msg.client.cache.getGuild(msg);
 	if (!settings) return;
 	if (!args[0]) args = ['false'];
 	const arg = args[0].toLowerCase() === 'on';
 	settings.settings.deleteCommandTriggers = arg;
 	settings.save();
-	return msg.channel.send(`I will ${arg ? 'now' : 'no longer'} delete commmand triggers :D`);
+	return msg.channel.send(`I will ${arg ? 'now' : 'no longer'} delete command triggers :D`);
 };
 
 export const command: Command = {
@@ -20,7 +20,7 @@ export const command: Command = {
 	devOnly: false,
 	guildOnly: true,
 	nsfw: false,
-	memberPermission: ['MANAGE_GUILD'],
-	botPermission: [],
+	memberPermission: ['MANAGE_GUILD', 'MANAGE_MESSAGES'],
+	botPermission: ['MANAGE_MESSAGES'],
 	callback: callback
 };
