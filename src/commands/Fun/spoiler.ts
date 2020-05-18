@@ -12,7 +12,7 @@ export const command: Command = {
 	name: 'spoiler',
 	category: 'Fun',
 	aliases: ['spoilers'],
-	description: 'Transform your boring text into some beautifull spoiled text :P',
+	description: 'Transform your boring text into some beautiful spoiled text :P',
 	usage: '<text:1-400>',
 	args: 1,
 	devOnly: false,
