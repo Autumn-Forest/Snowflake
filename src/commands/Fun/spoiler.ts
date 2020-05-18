@@ -3,7 +3,7 @@ import { Command, Message } from '../../Client';
 const callback = async (msg: Message, args: string[]) => {
 	const arg = args.join(' ').replace(msg.client.constants.emoteRegex, '');
 	const spoiled = await msg.client.nekos.spoiler(arg);
-	if (!spoiled) return msg.client.helpers.wrongSyntax(msg, `"Your massage could not be spoilified. Please try again."`);
+	if (!spoiled) return msg.client.helpers.wrongSyntax(msg, `"Your message could not be spoilified. Please try again."`);
 	msg.delete().catch(() => null);
 	return msg.client.webhooks.sendFirst(msg, spoiled);
 };
