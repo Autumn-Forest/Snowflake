@@ -1,6 +1,7 @@
 import { Message, Client } from '..';
 import nodeFetch, { RequestInfo, RequestInit } from 'node-fetch';
 import { PermissionString, GuildMember } from 'discord.js';
+import ordinal from 'ordinal';
 
 export class Util {
 	constructor(client: Client) {
@@ -49,7 +50,7 @@ export class Util {
 		if (message.channel.type !== 'text') return false;
 
 		const settings = await this.client.cache.getGuild(message);
-		return settings?.settings.nsfw === true;
+		return settings?.settings.nsfw === true && message.channel.nsfw;
 	}
 
 	missingPermissions(message: Message, permissions: PermissionString[], member?: GuildMember | 'self') {
@@ -65,5 +66,13 @@ export class Util {
 			.split('_')
 			.map(word => word.charAt(0) + word.slice(1).toLowerCase())
 			.join(' ');
+	}
+
+	numToOrdinal(num: number) {
+		return ordinal(num);
+	}
+
+	numToMonth(num: number) {
+		return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][num];
 	}
 }
