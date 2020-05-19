@@ -1,7 +1,7 @@
 import { Command, Message } from '../../Client';
 
 const callback = async (msg: Message, args: string[]) => {
-	const slaps = msg.client.constants.stringsSlaps;
+	const slaps = msg.client.constants.actionStrings.slap;
 	return msg.client.nekos.sendImage(msg, args, 'slap', slaps[Math.floor(Math.random() * slaps.length)]);
 };
 
@@ -10,12 +10,12 @@ export const command: Command = {
 	category: 'Fun',
 	aliases: ['slaps'],
 	description: 'Slaps the means baka!',
-	usage: '<@member|nickname>',
-	args: 1,
+	usage: '[Member]',
+	args: 0,
 	devOnly: false,
 	guildOnly: false,
 	nsfw: false,
 	memberPermission: [],
-	botPermission: ['EMBED_LINKS'],
+	botPermission: [],
 	callback: callback
 };

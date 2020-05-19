@@ -1,19 +1,13 @@
-import { linkRegex, inviteRegex, emojiRegex, emoteRegex, channelRegex } from './regex';
+import { regex } from './regex';
 import { statusIcons } from './statusIcons';
 import animeQuery from './animeQuery';
-import { stringsTickles, stringsKisses, stringsCuddles, stringsSlaps, stringsHugs } from './strings';
+import { actionStrings } from './strings';
+import { emojis } from './emojis';
 
 export default {
-	linkRegex,
-	inviteRegex,
-	emojiRegex,
-	emoteRegex,
-	channelRegex,
+	regex,
 	statusIcons,
 	animeQuery,
-	stringsTickles,
-	stringsKisses,
-	stringsCuddles,
-	stringsSlaps,
-	stringsHugs
+	actionStrings,
+	emojis
 };

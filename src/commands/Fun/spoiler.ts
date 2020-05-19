@@ -1,7 +1,7 @@
 import { Command, Message } from '../../Client';
 
 const callback = async (msg: Message, args: string[]) => {
-	const arg = args.join(' ').replace(msg.client.constants.emoteRegex, '');
+	const arg = args.join(' ').replace(msg.client.constants.regex.emotes, '');
 	const spoiled = await msg.client.nekos.spoiler(arg);
 	if (!spoiled) return msg.client.helpers.wrongSyntax(msg, `"Your message could not be spoilified. Please try again."`);
 	msg.delete().catch(() => null);

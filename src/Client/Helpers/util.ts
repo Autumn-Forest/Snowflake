@@ -79,6 +79,6 @@ export class Util {
 	}
 
 	isImageUrl(str: string) {
-		return this.client.constants.linkRegex.test(str) && str.match(/.(png|jpe?g|gif|web[pm])(?:\?.*)?$/i) !== null;
+		return this.client.constants.regex.links.test(str) && str.match(/.(png|jpe?g|gif|web[pm])(?:\?.*)?$/i) !== null;
 	}
 }

@@ -1,11 +1,16 @@
-import { Message, MessageEmbed } from 'discord.js';
-import { Command, Client } from '../../Client';
+import { MessageEmbed, TextChannel } from 'discord.js';
+import { Command, Message } from '../../Client';
+import { stripIndents } from 'common-tags';
 
 const callback = async (msg: Message, args: string[]) => {
 	// Get the guild's settings if on a guild and determine the prefix that needs to be used in the help
-	const client = msg.client as Client;
+	const client = msg.client;
 	const guildSettings = msg.guild ? await client.database.guildSettings.findOne({ guild: msg.guild.id }) : null;
 	const prefix = guildSettings?.settings.prefix || client.config.defaultPrefix;
+
+	// Check if we should display Dev commands and NSFW commands
+	const isNsfw = msg.channel instanceof TextChannel && msg.channel.nsfw;
+	const isDev = client.config.developers.includes(msg.author.id);
 
 	// Initiate the output embed
 	const output = new MessageEmbed().setTimestamp().setColor('RANDOM');
@@ -15,6 +20,9 @@ const callback = async (msg: Message, args: string[]) => {
 		// Do some Voodoo magic to create an object having all commands sorted by their category
 		const commandList: { [key: string]: string[] } = {};
 		client.commands.forEach(command => {
+			// Check if commands should be displayed or hidden (Dev and NSFW check)
+			if ((command.devOnly && !isDev) || (command.nsfw && !isNsfw)) return;
+
 			if (!commandList[command.category]) commandList[command.category] = [];
 			commandList[command.category].push(`\`${prefix}${command.name}\` - ${command.description || 'This command has no description.'}`);
 		});
@@ -36,13 +44,31 @@ const callback = async (msg: Message, args: string[]) => {
 	const command = client.commands.find(cmd => cmd.name === commandName || cmd.aliases.includes(commandName));
 	if (!command) return msg.channel.send('That is not a valid command!');
 
+	// Make sure we can display this here
+	if ((command.devOnly && !isDev) || (command.nsfw && !isNsfw)) return;
+
 	output
-		.setTitle(command.name)
-		.setDescription(command.description)
+		.setTitle(prefix + command.name)
 		.addFields([
-			{ name: 'Usage', value: `${prefix}${command.name}${command.usage ? ' ' + command.usage : ''}` },
-			{ name: 'Aliases', value: command.aliases.join(', ') || 'This command has no aliases.' }
-		]);
+			{ name: 'Description', value: command.description },
+			{
+				name: 'Usage',
+				value: client.helpers.codeBlock(`${prefix}${command.name}${command.usage ? ' ' + command.usage : ''}`, 'json')
+			},
+			{ name: 'Aliases', value: command.aliases.join(', ') || `${command.name} has no aliases.` }
+		])
+		.setDescription(
+			stripIndents`
+				Guild only: ${command.guildOnly ? client.constants.emojis.success : client.constants.emojis.fail}
+				NSFW: ${command.nsfw ? client.constants.emojis.success : client.constants.emojis.fail}
+				Requires arguments: ${command.args || client.constants.emojis.fail}
+				Requires Permissions: ${
+					command.memberPermission.length
+						? command.memberPermission.map(p => client.helpers.nicerPermissions(p)).join(', ')
+						: client.constants.emojis.fail
+				}
+		`
+		);
 
 	return msg.channel.send(output);
 };
@@ -50,7 +76,7 @@ const callback = async (msg: Message, args: string[]) => {
 export const command: Command = {
 	name: 'help',
 	category: 'Utility',
-	aliases: ['h'],
+	aliases: ['h', 'info', 'commands'],
 	description: 'Get a list of all commands or info on a specific command',
 	usage: '[command name]',
 	args: 0,
