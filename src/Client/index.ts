@@ -110,7 +110,7 @@ export class Client extends BaseClient {
 		return text.replace(this.config.token, '[REDACTED]').replace(this.config.mongoString, '[REDACTED]');
 	}
 
-	async handleError(err: Error, message?: Message) {
+	handleError = async (err: Error, message?: Message) => {
 		console.error(err);
 
 		const channel = this.getChannel('errors');
@@ -121,7 +121,7 @@ export class Client extends BaseClient {
 			.setDescription(this.helpers.codeBlock(this.helpers.trimString(err.stack || 'No Error.', 2048), 'js'));
 		if (message) {
 			errorEmbed.addFields([
-				{ name: 'Message', value: this.helpers.codeBlock(this.helpers.trimString(message!.content, 1024)) },
+				{ name: 'Message', value: this.helpers.codeBlock(this.helpers.trimString(message.content || 'Empty message', 1024)) },
 				{
 					name: 'Message Info',
 					value: stripIndents`
@@ -136,7 +136,7 @@ export class Client extends BaseClient {
 			);
 		}
 		return channel.send((await Promise.all(this.config.developers.map(d => this.users.fetch(d)))).join(' '), errorEmbed);
-	}
+	};
 
 	async getPrefix(identifier: Message | GuildMember) {
 		return (await this.cache.getGuild(identifier))?.settings.prefix || this.config.defaultPrefix;
