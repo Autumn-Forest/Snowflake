@@ -2,8 +2,8 @@ import { Command, Message } from '../../Client';
 import { TextChannel } from 'discord.js';
 
 const callback = async (msg: Message, _args: string[]) => {
-	const channel = msg.mentions.channels.first()?.id || '';
-
+	const regex = new RegExp(/\d{17,19}/);
+	const channel = msg.mentions.channels.first()?.id || regex.exec(msg.content)?.[0] || '';
 	const settings = await msg.client.cache.getGuild(msg);
 	if (!settings) return;
 	if (!channel) {
@@ -11,11 +11,14 @@ const callback = async (msg: Message, _args: string[]) => {
 		settings.channels.messageLogWebhook = channel;
 	} else {
 		const leChannel = await msg.client.channels.fetch(channel);
+		if (!leChannel) return;
 		if (!(leChannel instanceof TextChannel)) return;
+		if (!leChannel.permissionsFor(msg.author)!.has(['MANAGE_WEBHOOKS', 'MANAGE_CHANNELS']))
+			return msg.client.helpers.wrongSyntax(msg, "You don't have required perms on this guild");
 		const webhookID = await msg.client.webhooks.create(
 			msg,
 			leChannel,
-			'Message Logger',
+			'Snowflake Logger',
 			'https://cdn.discordapp.com/avatars/709570149107367966/5a788241e762a89bae17019bcdcbec75.webp?size=2048',
 			`${msg.author.tag} created a logger for messages.`
 		);
@@ -36,7 +39,7 @@ export const command: Command = {
 	devOnly: false,
 	guildOnly: true,
 	nsfw: false,
-	memberPermission: ['MANAGE_CHANNELS', 'MANAGE_GUILD'],
+	memberPermission: ['MANAGE_CHANNELS', 'MANAGE_GUILD', 'MANAGE_WEBHOOKS'],
 	botPermission: [],
 	callback: callback
 };

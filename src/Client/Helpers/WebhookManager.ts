@@ -64,7 +64,8 @@ export class WebhookManager extends Util {
 	};
 
 	delete = async (id: string, reason?: string) => {
-		const webhook = await this.client.fetchWebhook(id);
-		webhook.delete(reason).catch(() => null);
+		const webhook = await this.client.fetchWebhook(id).catch(() => null);
+		if (!webhook) return;
+		webhook.delete(reason);
 	};
 }
