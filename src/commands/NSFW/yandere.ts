@@ -2,13 +2,13 @@ import { Command, Message } from '../../Client';
 
 const callback = async (msg: Message, args: string[]) => {
 	args = args.map(arg => arg.toLowerCase());
-	const bannedTags = args.filter(arg => ['loli', 'shota'].includes(arg));
+	const bannedTags = args.filter(arg => msg.client.constants.bannedTags.includes(arg));
 
 	if (bannedTags.length)
 		return msg.client.helpers.wrongSyntax(msg, `One or more of the provided tags are blacklisted as they break Discord ToS: ${bannedTags.join(', ')}`);
 
 	const result = (await msg.client.helpers.fetch('https://yande.re/post.json?limit=100&tags=' + args.join('%20')))?.filter(
-		(item: { [key: string]: string }) => !item.tags.includes('loli') && !item.tags.includes('shota')
+		(item: { [key: string]: string }) => !msg.client.constants.bannedTags.some(word => item.tags.includes(word))
 	);
 	if (!result || !result.length) return msg.client.helpers.wrongSyntax(msg, 'I was not able to find any images matching your search terms.');
 
@@ -37,6 +37,6 @@ export const command: Command = {
 	guildOnly: false,
 	nsfw: true,
 	memberPermission: [],
-	botPermission: [],
+	botPermission: ['EMBED_LINKS'],
 	callback: callback
 };
