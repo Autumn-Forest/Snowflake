@@ -110,6 +110,15 @@ export class Client extends BaseClient {
 		return text.replace(this.config.token, '[REDACTED]').replace(this.config.mongoString, '[REDACTED]');
 	}
 
+	/*
+		Functions written like ^ bind the caller as this, 
+		so if they were run from within a process event handler (in which this refers to the process), 
+		they bind the process as this instead of the client.
+		That is why the below function is an arrow function, because arrow functions do not bind the calling object as this, so this always stays the client.
+		It has to be like this because we call this function from within process.on('unhandledRejection') in which case this became the process,
+		which gave us the error process.getChannel() is not a function, because getChannel obviously only exists on the client. 
+
+	*/
 	handleError = async (err: Error, message?: Message) => {
 		console.error(err);
 
