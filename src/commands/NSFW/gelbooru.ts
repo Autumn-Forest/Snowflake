@@ -29,7 +29,7 @@ const callback = async (msg: Message, args: string[]) => {
 			.then(response => response.json())
 			.catch(() => {
 				error++; // increase on errors
-				msg.client.helpers.wrongSyntax(msg, "oop, one of your tags/combination of them surely don't exist!\nOr an error happened :/"); // return if an error got catched.
+				msg.client.helpers.wrongSyntax(msg, "oop, one of your tags/combination of them surely don't exist!\nOr an error happened :/");
 			});
 		if (error !== 0) return; // return if an error hapened (i can't return directly in catch :/ )
 		file = file.filter((item: { [key: string]: string }) => !msg.client.constants.bannedTags.some(word => item.tags.includes(word)));
