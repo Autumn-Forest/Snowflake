@@ -2,7 +2,7 @@ import { Client, Message } from '..';
 import { Collection, GuildMember, User } from 'discord.js';
 import { GuildSettings } from '../../database/schemas/GuildSettings';
 import { UserSettings } from '../../database/schemas/UserSettings';
-
+import { ClientSettings } from '../../database/schemas/clientSettings';
 export class CacheManager {
 	constructor(client: Client) {
 		this.client = client;
@@ -11,6 +11,7 @@ export class CacheManager {
 	private readonly client: Client;
 	private guildCache: Collection<string, GuildSettings> = new Collection();
 	private userCache: Collection<string, UserSettings> = new Collection();
+	private clientCache: Collection<string, ClientSettings> = new Collection();
 	private flushQueue: Collection<string, NodeJS.Timeout> = new Collection();
 
 	get size() {
@@ -56,7 +57,26 @@ export class CacheManager {
 		return cache;
 	}
 
-	flush(cacheType?: 'User' | 'Guild', id?: string) {
+	async getClient(flush = false) {
+		const id = '0';
+
+		if (flush) this.flush('Client', id);
+
+		let cache = this.clientCache.get(id);
+		if (!cache) {
+			cache = (await this.client.database.clientSettings.findOne({ client: id })) || (await this.client.database.clientSettings.create({ client: id }));
+			this.clientCache.set(id, cache);
+		}
+
+		this.flushQueue.delete(id);
+		this.flushQueue.set(
+			id,
+			setTimeout(() => this.flush('User', id), this.client.flushTime)
+		);
+		return cache;
+	}
+
+	flush(cacheType?: 'User' | 'Guild' | 'Client', id?: string) {
 		if (cacheType === 'User') {
 			if (id) this.userCache.delete(id);
 			else this.userCache = new Collection();
@@ -64,9 +84,14 @@ export class CacheManager {
 		if (cacheType === 'Guild') {
 			if (id) this.guildCache.delete(id);
 			else this.guildCache = new Collection();
+		}
+		if (cacheType === 'Client') {
+			if (id) this.clientCache.delete(id);
+			else this.clientCache = new Collection();
 		} else {
 			this.guildCache = new Collection();
 			this.userCache = new Collection();
+			this.clientCache = new Collection();
 		}
 	}
 }

@@ -7,7 +7,8 @@ export type GuildChannelSettings =
 	| 'messageLogWebhook'
 	| 'memberLogChannel'
 	| 'automodLogChannel'
-	| 'serverLogChannel';
+	| 'serverLogChannel'
+	| 'annoucementsWebhook';
 
 interface Settings {
 	prefix: string;
@@ -57,7 +58,8 @@ const GuildSchema: mongoose.Schema = new mongoose.Schema({
 		messageLogWebhook: String,
 		memberLogChannel: String,
 		automodLogChannel: String,
-		serverLogChannel: String
+		serverLogChannel: String,
+		annoucementsWebhook: String
 	},
 	welcome: {
 		message: String,
