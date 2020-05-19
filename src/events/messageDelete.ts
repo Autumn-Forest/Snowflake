@@ -1,13 +1,12 @@
 import { Client, Message } from '../Client';
-import { TextChannel } from 'discord.js';
 
 export const listener = async (client: Client, msg: Message) => {
 	if (msg.author?.bot) return;
 
 	const settings = await client.cache.getGuild(msg);
 	if (!settings) return;
-	const logChannel = msg.guild?.channels.cache.get(settings?.channels.messageLogChannel);
-	if (!logChannel || !(logChannel instanceof TextChannel)) return;
+	const logWebhook = settings.channels.messageLogWebhook;
+	if (!logWebhook) return;
 
 	const logEmbed = client
 		.newEmbed('INFO')
@@ -18,12 +17,12 @@ export const listener = async (client: Client, msg: Message) => {
 			{ name: 'Message ID', value: msg.id, inline: true }
 		]);
 
-	if (msg.partial) return logChannel.send(logEmbed);
+	if (msg.partial) return msg.client.webhooks.send(logWebhook, '', logEmbed);
 
 	logEmbed
 		.setThumbnail(msg.author.displayAvatarURL({ dynamic: true }))
 		.addField('Member', `${msg.author} - ${msg.author.tag} - ${msg.author.id}`)
 		.setDescription(msg.content);
 
-	return logChannel.send(logEmbed);
+	return msg.client.webhooks.send(logWebhook, '', logEmbed);
 };

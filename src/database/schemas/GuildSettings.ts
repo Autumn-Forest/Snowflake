@@ -4,7 +4,7 @@ export type GuildChannelSettings =
 	| 'welcomeChannel'
 	| 'introChannel'
 	| 'modLogChannel'
-	| 'messageLogChannel'
+	| 'messageLogWebhook'
 	| 'memberLogChannel'
 	| 'automodLogChannel'
 	| 'serverLogChannel';
@@ -54,7 +54,7 @@ const GuildSchema: mongoose.Schema = new mongoose.Schema({
 		welcomeChannel: String,
 		introChannel: String,
 		modLogChannel: String,
-		messageLogChannel: String,
+		messageLogWebhook: String,
 		memberLogChannel: String,
 		automodLogChannel: String,
 		serverLogChannel: String

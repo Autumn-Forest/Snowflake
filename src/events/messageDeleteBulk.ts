@@ -1,5 +1,5 @@
 import { Client, Message } from '../Client';
-import { Collection, TextChannel } from 'discord.js';
+import { Collection } from 'discord.js';
 
 export const listener = async (client: Client, messages: Collection<string, Message>) => {
 	const msg = messages.first();
@@ -7,8 +7,8 @@ export const listener = async (client: Client, messages: Collection<string, Mess
 
 	const settings = await client.cache.getGuild(msg);
 	if (!settings) return;
-	const logChannel = msg.guild?.channels.cache.get(settings.channels.messageLogChannel);
-	if (!logChannel || !(logChannel instanceof TextChannel)) return;
+	const logWebhook = settings.channels.messageLogWebhook;
+	if (!logWebhook) return;
 
 	const output = client
 		.newEmbed('INFO')
@@ -22,5 +22,5 @@ export const listener = async (client: Client, messages: Collection<string, Mess
 	if (log)
 		output.setThumbnail(log.executor.displayAvatarURL({ dynamic: true })).addField('Bot', `${log.executor} - ${log.executor.tag} - ${log.executor.id}`);
 
-	return logChannel.send(output);
+	return msg.client.webhooks.send(logWebhook, '', output);
 };

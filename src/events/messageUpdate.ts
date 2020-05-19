@@ -1,5 +1,4 @@
 import { Client, Message } from '../Client';
-import { TextChannel } from 'discord.js';
 
 export const listener = async (client: Client, oldMsg: Message, newMsg: Message) => {
 	if (oldMsg.partial) return;
@@ -8,8 +7,8 @@ export const listener = async (client: Client, oldMsg: Message, newMsg: Message)
 
 	const settings = await client.cache.getGuild(newMsg);
 	if (!settings) return;
-	const logChannel = newMsg.guild?.channels.cache.get(settings?.channels.messageLogChannel);
-	if (!logChannel || !(logChannel instanceof TextChannel)) return;
+	const logWebhook = settings.channels.messageLogWebhook;
+	if (!logWebhook) return;
 
 	const logEmbed = client
 		.newEmbed('INFO')
@@ -22,5 +21,5 @@ export const listener = async (client: Client, oldMsg: Message, newMsg: Message)
 			{ name: 'After', value: newMsg.client.helpers.trimString(newMsg.content || '-', 1024) }
 		]);
 
-	return logChannel.send(logEmbed);
+	return client.webhooks.send(logWebhook, '', logEmbed);
 };
