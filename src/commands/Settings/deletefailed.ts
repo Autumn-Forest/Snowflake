@@ -3,18 +3,19 @@ import { Command, Message } from '../../Client';
 const callback = async (msg: Message, args: string[]) => {
 	const settings = await msg.client.cache.getGuild(msg);
 	if (!settings) return;
-	if (!args[0]) args = ['false'];
-	const arg = args[0].toLowerCase() === 'on';
-	settings.settings.deleteCommandTriggers = arg;
+	let arg = settings.settings.deleteFailedCommands === false;
+	if (args.length) arg = args[0].toLowerCase() === 'on' ? true : args[0].toLowerCase() === 'off' ? false : arg;
+
+	settings.settings.deleteFailedCommands = arg;
 	settings.save();
-	return msg.channel.send(`I will ${arg ? 'now' : 'no longer'} delete command triggers :D`);
+	return msg.channel.send(`I will ${arg ? 'now' : 'no longer'} delete failed commands.`);
 };
 
 export const command: Command = {
-	name: 'cmddelete',
+	name: 'deletefailed',
 	category: 'Settings',
-	aliases: ['commandedelete', 'triggerdelete', 'trgdelete', 'cmddel', 'trgdel'],
-	description: 'Delete the triggers of the commands.',
+	aliases: ['delfailed', 'df'],
+	description: 'Delete failed commands',
 	usage: '',
 	args: 0,
 	devOnly: false,
