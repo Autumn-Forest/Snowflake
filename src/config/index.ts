@@ -10,4 +10,10 @@ interface Config {
 		info: string;
 		errors: string;
 	};
+	apiKeys: {
+		gelbooru: {
+			key: string;
+			id: string;
+		};
+	};
 }

@@ -10,11 +10,11 @@ const callback = async (msg: Message, args: string[]) => {
 	const result = (await msg.client.helpers.fetch('https://yande.re/post.json?limit=100&tags=' + args.join('%20')))?.filter(
 		(item: { [key: string]: string }) => !msg.client.constants.bannedTags.some(word => item.tags.includes(word))
 	);
-	if (!result || !result.length) return msg.client.helpers.wrongSyntax(msg, 'I was not able to find any images matching your search terms.');
+	if (!result || !result.length) return msg.client.helpers.wrongSyntax(msg, 'I was not able to find any images matching your search term.');
 
 	const res = result[Math.floor(Math.random() * result.length)];
 	const url = res.sample_url;
-	if (!url) return msg.client.helpers.wrongSyntax(msg, 'I was not able to find any images matching your search terms.');
+	if (!url) return msg.client.helpers.wrongSyntax(msg, 'I was not able to find any images matching your search term.');
 
 	const output = msg.client
 		.newEmbed('BASIC')
