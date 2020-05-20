@@ -2,8 +2,10 @@ import { Command, Message } from '../../Client';
 
 const callback = async (msg: Message, args: string[]) => {
 	const webhooks = await msg.client.cache.getClient();
-	webhooks.annoucementsWebhooks.map(id => msg.client.webhooks.send(id, args.join(' ')));
-	return msg.channel.send(`Succefully announced in ${webhooks.annoucementsWebhooks.length} guilds!`);
+	const succeeded = (await Promise.all(webhooks.annoucementsWebhooks.map(id => msg.client.webhooks.send(id, args.join(' ')))).catch(() => undefined))?.filter(
+		val => typeof val !== 'undefined'
+	);
+	return msg.channel.send(`Succefully announced in ${succeeded ? ` ${succeeded?.length} guilds!` : ' 0 guild! wait what?! An error happened :/'} `);
 };
 
 export const command: Command = {
