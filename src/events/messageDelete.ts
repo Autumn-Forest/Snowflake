@@ -11,7 +11,7 @@ export const listener = async (client: Client, msg: Message) => {
 	const logEmbed = client
 		.newEmbed('INFO')
 		.setTitle('Message deleted')
-		.setDescription('This message was not cached, so I sadly cannot display more info than this ( ≧Д≦)')
+		.setDescription('This message was not cached, so I sadly cannot display more info than this (≧Д≦)')
 		.addFields([
 			{ name: 'Channel', value: msg.channel, inline: true },
 			{ name: 'Message ID', value: msg.id, inline: true }

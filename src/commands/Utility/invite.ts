@@ -5,7 +5,7 @@ const callback = async (msg: Message, _args: string[]) => {
 		.newEmbed('INFO')
 		.setTitle('Invite me!')
 		.setDescription(
-			`[Click here to add me to you server ;D](https://discordapp.com/oauth2/authorize?client_id=${msg.client.user!.id}&permissions=1580592383&scope=bot)`
+			`[Click here to add me to you server](https://discordapp.com/oauth2/authorize?client_id=${msg.client.user!.id}&permissions=1580592383&scope=bot)`
 		);
 	return msg.channel.send(embed);
 };

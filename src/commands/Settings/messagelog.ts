@@ -18,7 +18,7 @@ const callback = async (msg: Message, _args: string[]) => {
 		const leChannel = await msg.client.channels.fetch(channel);
 		if (!leChannel) return;
 		if (!(leChannel instanceof TextChannel)) return;
-		if (!leChannel.permissionsFor(msg.author)!.has(['MANAGE_WEBHOOKS', 'MANAGE_CHANNELS']))
+		if (!leChannel.permissionsFor(msg.author)?.has(['MANAGE_WEBHOOKS', 'MANAGE_CHANNELS']))
 			return msg.client.helpers.wrongSyntax(msg, "You don't have required perms on this guild");
 		const webhookID = await msg.client.webhooks.create(
 			msg,
