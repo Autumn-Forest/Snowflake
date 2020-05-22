@@ -25,7 +25,13 @@ const callback = async (msg: Message, args: string[]) => {
 		.setThumbnail(user?.displayAvatarURL({ dynamic: true }) || info.discord.displayAvatarURL)
 		.setTitle(`Bio of ${user?.tag || info.discord.tag}\n(\`${info.settings.name}\`)`)
 		.setURL(`https://discord.bio/p/${info.settings.name}`)
-		.setImage(info.settings.banner || 'https://your.is-inside.me/6PINEw1T.png');
+		.setImage(info.settings.banner || 'https://your.is-inside.me/6PINEw1T.png')
+		.setDescription(`**About:** ${info.settings.description}\n**Upvote:** ${info.settings.upvotes}`)
+		.addFields(
+			{ name: 'Location', value: info.settings.location || 'not set', inline: true },
+			{ name: 'Birthday', value: info.settings.birthday || 'not set', inline: true },
+			{ name: 'gender', value: info.settings.gender || 'not set', inline: true }
+		);
 	msg.channel.send(embed);
 };
 
