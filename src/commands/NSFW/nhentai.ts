@@ -1,7 +1,14 @@
 import { Command, Message } from '../../Client';
+import fetch from 'node-fetch';
 
 const callback = async (msg: Message, args: string[]) => {
-	const nhentai = new msg.client.nhentai(args.join('%20'));
+	let query = args.join('%20');
+	if (!query) {
+		const random = (await fetch('https://nhentai.net/random')).url.match(/\d+/);
+		if (!random) return;
+		query = random[0];
+	}
+	const nhentai = new msg.client.nhentai(query);
 	await nhentai.fetch();
 
 	const m = await msg.channel.send({ embed: nhentai.nextPage });
@@ -38,7 +45,7 @@ export const command: Command = {
 	aliases: ['hentai', 'nh'],
 	description: 'Get hentai from nhentai.net',
 	usage: '<ID/Tags/Name>',
-	args: 1,
+	args: 0,
 	devOnly: false,
 	guildOnly: false,
 	nsfw: true,
