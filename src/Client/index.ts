@@ -17,6 +17,7 @@ import { readdirSync } from 'fs';
 import { Getters, Nekos, WebhookManager, PromptManager } from './Helpers';
 import { stripIndents } from 'common-tags';
 import { CacheManager } from './Helpers/CacheManager';
+import { NHentaiWrapper } from './Helpers/NHentaiWrapper';
 
 const BaseClientOptions: BaseClientOptions = {
 	disableMentions: 'everyone',
@@ -49,6 +50,7 @@ export class Client extends BaseClient {
 		commands: join(__dirname, '../commands')
 	};
 	prompt = PromptManager;
+	nhentai = NHentaiWrapper;
 	nekos = new Nekos(this);
 	webhooks = new WebhookManager(this);
 	helpers = new Getters(this);

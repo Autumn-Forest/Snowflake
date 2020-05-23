@@ -15,7 +15,7 @@ const callback = async (msg: Message, args: string[]) => {
 		let output = await eval(args.join(' '));
 
 		if (typeof output !== 'string') output = require('util').inspect(output);
-		if (output.length > 2000) return message.channel.send(embed.addField('Output', await client.helpers.uploadHaste(msg.client.redactCredentials(output))));
+		if (output.length > 1024) return message.channel.send(embed.addField('Output', await client.helpers.uploadHaste(msg.client.redactCredentials(output))));
 
 		return sendOutput(msg, embed, output);
 	} catch (err) {
