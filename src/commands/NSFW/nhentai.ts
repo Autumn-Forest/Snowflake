@@ -11,7 +11,7 @@ const callback = async (msg: Message, args: string[]) => {
 	const nhentai = new msg.client.nhentai(query);
 	await nhentai.fetch();
 
-	const m = await msg.channel.send({ embed: nhentai.nextPage });
+	const m = await msg.channel.send({ embed: nhentai.embed });
 	await Promise.all(['⬅️', '⏹️', '➡️'].map(e => m.react(e)));
 	const menu = m.createReactionCollector((_r, u) => u.id === msg.author.id);
 

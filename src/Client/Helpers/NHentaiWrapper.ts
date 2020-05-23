@@ -44,7 +44,7 @@ export class NHentaiWrapper {
 		return true;
 	}
 
-	private get page() {
+	get page() {
 		this.embed
 			.setImage(this.pageUrl.replace('{MEDIA_ID}', this.hentai?.media_id!).replace('{PAGE}', this.currentPage.toString()))
 			.setDescription('')
