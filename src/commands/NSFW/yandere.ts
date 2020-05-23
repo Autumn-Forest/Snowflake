@@ -19,7 +19,7 @@ const callback = async (msg: Message, args: string[]) => {
 	const output = msg.client
 		.newEmbed('BASIC')
 		.setImage(url)
-		.setDescription(`[Source](${msg.client.constants.regex.links.test(res.source) ? res.source : `https://yande.re/post/show/${res.id}`})`)
+		.setDescription(`[Source](${res.source && res.source.match(msg.client.constants.regex) ? res.source : `https://yande.re/post/show/${res.id}`})`)
 		.setFooter(`Author: ${res.author || 'Unknown'}`)
 		.setTimestamp(res.created_at);
 
