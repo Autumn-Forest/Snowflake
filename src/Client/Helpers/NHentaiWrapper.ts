@@ -12,7 +12,6 @@ export class NHentaiWrapper {
 	currentPage = 0;
 	totalPages = 0;
 	embed = new MessageEmbed().setColor(this.nHentaiColour).setAuthor('nHentai', this.nHentaiLogo);
-	pages: MessageEmbed[] = [];
 
 	/**
 	 * @param query Id or tags
@@ -29,7 +28,7 @@ export class NHentaiWrapper {
 		let res: NHentaiData = await fetch(this.url).then(res => res.json());
 		if (res.error) return false;
 
-		//@ts-ignore
+		//@ts-ignore cause jeez this would be very inconvenient to implement types for xD
 		if (res.result) res = res.result.length ? res.result[Math.floor(Math.random() * res.result.length)] : null;
 		if (!res) return false;
 
@@ -45,20 +44,21 @@ export class NHentaiWrapper {
 		return true;
 	}
 
+	private get page() {
+		this.embed
+			.setImage(this.pageUrl.replace('{MEDIA_ID}', this.hentai?.media_id!).replace('{PAGE}', this.currentPage.toString()))
+			.setDescription('')
+			.setFooter(`${this.currentPage}/${this.totalPages}`);
+		return this.embed;
+	}
 	/**
 	 * Gets the next page
 	 * @returns Embed
 	 */
 	get nextPage() {
 		if (this.currentPage === this.totalPages) return;
-		const embed = JSON.parse(JSON.stringify(this.embed));
-		this.pages.push(embed);
 		this.currentPage++;
-		this.embed
-			.setImage(this.pageUrl.replace('{MEDIA_ID}', this.hentai?.media_id!).replace('{PAGE}', this.currentPage.toString()))
-			.setDescription('')
-			.setFooter(`${this.currentPage}/${this.totalPages}`);
-		return embed;
+		return this.page;
 	}
 
 	/**
@@ -66,9 +66,9 @@ export class NHentaiWrapper {
 	 * @returns Embed
 	 */
 	get previousPage() {
-		if (!this.pages.length) return;
+		if (this.currentPage === 1) return;
 		this.currentPage--;
-		return this.pages.pop();
+		return this.page;
 	}
 }
 
