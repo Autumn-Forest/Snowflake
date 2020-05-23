@@ -26,8 +26,12 @@ export class NHentaiWrapper {
 	 * @returns true if successful or false if no hentai was found
 	 */
 	async fetch() {
-		const res: NHentaiData = await fetch(this.url).then(res => res.json());
+		let res: NHentaiData = await fetch(this.url).then(res => res.json());
 		if (res.error) return false;
+
+		//@ts-ignore
+		if (res.result) res = res.result.length ? res.result[Math.floor(Math.random() * res.result.length)] : null;
+		if (!res) return false;
 
 		this.hentai = res;
 		this.totalPages = res.num_pages;
@@ -37,7 +41,7 @@ export class NHentaiWrapper {
 			.setURL(`https://nhentai.net/g/${res.id}`)
 			.setDescription(this.hentai.tags.map(tag => tag.name).join(', '))
 			.setImage(this.thumbnailUrl.replace('{MEDIA_ID}', this.hentai?.media_id!))
-			.setTimestamp(res.upload_date || Date.now());
+			.setTimestamp();
 		return true;
 	}
 
@@ -54,7 +58,7 @@ export class NHentaiWrapper {
 			.setImage(this.pageUrl.replace('{MEDIA_ID}', this.hentai?.media_id!).replace('{PAGE}', this.currentPage.toString()))
 			.setDescription('')
 			.setFooter(`${this.currentPage}/${this.totalPages}`);
-		return this.embed;
+		return embed;
 	}
 
 	/**
