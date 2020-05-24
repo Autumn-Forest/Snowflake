@@ -6,7 +6,7 @@ const callback = async (msg: Message, _args: string[]) => {
 	msg.client.initCommands();
 	msg.client.removeAllListeners();
 	msg.client.initListeners();
-	return msg.channel.send(`Successfully reloaded all commands and listeners! There are ${msg.client.commands.size} commands.`);
+	return msg.channel.send(`Successfully reloaded all commands and listeners! There is ${msg.client.commands.size} Commands.`);
 };
 
 export const command: Command = {
