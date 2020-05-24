@@ -1,8 +1,12 @@
 {
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"editor.formatOnPaste": true,
 	"editor.formatOnSave": true,
 	"editor.formatOnType": true,
+	"eslint.nodePath": ".vscode/pnpify",
+	"files.autoSave": "afterDelay",
+	"prettier.prettierPath": ".vscode/pnpify/prettier/index.js",
 	"prettier.useTabs": true,
-	"editor.defaultFormatter": "esbenp.prettier-vscode",
-	"files.autoSave": "afterDelay"
+	"typescript.enablePromptUseWorkspaceTsdk": true,
+	"typescript.tsdk": ".vscode/pnpify/typescript/lib"
 }
