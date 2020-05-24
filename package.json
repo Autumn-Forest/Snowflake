@@ -17,9 +17,9 @@
 		".vscode"
 	],
 	"scripts": {
-		"dev": "yarn build && NODE_ENV=development && node .",
-		"prod": "yarn build && NODE_ENV=production && node .",
-		"start": "pm2 start --name Snowflake yarn -- yarn prod",
+		"dev": "yarn build && export NODE_ENV=development && node .",
+		"prod": "yarn build && export NODE_ENV=production && node .",
+		"start": "pm2 start --name Snowflake yarn -- prod",
 		"pm2": "pm2 start --name Snowflake yarn -- dev --ignore-watch dist/*",
 		"test": "tsc -p tsconfig.test.json && yarn lint",
 		"lint": "eslint ./src/**/*.ts --fix",
@@ -33,7 +33,7 @@
 	},
 	"husky": {
 		"hooks": {
-			"pre-commit": "precise-commits && npm run test"
+			"pre-commit": "precise-commits && yarn test"
 		}
 	},
 	"dependencies": {
