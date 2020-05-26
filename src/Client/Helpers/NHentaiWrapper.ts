@@ -30,7 +30,7 @@ export class NHentaiWrapper {
 
 		//@ts-ignore cause jeez this would be very inconvenient to implement types for xD
 		if (res.result) res = res.result.length ? res.result[Math.floor(Math.random() * res.result.length)] : null;
-		if (!res) return false;
+		if (!res || !res.id) return false;
 
 		this.hentai = res;
 		this.totalPages = res.num_pages;
@@ -42,6 +42,10 @@ export class NHentaiWrapper {
 			.setImage(this.thumbnailUrl.replace('{MEDIA_ID}', this.hentai?.media_id!))
 			.setTimestamp();
 		return true;
+	}
+
+	get exists() {
+		return typeof this.hentai !== 'undefined';
 	}
 
 	get page() {
