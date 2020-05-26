@@ -29,13 +29,13 @@ const callback = async (msg: Message, args: string[]) => {
 		.setDescription(`**About:** ${info.user.details.description}\n**Upvote:** ${info.user.details.upvotes}`)
 		.addFields(
 			{ name: 'Location', value: info.user.details.location || 'not set', inline: true },
-			{ name: 'Birthday', value: info.user.details.birthday || 'not set', inline: true },
+			{ name: 'Birthday', value: info.user.details.birthday?.slice(0, 9) || 'not set', inline: true },
 			{ name: 'gender', value: info.user.details.gender || 'not set', inline: true },
 			{ name: 'email', value: info.user.details.email || 'not set', inline: true },
 			{ name: 'occupation', value: info.user.details.occupation || 'not set', inline: true },
-			{ name: 'Created at', value: info.user.details.created_at || 'not set', inline: true }
+			{ name: 'Created at', value: info.user.details.created_at?.slice(0, 9) || 'not set', inline: true }
 		);
-	msg.channel.send(embed);
+	return msg.channel.send(embed);
 };
 
 export const command: Command = {
@@ -49,6 +49,6 @@ export const command: Command = {
 	guildOnly: false,
 	nsfw: false,
 	memberPermission: [],
-	botPermission: [],
+	botPermission: ['EMBED_LINKS'],
 	callback: callback
 };
