@@ -8,7 +8,7 @@ const callback = async (msg: Message, args: string[]) => {
 	let user;
 	if (args[0]) user = msg.mentions.users.first()?.id || regex.exec(args[0])?.[0] || args[0];
 	else user = msg.author.id;
-	const info = await bio.details(user).catch(() => null);
+	const info = await bio.users.details(user).catch(() => null);
 	if (!info)
 		return msg.client.helpers.wrongSyntax(
 			msg,
@@ -19,18 +19,21 @@ const callback = async (msg: Message, args: string[]) => {
 		.newEmbed('BASIC')
 		.setAuthor(
 			info.discord.username,
-			user?.displayAvatarURL({ dynamic: true }) || info.discord.displayAvatarURL,
-			`https://discord.bio/p/${info.settings.name}`
+			user?.displayAvatarURL({ dynamic: true }) || info.discord.displayAvatarURL({ dynamic: true }),
+			`https://discord.bio/p/${info.user.details.name}`
 		)
-		.setThumbnail(user?.displayAvatarURL({ dynamic: true }) || info.discord.displayAvatarURL)
-		.setTitle(`Bio of ${user?.tag || info.discord.tag}\n(\`${info.settings.name}\`)`)
-		.setURL(`https://discord.bio/p/${info.settings.name}`)
-		.setImage(info.settings.banner || 'https://your.is-inside.me/6PINEw1T.png')
-		.setDescription(`**About:** ${info.settings.description}\n**Upvote:** ${info.settings.upvotes}`)
+		.setThumbnail(user?.displayAvatarURL({ dynamic: true }) || info.discord.displayAvatarURL({ dynamic: true }))
+		.setTitle(`Bio of ${user?.tag || info.discord.tag}\n(\`${info.user.details.name}\`)`)
+		.setURL(`https://discord.bio/p/${info.user.details.name}`)
+		.setImage(info.user.details.banner || 'https://your.is-inside.me/6PINEw1T.png')
+		.setDescription(`**About:** ${info.user.details.description}\n**Upvote:** ${info.user.details.upvotes}`)
 		.addFields(
-			{ name: 'Location', value: info.settings.location || 'not set', inline: true },
-			{ name: 'Birthday', value: info.settings.birthday || 'not set', inline: true },
-			{ name: 'gender', value: info.settings.gender || 'not set', inline: true }
+			{ name: 'Location', value: info.user.details.location || 'not set', inline: true },
+			{ name: 'Birthday', value: info.user.details.birthday || 'not set', inline: true },
+			{ name: 'gender', value: info.user.details.gender || 'not set', inline: true },
+			{ name: 'email', value: info.user.details.email || 'not set', inline: true },
+			{ name: 'occupation', value: info.user.details.occupation || 'not set', inline: true },
+			{ name: 'Created at', value: info.user.details.created_at || 'not set', inline: true }
 		);
 	msg.channel.send(embed);
 };
