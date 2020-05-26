@@ -14,9 +14,10 @@ import constants from '../constants';
 import { database } from '../database';
 import { join } from 'path';
 import { readdirSync } from 'fs';
-import { Getters, Nekos, WebhookManager } from './Helpers';
+import { Getters, Nekos, WebhookManager, PromptManager } from './Helpers';
 import { stripIndents } from 'common-tags';
 import { CacheManager } from './Helpers/CacheManager';
+import { NHentaiWrapper } from './Helpers/NHentaiWrapper';
 
 const BaseClientOptions: BaseClientOptions = {
 	disableMentions: 'everyone',
@@ -31,30 +32,14 @@ const BaseClientOptions: BaseClientOptions = {
 };
 
 export class Client extends BaseClient {
-	constructor(options?: ClientOptions) {
-		super(BaseClientOptions);
-		if (options) {
-			this.debug = options.debug || this.debug;
-			this.flushTime = options.flushTime || this.flushTime;
-			if (options.colours)
-				Object.keys(options.colours).forEach(
-					key => (this.colours[key as ClientColours] = options.colours![key as ClientColours] || this.colours[key as ClientColours])
-				);
-		}
-		this.initCommands();
-		this.initListeners();
-	}
-
 	debug = false;
 	flushTime = 1000 * 60 * 30;
+	promptTimeout = 3; // In minutes
 	config = config;
 	constants = constants;
-	nekos = new Nekos(this);
-	webhooks = new WebhookManager(this);
-	helpers = new Getters(this);
 	database = database;
-	cache = new CacheManager(this);
 	commands: Collection<string, Command> = new Collection();
+	prompts: Collection<string, string> = new Collection();
 	colours: { [key in ClientColours]: string } = {
 		ERROR: 'FF403C',
 		INFO: '0D7DFF',
@@ -64,6 +49,27 @@ export class Client extends BaseClient {
 		listeners: join(__dirname, '../events'),
 		commands: join(__dirname, '../commands')
 	};
+	prompt = PromptManager;
+	nhentai = NHentaiWrapper;
+	nekos = new Nekos(this);
+	webhooks = new WebhookManager(this);
+	helpers = new Getters(this);
+	cache = new CacheManager(this);
+
+	constructor(options?: ClientOptions) {
+		super(BaseClientOptions);
+		if (options) {
+			this.debug = options.debug || this.debug;
+			this.flushTime = options.flushTime || this.flushTime;
+			this.promptTimeout = options.promptTimeout || this.promptTimeout;
+			if (options.colours)
+				Object.keys(options.colours).forEach(
+					key => (this.colours[key as ClientColours] = options.colours![key as ClientColours] || this.colours[key as ClientColours])
+				);
+		}
+		this.initCommands();
+		this.initListeners();
+	}
 
 	initCommands() {
 		let amount = 0;
@@ -166,6 +172,7 @@ export interface ClientOptions {
 	colours?: { [key in ClientColours]?: string };
 	debug?: boolean;
 	flushTime?: number;
+	promptTimeout?: number;
 }
 
 export type ClientColours = 'ERROR' | 'INFO' | 'BASIC';

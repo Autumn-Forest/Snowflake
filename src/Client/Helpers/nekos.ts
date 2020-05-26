@@ -3,31 +3,39 @@ import { NekoSfwImageOptions, NekoNsfwImageOptions } from '../../interfaces/Neko
 import { TextChannel } from 'discord.js';
 import { Message, Client } from '../../Client';
 const neko = new NekoClient();
+
 export class Nekos extends NekoClient {
+	client: Client;
 	constructor(client: Client) {
 		super();
 		this.client = client;
 	}
-	client: Client;
+
 	getImage = async (type: NekoSfwImageOptions) => {
 		return (await neko.sfw[type]())?.url;
 	};
+
 	getHentai = async (type: NekoNsfwImageOptions) => {
 		return (await neko.nsfw[type]())?.url;
 	};
+
 	OwOify = async (text: string) => {
 		return (await neko.sfw.OwOify({ text: text }))?.owo;
 	};
+
 	eightball = async () => {
 		return await neko.sfw['8Ball']({ text: '' });
 	};
+
 	fact = async () => {
 		return (await neko.sfw.fact()).fact;
 	};
+
 	spoiler = async (text: string) => {
 		if (text.length >= 400) return;
 		return (await neko.sfw.spoiler({ text: text }))?.owo;
 	};
+
 	sendImage = async (message: Message, args: string[], type: NekoSfwImageOptions, description: string) => {
 		let member;
 		if (args.length && message.guild) {
@@ -46,10 +54,9 @@ export class Nekos extends NekoClient {
 		if (!member) return message.channel.send(output);
 
 		output.setDescription(
-			// eslint-disable-next-line prettier/prettier
 			`*${description
-				.replace('{{USER}}', `**${message.member!.displayName.replace(/\*/g, '*')}**`)
-				.replace('{{MEMBER}}', `**${member.displayName.replace(/\*/g, '*')}**`)}*`
+				.replace('{{USER}}', `**${message.member!.displayName.replace(/\*/g, '\\*')}**`)
+				.replace('{{MEMBER}}', `**${member.displayName.replace(/\*/g, '\\*')}**`)}*`
 		);
 		return message.channel.send(output);
 	};

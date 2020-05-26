@@ -42,7 +42,9 @@ export const listener = async (client: Client, message: Message) => {
 		if (command.nsfw && !(await message.client.helpers.isNSFW(message)))
 			return message.client.helpers.wrongSyntax(
 				message,
-				`You cannot use this command, because you are either not in a NSFW-channel, or because NSFW-commands are not enabled on this server.`
+				(await message.client.cache.getGuild(message))?.settings.nsfw
+					? 'Please move to a NSFW channel to use this!'
+					: `NSFW commands are not enabled on this server! Tell an Admin to run \`${guildPrefix}setnsfw\``
 			);
 
 		if (command.memberPermission.length && message.client.helpers.missingPermissions(message, command.memberPermission))
