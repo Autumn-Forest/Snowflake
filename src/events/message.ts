@@ -73,7 +73,6 @@ export const listener = async (client: Client, message: Message) => {
 
 	command
 		.callback(message, args)
-		//@ts-ignore
 		.then(() => client.emit('commandUsed', message, command))
 		.catch(err => client.handleError(err, message));
 	return;
