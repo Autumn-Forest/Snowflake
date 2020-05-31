@@ -25,7 +25,7 @@ const BaseClientOptions: BaseClientOptions = {
 	presence: {
 		activity: {
 			name: `${config.defaultPrefix}help`,
-			type: 'LISTENING',
+			type: 'STREAMING',
 			url: 'https://www.twitch.tv/.'
 		}
 	},
