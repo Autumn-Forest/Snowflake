@@ -77,6 +77,10 @@ export class Util {
 	numToMonth(num: number) {
 		return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][num];
 	}
+	nicerDates(date: Date | number = new Date()) {
+		if (!(date instanceof Date)) date = new Date(date);
+		return `${this.numToMonth(date.getMonth())} ${ordinal(date.getDate())} ${date.getFullYear()}`;
+	}
 
 	isImageUrl(str: string) {
 		return this.client.constants.regex.links.test(str) && str.match(/.(png|jpe?g|gif|web[pm])(?:\?.*)?$/i) !== null;
