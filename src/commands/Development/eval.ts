@@ -28,7 +28,7 @@ const callback = async (msg: Message, args: string[]) => {
 export const command: Command = {
 	name: 'eval',
 	category: 'Dev',
-	aliases: [],
+	aliases: ['ev'],
 	description: 'Eval script',
 	usage: '',
 	devOnly: true,
