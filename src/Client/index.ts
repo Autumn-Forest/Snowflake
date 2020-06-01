@@ -7,7 +7,8 @@ import {
 	GuildMember,
 	TextChannel,
 	MessageEmbed,
-	User
+	User,
+	ClientEvents
 } from 'discord.js';
 import { config } from '../config';
 import constants from '../constants';
@@ -24,14 +25,52 @@ const BaseClientOptions: BaseClientOptions = {
 	presence: {
 		activity: {
 			name: `${config.defaultPrefix}help`,
-			type: 'LISTENING',
+			type: 'STREAMING',
 			url: 'https://www.twitch.tv/.'
 		}
 	},
 	partials: ['MESSAGE', 'REACTION']
 };
 
+export interface ClientOptions {
+	colours?: { [key in ClientColours]?: string };
+	debug?: boolean;
+	flushTime?: number;
+	promptTimeout?: number;
+}
+
+export type ClientColours = 'ERROR' | 'INFO' | 'BASIC';
+export interface Message extends BaseMessage {
+	client: Client;
+}
+
+export type CommandCategories = 'Dev' | 'Fun' | 'Utility' | 'Settings' | 'NSFW';
+
+interface ClientCategories extends ClientEvents {
+	commandUsed: [Message, Command];
+}
+
+export interface Command {
+	name: string;
+	category: CommandCategories;
+	aliases: string[];
+	description: string;
+	args: number;
+	usage: string;
+	devOnly: boolean;
+	guildOnly: boolean;
+	nsfw: boolean;
+	memberPermission: PermissionString[];
+	botPermission: PermissionString[];
+	callback(message: Message, args: string[]): Promise<BaseMessage | void>;
+}
+
 export class Client extends BaseClient {
+	private _on = this.on;
+	private _emit = this.emit;
+	on = <K extends keyof ClientCategories>(event: K, listener: (...args: ClientCategories[K]) => void): this => this._on(event, listener);
+	emit = <K extends keyof ClientCategories>(event: K, ...args: ClientCategories[K]): boolean => this._emit(event, ...args);
+
 	debug = false;
 	flushTime = 1000 * 60 * 30;
 	promptTimeout = 3; // In minutes
@@ -166,33 +205,4 @@ export class Client extends BaseClient {
 	getCommand(commandName: string) {
 		return this.commands.find(cmd => cmd.name === commandName.toLowerCase() || cmd.aliases.includes(commandName.toLowerCase()));
 	}
-}
-
-export interface ClientOptions {
-	colours?: { [key in ClientColours]?: string };
-	debug?: boolean;
-	flushTime?: number;
-	promptTimeout?: number;
-}
-
-export type ClientColours = 'ERROR' | 'INFO' | 'BASIC';
-export interface Message extends BaseMessage {
-	client: Client;
-}
-
-export type CommandCategories = 'Dev' | 'Fun' | 'Utility' | 'Settings' | 'NSFW';
-
-export interface Command {
-	name: string;
-	category: CommandCategories;
-	aliases: string[];
-	description: string;
-	args: number;
-	usage: string;
-	devOnly: boolean;
-	guildOnly: boolean;
-	nsfw: boolean;
-	memberPermission: PermissionString[];
-	botPermission: PermissionString[];
-	callback(message: Message, args: string[]): Promise<BaseMessage | void>;
 }
