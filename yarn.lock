@@ -550,10 +550,10 @@ diff-match-patch@^1.0.0:
   resolved "https://registry.yarnpkg.com/diff-match-patch/-/diff-match-patch-1.0.4.tgz#6ac4b55237463761c4daf0dc603eb869124744b1"
   integrity sha512-Uv3SW8bmH9nAtHKaKSanOQmj2DnlH65fUpcrMdfdaOxUG02QQ4YGZ8AE7kKOMisF7UqvOlGKVYWRvezdncW9lg==
 
-discord.bio@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/discord.bio/-/discord.bio-6.0.0.tgz#4afb5b623a40df20e8d082d301a09878cd953894"
-  integrity sha512-gGG0BsMRJHx4QPM9H6ytoDKtjLJ0pHmh4K57YibmHWAIbA2sUB42SzDfoH9baYMPQuO1Ss1OOd4l/K2+L+nICA==
+discord.bio@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/discord.bio/-/discord.bio-6.0.1.tgz#550923cf49274b72c57b3ed5b67d4e452c4c6d46"
+  integrity sha512-3kuis07BCwchspQFRTSKVI1m8cGY48ecdoP0y3mi8A+U1kyWJGnEJxlC7+kcMDF9hwKtxzSfueZNXfCSYs0ivg==
   dependencies:
     "@types/node-fetch" "^2.5.4"
     "@types/ws" "^7.2.4"
@@ -2083,12 +2083,7 @@ type-fest@^0.8.1:
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.8.1.tgz#09e249ebde851d3b1e48d27c105444667f17b83d"
   integrity sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==
 
-typescript@^3.7.5:
-  version "3.9.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.3.tgz#d3ac8883a97c26139e42df5e93eeece33d610b8a"
-  integrity sha512-D/wqnB2xzNFIcoBG9FG8cXRDjiqSTbG2wd8DMZeQyJlP1vfTkIxH4GKveWaEBYySKIg+USu+E+EDIR47SqnaMQ==
-
-typescript@^3.9.2:
+typescript@^3.7.5, typescript@^3.9.2:
   version "3.9.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.3.tgz#d3ac8883a97c26139e42df5e93eeece33d610b8a"
   integrity sha512-D/wqnB2xzNFIcoBG9FG8cXRDjiqSTbG2wd8DMZeQyJlP1vfTkIxH4GKveWaEBYySKIg+USu+E+EDIR47SqnaMQ==
