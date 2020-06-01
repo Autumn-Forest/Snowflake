@@ -5,5 +5,22 @@ export const emojis = {
 	failId: '699715122716737538',
 	loading: '<a:loading:699715156371832960>',
 	leave: '<:leave:699715142891601991>',
-	nitro: '<:NitroBoost:699715144862662666>'
+	nitro: '<:NitroBoost:699715144862662666>',
+	speech: '💬',
+	user: '👤',
+	users: '👥',
+	bot: '🤖',
+	hash: '#️⃣',
+	cake: '🎂',
+	calendar: '🗓️',
+	colour: '🎨',
+	diamond: '🔹',
+	PLAYING: '🎮',
+	LISTENING: '🎧',
+	WATCHING: '🍿',
+	STREAMING: '🎬',
+	CUSTOM_STATUS: '💬',
+	crown: '👑',
+	globe: '🌐',
+	smiley: '😃'
 };
