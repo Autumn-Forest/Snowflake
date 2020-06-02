@@ -6,7 +6,7 @@ const bio = new Bio();
 const callback = async (msg: Message, args: string[]) => {
 	const regex = msg.client.constants.regex.snowflake;
 	let user;
-	if (args[0]) user = msg.mentions.users.first()?.id || regex.exec(args[0])?.[0] || args[0];
+	if (args[0]) user = msg.mentions.users.first()?.id || regex.exec(args[0])?.[0];
 	else user = msg.author.id;
 	const info = await bio.users.details(user).catch(() => null);
 	if (!info)
