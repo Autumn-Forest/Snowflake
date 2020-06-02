@@ -6,7 +6,8 @@ const bio = new Bio();
 const callback = async (msg: Message, args: string[]) => {
 	const regex = msg.client.constants.regex.snowflake;
 	let user;
-	if (args[0]) user = msg.mentions.users.first()?.id || regex.exec(args.join(' '))?.[0] || args[0]; // why that? 1 because TS complain, so it check the args using th regex, return the id if it found i or the first arg if it's something false, it'll error after. BUT it can be also a slug directly precised, so if no id or mention found, it return the first arg, wich can be a slug, and so it wont error and continue.
+	if (args[0]) user = msg.mentions.users.first()?.id || regex.exec(args.join(' '))?.[0] || args[0];
+	// why that? 1 because TS complain, so it check the args using th regex, return the id if it found i or the first arg if it's something false, it'll error after. BUT it can be also a slug directly precised, so if no id or mention found, it return the first arg, wich can be a slug, and so it wont error and continue.
 	else user = msg.author.id;
 	const info = await bio.users.details(user).catch(() => null);
 	if (!info)
