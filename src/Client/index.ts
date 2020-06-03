@@ -152,7 +152,7 @@ export class Client extends BaseClient {
 	}
 
 	redactCredentials(text: string) {
-		return text.replace(this.config.token, '[REDACTED]').replace(this.config.mongoString, '[REDACTED]');
+		return text.replace(new RegExp(`(${this.config.token}|${this.config.mongoString})`, 'gi'), '[REDACTED]');
 	}
 
 	/*
