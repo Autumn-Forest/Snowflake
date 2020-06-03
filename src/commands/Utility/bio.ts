@@ -4,7 +4,6 @@ import { Bio } from 'discord.bio';
 const bio = new Bio();
 
 const callback = async (msg: Message, args: string[]) => {
-	const regex = msg.client.constants.regex.snowflake;
 	let user;
 	if (args[0]) user = msg.mentions.users.first()?.id || args[0];
 	else user = msg.author.id;
