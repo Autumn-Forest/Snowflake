@@ -1,15 +1,18 @@
 import { Client, Message } from '../Client';
 import { stripIndents } from 'common-tags';
 
-export const listener = async (client: Client, message: Message) => {
-	if (message.author.bot) return;
+export const listener = async (client: Client, msg: Message) => {
+	if (msg.author.bot) return;
 
-	if (message.partial) message = (await message.fetch().catch(() => null)) as Message;
-	if (!message) return;
+	if (msg.partial) msg = (await msg.fetch().catch(() => null)) as Message;
+	if (!msg) return;
 
-	const guildPrefix = await client.getPrefix(message);
-	const guildPrefixes = await client.getPrefixes(message);
-	const userPrefixes = await client.getUserPrefixes(message.author);
+	if (msg.client.helpers.missingPermissions(msg, ['SEND_MESSAGES', 'VIEW_CHANNEL'])) return;
+	if (msg.client.helpers.missingPermissions(msg, ['EMBED_LINKS'])) return msg.channel.send('I require the `Embed Links` permission to run commands!');
+
+	const guildPrefix = await client.getPrefix(msg);
+	const guildPrefixes = await client.getPrefixes(msg);
+	const userPrefixes = await client.getUserPrefixes(msg.author);
 
 	let prefixes = [guildPrefix];
 	if (guildPrefixes) prefixes = prefixes.concat(guildPrefixes);
@@ -17,63 +20,64 @@ export const listener = async (client: Client, message: Message) => {
 
 	const prefixRegex = new RegExp(`^(<@!?${client.user!.id}>|${prefixes.map(p => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\s*`);
 
-	const matched = message.content.match(prefixRegex);
+	const matched = msg.content.match(prefixRegex);
 	const prefix = matched ? matched[0] : null;
-	if (!prefix || !message.content.startsWith(prefix)) return;
+	if (!prefix || !msg.content.startsWith(prefix)) return;
 
-	if (!message.content.replace(new RegExp(`<@!?${client.user!.id}>`), '').length)
-		return message.channel.send(stripIndents`
+	if (!msg.content.replace(new RegExp(`<@!?${client.user!.id}>`), '').length)
+		return msg.channel.send(stripIndents`
 		My prefix is \`${guildPrefix}\`
 		For a list of commands, type \`${guildPrefix}help\``);
 
-	const args = message.content.slice(prefix.length).trim().split(/ +/);
+	const args = msg.content.slice(prefix.length).trim().split(/ +/);
 	const commandName = args.shift();
 	if (!commandName) return;
 
 	const command = client.getCommand(commandName);
 	if (!command) return;
 
-	if (!message.content.endsWith('--force') || !message.client.config.developers.includes(message.author.id)) {
-		if (command.devOnly && !message.client.config.developers.includes(message.author.id)) return;
+	if (args.length === 1 && args[0].toLowerCase() === 'help') return client.getCommand('help')!.callback(msg, [command.name]);
 
-		if (command.guildOnly && !message.guild)
-			return message.client.helpers.wrongSyntax(message, `\`${prefix}${command.name}\` can only be used on a server!`);
+	if (!msg.content.endsWith('--force') || !msg.client.config.developers.includes(msg.author.id)) {
+		if (command.devOnly && !msg.client.config.developers.includes(msg.author.id)) return;
 
-		if (command.nsfw && !(await message.client.helpers.isNSFW(message)))
-			return message.client.helpers.wrongSyntax(
-				message,
-				(await message.client.cache.getGuild(message))?.settings.nsfw
+		if (command.guildOnly && !msg.guild) return msg.client.helpers.wrongSyntax(msg, `\`${prefix}${command.name}\` can only be used on a server!`);
+
+		if (command.nsfw && !(await msg.client.helpers.isNSFW(msg)))
+			return msg.client.helpers.wrongSyntax(
+				msg,
+				(await msg.client.cache.getGuild(msg))?.settings.nsfw
 					? 'Please move to a NSFW channel to use this!'
 					: `NSFW commands are not enabled on this server! Tell an Admin to run \`${guildPrefix}setnsfw\``
 			);
 
-		if (command.memberPermission.length && message.client.helpers.missingPermissions(message, command.memberPermission))
-			return message.client.helpers.wrongSyntax(
-				message,
-				`You require the following permissions to use this command: ${message.client.helpers
-					.missingPermissions(message, command.memberPermission)!
-					.map(perm => message.client.helpers.nicerPermissions(perm))
+		if (command.memberPermission.length && msg.client.helpers.missingPermissions(msg, command.memberPermission))
+			return msg.client.helpers.wrongSyntax(
+				msg,
+				`You require the following permissions to use this command: ${msg.client.helpers
+					.missingPermissions(msg, command.memberPermission)!
+					.map(perm => msg.client.helpers.nicerPermissions(perm))
 					.join(', ')}`
 			);
-		if (command.botPermission.length && message.client.helpers.missingPermissions(message, command.botPermission, 'self'))
-			return message.client.helpers.wrongSyntax(
-				message,
-				`I require the following permissions to run this command: ${message.client.helpers
-					.missingPermissions(message, command.botPermission, 'self')!
-					.map(perm => message.client.helpers.nicerPermissions(perm))
+		if (command.botPermission.length && msg.client.helpers.missingPermissions(msg, command.botPermission, 'self'))
+			return msg.client.helpers.wrongSyntax(
+				msg,
+				`I require the following permissions to run this command: ${msg.client.helpers
+					.missingPermissions(msg, command.botPermission, 'self')!
+					.map(perm => msg.client.helpers.nicerPermissions(perm))
 					.join(', ')}`
 			);
 
 		if (args.length < command.args)
-			return message.client.helpers.wrongSyntax(
-				message,
+			return msg.client.helpers.wrongSyntax(
+				msg,
 				`This command requires ${command.args} arguments, but you only provided ${args.length}.\nPlease use it like this: \`${prefix}${command.name} ${command.usage}\``
 			);
 	}
 
 	command
-		.callback(message, args)
-		.then(() => client.emit('commandUsed', message, command))
-		.catch(err => client.handleError(err, message));
+		.callback(msg, args)
+		.then(() => client.emit('commandUsed', msg, command))
+		.catch(err => client.handleError(err, msg));
 	return;
 };
