@@ -30,7 +30,7 @@
 		"deleteModules": "rm -rf node_modules/*",
 		"deleteLock": "rm yarn.lock",
 		"installModules": "yarn install",
-		"push": "git add . && git commit $1 && git push"
+		"push": "git add . && git commit -m $m && git push"
 	},
 	"husky": {
 		"hooks": {
