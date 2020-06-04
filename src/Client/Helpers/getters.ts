@@ -3,8 +3,11 @@ import { Collection, Snowflake, Role, User, GuildMember } from 'discord.js';
 import { Message } from '../../Client';
 
 export class Getters extends Util {
-	getUser = async (message: Message, args: string[], spot?: number) => {
-		if (message.guild) return (await this.getMember(message, args))?.user;
+	async getUser(message: Message, args: string[], spot?: number) {
+		if (message.guild) {
+			const member = await this.getMember(message, args);
+			return member ? member.user : null;
+		}
 
 		const input = spot ? args[spot].toLowerCase() : args.join(' ').toLowerCase();
 
@@ -19,14 +22,14 @@ export class Getters extends Util {
 		} else if (userSearch.size === 1) {
 			return userSearch.first();
 		} else if (userSearch.size < 11) {
-			return (await this.chooseOne(message, userSearch)) as User;
+			return await this.chooseOne(message, userSearch);
 		} else {
 			this.wrongSyntax(message, `I found multiple users matching your input: ${userSearch.size}`);
 			return null;
 		}
-	};
+	}
 
-	getMember = async (message: Message, args: string[], spot?: number) => {
+	async getMember(message: Message, args: string[], spot?: number) {
 		if (!message.guild) throw new SyntaxError('getMember was used in a DmChannel.');
 
 		const input = spot || spot === 0 ? args[spot].toLowerCase() : args.join(' ').toLowerCase();
@@ -45,14 +48,14 @@ export class Getters extends Util {
 		} else if (memberSearch.size === 1) {
 			return memberSearch.first();
 		} else if (memberSearch.size < 11) {
-			return (await this.chooseOne(message, memberSearch)) as GuildMember;
+			return await this.chooseOne(message, memberSearch);
 		} else {
 			this.wrongSyntax(message, `I found multiple users matching your input: ${memberSearch.size}`);
 			return null;
 		}
-	};
+	}
 
-	getRole = async (message: Message, args: string[], spot?: number) => {
+	async getRole(message: Message, args: string[], spot?: number) {
 		if (!message.guild) throw new SyntaxError('getRole was used in a DmChannel.');
 
 		const input = spot ? args[spot].toLowerCase() : args.join(' ').toLowerCase();
@@ -68,16 +71,19 @@ export class Getters extends Util {
 		} else if (roleSearch.size === 1) {
 			return roleSearch.first();
 		} else if (roleSearch.size < 11) {
-			return (await this.chooseOne(message, roleSearch)) as Role;
+			return await this.chooseOne(message, roleSearch);
 		} else {
 			this.wrongSyntax(message, `I found multiple roles matching your input: ${roleSearch.size}`);
 			return null;
 		}
-	};
+	}
 
 	getName = (thing: Role | User | GuildMember) => (thing instanceof Role ? thing.name : thing instanceof User ? thing.tag : thing.user.tag);
 
-	chooseOne = async (message: Message, choices: Collection<Snowflake, Role | User | GuildMember>) => {
+	private chooseOne(message: Message, choices: Collection<Snowflake, Role>): Promise<Role | void>;
+	private chooseOne(message: Message, choices: Collection<Snowflake, User>): Promise<User | void>;
+	private chooseOne(message: Message, choices: Collection<Snowflake, GuildMember>): Promise<GuildMember | void>;
+	private async chooseOne(message: Message, choices: Collection<Snowflake, Role | User | GuildMember>) {
 		let i = 0;
 		const options = choices.map(choice => {
 			return { index: ++i, choice: choice };
@@ -98,5 +104,5 @@ export class Getters extends Util {
 		if (!result) return;
 
 		return result.choice;
-	};
+	}
 }

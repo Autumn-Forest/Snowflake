@@ -15,10 +15,8 @@ import constants from '../constants';
 import { database } from '../database';
 import { join } from 'path';
 import { readdirSync } from 'fs';
-import { Getters, Nekos, WebhookManager, PromptManager } from './Helpers';
+import { Getters, Nekos, WebhookManager, PromptManager, CacheManager, NHentaiWrapper } from './Helpers';
 import { stripIndents } from 'common-tags';
-import { CacheManager } from './Helpers/CacheManager';
-import { NHentaiWrapper } from './Helpers/NHentaiWrapper';
 
 const BaseClientOptions: BaseClientOptions = {
 	disableMentions: 'everyone',
@@ -106,8 +104,12 @@ export class Client extends BaseClient {
 					key => (this.colours[key as ClientColours] = options.colours![key as ClientColours] || this.colours[key as ClientColours])
 				);
 		}
+	}
+
+	start() {
 		this.initCommands();
 		this.initListeners();
+		this.login(this.config.token);
 	}
 
 	initCommands() {

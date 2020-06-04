@@ -57,15 +57,14 @@ export const listener = async (client: Client, msg: Message) => {
 				msg,
 				`You require the following permissions to use this command: ${msg.client.helpers
 					.missingPermissions(msg, command.memberPermission)!
-					.map(perm => msg.client.helpers.nicerPermissions(perm))
+					.map(perm => msg.client.helpers.titleCase(perm))
 					.join(', ')}`
 			);
 		if (command.botPermission.length && msg.client.helpers.missingPermissions(msg, command.botPermission, 'self'))
 			return msg.client.helpers.wrongSyntax(
 				msg,
 				`I require the following permissions to run this command: ${msg.client.helpers
-					.missingPermissions(msg, command.botPermission, 'self')!
-					.map(perm => msg.client.helpers.nicerPermissions(perm))
+					.titleCase(msg.client.helpers.missingPermissions(msg, command.botPermission, 'self')!)
 					.join(', ')}`
 			);
 

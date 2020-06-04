@@ -4,7 +4,7 @@ const client = new Client({
 	debug: false
 });
 
-client.login(client.config.token);
+client.start();
 
 process.on('uncaughtException', client.handleError);
 process.on('unhandledRejection', err => {

@@ -37,9 +37,9 @@ const callback = async (msg: Message, args: string[]) => {
 		.addFields([
 			{ name: 'Other Names', value: names.join('\n') || '-' },
 			{ name: '🎲 Genres', value: media.genres.join(', ') || '-' },
-			{ name: '⏳ Status', value: media.status || '-', inline: true },
+			{ name: '⏳ Status', value: msg.client.helpers.titleCase(media.status || '-'), inline: true },
 			{ name: '⭐ Average Rating', value: media.averageScore ? media.averageScore + '%' : '-', inline: true },
-			{ name: '🎬 Format', value: media.format || '-', inline: true },
+			{ name: '🎬 Format', value: msg.client.helpers.titleCase(media.format || '-'), inline: true },
 			{ name: '💽 Episodes', value: media.episodes || media.chapters || '-', inline: true },
 			{
 				name: '🗓️ Started on',

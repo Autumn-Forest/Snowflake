@@ -63,9 +63,7 @@ const callback = async (msg: Message, args: string[]) => {
 				NSFW: ${command.nsfw ? client.constants.emojis.success : client.constants.emojis.fail}
 				Requires arguments: ${command.args || client.constants.emojis.fail}
 				Requires Permissions: ${
-					command.memberPermission.length
-						? command.memberPermission.map(p => client.helpers.nicerPermissions(p)).join(', ')
-						: client.constants.emojis.fail
+					command.memberPermission.length ? command.memberPermission.map(p => client.helpers.titleCase(p)).join(', ') : client.constants.emojis.fail
 				}
 		`
 		);

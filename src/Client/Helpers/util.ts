@@ -39,13 +39,26 @@ export class Util {
 	}
 
 	async uploadHaste(text: string) {
-		const result = await this.fetch('https://hastebin.com/documents', {
+		let url = 'https://hastebin.com/';
+
+		let result = await this.fetch(url + 'documents', {
 			method: 'POST',
 			headers: { 'Content-Type': 'text/plain' },
 			body: text,
 			redirect: 'follow'
-		});
-		return result?.key ? `https://hastebin.com/${result.key}` : 'Failed to upload to hastebin!';
+		}).catch(() => null);
+
+		if (!result || !result.key) {
+			url = 'https://hasteb.in/';
+			result = await this.fetch(url + 'documents', {
+				method: 'POST',
+				headers: { 'Content-Type': 'text/plain' },
+				body: text,
+				redirect: 'follow'
+			}).catch(() => null);
+		}
+
+		return result?.key ? url + result.key : 'Failed uploading to hastebin!';
 	}
 
 	async isNSFW(message: Message) {
@@ -63,11 +76,17 @@ export class Util {
 		return missing.length ? missing : undefined;
 	}
 
-	nicerPermissions(perm: PermissionString) {
-		return perm
-			.split('_')
-			.map(word => word.charAt(0) + word.slice(1).toLowerCase())
-			.join(' ');
+	titleCase(str: PermissionString): string;
+	titleCase(str: PermissionString[]): string[];
+	titleCase(str: string): string;
+	titleCase(str: string[]): string[];
+	titleCase(str: string | string[]) {
+		const transformWord = (word: string) =>
+			word
+				.split('_')
+				.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+				.join(' ');
+		return Array.isArray(str) ? str.map(w => transformWord(w)) : transformWord(str);
 	}
 
 	numToOrdinal(num: number) {
