@@ -8,7 +8,6 @@ export const listener = async (client: Client, msg: Message) => {
 	if (!msg) return;
 
 	if (msg.client.helpers.missingPermissions(msg, ['SEND_MESSAGES', 'VIEW_CHANNEL'], 'self')) return;
-	if (msg.client.helpers.missingPermissions(msg, ['EMBED_LINKS'], 'self')) return msg.channel.send('I require the `Embed Links` permission to run commands!');
 
 	const guildPrefix = await client.getPrefix(msg);
 	const guildPrefixes = await client.getPrefixes(msg);
@@ -35,6 +34,8 @@ export const listener = async (client: Client, msg: Message) => {
 
 	const command = client.getCommand(commandName);
 	if (!command) return;
+
+	if (msg.client.helpers.missingPermissions(msg, ['EMBED_LINKS'], 'self')) return msg.channel.send('I require the `Embed Links` permission to run commands!');
 
 	if (args.length === 1 && args[0].toLowerCase() === 'help') return client.getCommand('help')!.callback(msg, [command.name]);
 
