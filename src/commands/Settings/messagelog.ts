@@ -2,7 +2,7 @@ import { Command, Message } from '../../Client';
 import { TextChannel } from 'discord.js';
 
 const callback = async (msg: Message, _args: string[]) => {
-	const regex = new RegExp(/\d{17,19}/);
+	const regex = msg.client.constants.regex.snowflake;
 	const channel = msg.mentions.channels.first()?.id || regex.exec(msg.content)?.[0] || '';
 	const settings = await msg.client.cache.getGuild(msg);
 	if (!settings) return;
