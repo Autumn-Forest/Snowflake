@@ -22,5 +22,6 @@ export const emojis = {
 	CUSTOM_STATUS: '💬',
 	crown: '👑',
 	globe: '🌐',
-	smiley: '😃'
+	smiley: '😃',
+	trash: '🗑️'
 };

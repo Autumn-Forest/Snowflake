@@ -45,7 +45,7 @@ export interface Message extends BaseMessage {
 export type CommandCategories = 'Dev' | 'Fun' | 'Utility' | 'Settings' | 'NSFW';
 
 interface ClientCategories extends ClientEvents {
-	commandUsed: [Message, Command];
+	commandUsed: [Message, Command, BaseMessage | void];
 }
 
 export interface Command {
@@ -106,7 +106,7 @@ export class Client extends BaseClient {
 		}
 	}
 
-	start() {
+	async start() {
 		this.initCommands();
 		this.initListeners();
 		this.login(this.config.token);
