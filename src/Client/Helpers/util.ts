@@ -39,13 +39,13 @@ export class Util {
 	}
 
 	async uploadHaste(text: string) {
-		const result = await this.fetch('https://hasteb.in/documents', {
+		const result = await this.fetch('https://hastebin.com/documents', {
 			method: 'POST',
 			headers: { 'Content-Type': 'text/plain' },
 			body: text,
 			redirect: 'follow'
 		});
-		return result?.key ? `https://hasteb.in/${result.key}` : 'Failed to upload to hastebin!';
+		return result?.key ? `https://hastebin.com/${result.key}` : 'Failed to upload to hastebin!';
 	}
 
 	async isNSFW(message: Message) {
