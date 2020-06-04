@@ -37,6 +37,11 @@
     combined-stream "^1.0.8"
     mime-types "^2.1.12"
 
+"@klasa/stopwatch@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@klasa/stopwatch/-/stopwatch-0.0.1.tgz#77e0a91f9483d2c3ec841ca64a97086f7734c3eb"
+  integrity sha512-qKxiJoxju/mABXIajNHXPdbMqL8gtUgnDbhri1QEmhboBq9gwWSDnKZZNT3YXt/9w9THsJ+9s2j82PtYWxHDRw==
+
 "@types/bson@*":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@types/bson/-/bson-4.0.2.tgz#7accb85942fc39bbdb7515d4de437c04f698115f"

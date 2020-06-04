@@ -37,6 +37,7 @@
 		}
 	},
 	"dependencies": {
+		"@klasa/stopwatch": "^0.0.1",
 		"common-tags": "^1.8.0",
 		"discord.js": "^12.2.0",
 		"mongoose": "^5.9.15",
