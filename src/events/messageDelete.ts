@@ -1,7 +1,7 @@
 import { Client, Message } from '../Client';
 
 export const listener = async (client: Client, msg: Message) => {
-	if (msg.author?.bot) return;
+	if (msg.author?.bot || msg.partial) return;
 
 	const settings = await client.cache.getGuild(msg);
 	if (!settings) return;
@@ -11,18 +11,13 @@ export const listener = async (client: Client, msg: Message) => {
 	const logEmbed = client
 		.newEmbed('INFO')
 		.setTitle('Message deleted')
-		.setDescription('This message was not cached, so I sadly cannot display more info than this (≧Д≦)')
+		.setDescription(msg.content)
+		.setThumbnail(msg.author.displayAvatarURL({ dynamic: true }))
 		.addFields([
 			{ name: 'Channel', value: msg.channel, inline: true },
-			{ name: 'Message ID', value: msg.id, inline: true }
+			{ name: 'Message ID', value: msg.id, inline: true },
+			{ name: 'Member', value: `${msg.author} - ${msg.author.tag} - ${msg.author.id}` }
 		]);
-
-	if (msg.partial) return msg.client.webhooks.send(logWebhook, '', logEmbed);
-
-	logEmbed
-		.setThumbnail(msg.author.displayAvatarURL({ dynamic: true }))
-		.addField('Member', `${msg.author} - ${msg.author.tag} - ${msg.author.id}`)
-		.setDescription(msg.content);
 
 	return msg.client.webhooks.send(logWebhook, '', logEmbed);
 };

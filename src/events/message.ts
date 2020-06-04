@@ -77,7 +77,7 @@ export const listener = async (client: Client, msg: Message) => {
 
 	command
 		.callback(msg, args)
-		.then(() => client.emit('commandUsed', msg, command))
+		.then(res => client.emit('commandUsed', msg, command, res))
 		.catch(err => client.handleError(err, msg));
 	return;
 };
