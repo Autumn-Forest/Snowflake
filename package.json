@@ -29,7 +29,8 @@
 		"cleanCache": "npm cache clean --force",
 		"deleteModules": "rm -rf node_modules/*",
 		"deleteLock": "rm yarn.lock",
-		"installModules": "yarn install"
+		"installModules": "yarn install",
+		"push": "git add . && git commit $1 && git push"
 	},
 	"husky": {
 		"hooks": {
