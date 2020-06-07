@@ -20,7 +20,12 @@ const callback = async (msg: Message, args: string[]) => {
 		? ''
 		: stripIndents`
 		${emojis.diamond} ${member.roles.highest}
-		${emojis.colour} ${member.roles.highest.hexColor}
+		${emojis.colour} ${
+				member.roles.cache
+					.filter(r => r.hexColor !== '#000000')
+					.sort((x, y) => x.position - y.position)
+					.last()?.hexColor || 'No Colour!'
+		  }
 		${emojis.nitro} ${member.premiumSince ? `Since ${client.helpers.nicerDates(member.premiumSince)}` : emojis.fail}
 	`;
 
