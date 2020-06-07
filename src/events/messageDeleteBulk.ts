@@ -22,5 +22,5 @@ export const listener = async (client: Client, messages: Collection<string, Mess
 	if (log)
 		output.setThumbnail(log.executor.displayAvatarURL({ dynamic: true })).addField('Bot', `${log.executor} - ${log.executor.tag} - ${log.executor.id}`);
 
-	return msg.client.webhooks.send(logWebhook, '', output);
+	msg.client.webhooks.send(logWebhook, '', output);
 };
