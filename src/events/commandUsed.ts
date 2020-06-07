@@ -1,6 +1,5 @@
 import { Client, Message, Command } from '../Client';
-import { User } from 'discord.bio';
-import { MessageReaction } from 'discord.js';
+import { MessageReaction, User } from 'discord.js';
 
 export const listener = async (client: Client, msg: Message, _command: Command, res: Message | void) => {
 	const s = await msg.client.cache.getGuild(msg);
@@ -9,8 +8,7 @@ export const listener = async (client: Client, msg: Message, _command: Command, 
 	if (res) {
 		const t = client.constants.emojis.trash;
 
-		let success = true;
-		res.react(t).catch(() => (success = false));
+		const success = await res.react(t).catch(() => false);
 		if (!success) return;
 
 		const reacted = await res.awaitReactions((r: MessageReaction, u: User) => u.id === msg.author.id && r.emoji.name === t, {

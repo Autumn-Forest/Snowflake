@@ -7,6 +7,7 @@ const callback = async (msg: Message, _args: string[]) => {
 	if (!channelID) return;
 
 	const settings = await msg.client.cache.getGuild(msg);
+	if (!settings) return;
 
 	if (!channelID) {
 		await msg.client.webhooks.delete(settings.channels.messageLogWebhook, `Message logs disabled by ${msg.author.tag}`);

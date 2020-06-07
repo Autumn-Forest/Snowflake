@@ -12,8 +12,8 @@ export class Util {
 	async wrongSyntax(message: Message, text: string) {
 		const msg = await message.reply(text);
 		if (!msg.guild) return;
-		const s = await message.client.cache.getGuild(message);
-		if (s?.settings.deleteFailedCommands) {
+		const settings = await message.client.cache.getGuild(message);
+		if (settings?.settings.deleteFailedCommands) {
 			msg.delete({ timeout: 1000 * 10 }).catch(() => null);
 			message.delete({ timeout: 1000 * 10 }).catch(() => null);
 		}
