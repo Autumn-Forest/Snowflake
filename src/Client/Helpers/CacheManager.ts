@@ -18,8 +18,7 @@ export class CacheManager {
 	}
 
 	async getGuild(identifier: Message | GuildMember, flush = false, id?: string) {
-		id = id || identifier.guild?.id;
-		if (!id) return;
+		id = id || identifier.guild?.id!;
 
 		if (flush) this.flush('Guild', id);
 

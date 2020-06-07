@@ -1,5 +1,5 @@
 import NekoClient from 'nekos.life';
-import { NekoSfwImageOptions, NekoNsfwImageOptions } from '../../interfaces/NekoOptions';
+import { NekoNsfwEndpoints, NekoSfwEndpoints } from '../../interfaces/NekoOptions';
 import { TextChannel } from 'discord.js';
 import { Message, Client } from '../../Client';
 const neko = new NekoClient();
@@ -11,11 +11,12 @@ export class Nekos extends NekoClient {
 		this.client = client;
 	}
 
-	getImage = async (type: NekoSfwImageOptions) => {
+	getImage = async (type: NekoSfwEndpoints) => {
+		// @ts-ignore
 		return (await neko.sfw[type]())?.url;
 	};
 
-	getHentai = async (type: NekoNsfwImageOptions) => {
+	getHentai = async (type: NekoNsfwEndpoints) => {
 		return (await neko.nsfw[type]())?.url;
 	};
 
@@ -36,7 +37,7 @@ export class Nekos extends NekoClient {
 		return (await neko.sfw.spoiler({ text: text }))?.owo;
 	};
 
-	sendImage = async (message: Message, args: string[], type: NekoSfwImageOptions, description: string) => {
+	sendImage = async (message: Message, args: string[], type: NekoSfwEndpoints, description: string) => {
 		let member;
 		if (args.length && message.guild) {
 			member = await message.client.helpers.getMember(message, args);
@@ -61,7 +62,7 @@ export class Nekos extends NekoClient {
 		return message.channel.send(output);
 	};
 
-	sendHentai = async (message: Message, type: NekoNsfwImageOptions) => {
+	sendHentai = async (message: Message, type: NekoNsfwEndpoints) => {
 		if (!message.guild || !(message.channel as TextChannel).nsfw) return;
 
 		const url = await this.getHentai(type);

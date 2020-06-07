@@ -1,6 +1,6 @@
 import { Message, Client } from '..';
 import nodeFetch, { RequestInfo, RequestInit } from 'node-fetch';
-import { PermissionString, GuildMember } from 'discord.js';
+import { PermissionString, GuildMember, Message as BaseMessage, GuildChannel } from 'discord.js';
 import ordinal from 'ordinal';
 
 export class Util {
@@ -68,10 +68,14 @@ export class Util {
 		return settings?.settings.nsfw && message.channel.nsfw;
 	}
 
-	missingPermissions(message: Message, permissions: PermissionString[], member?: GuildMember | 'self') {
-		if (message.channel.type === 'dm') return;
-		const targetMember = member === 'self' ? message.guild!.me! : member || message.member!;
-		const allPermissions = message.channel.permissionsFor(targetMember) || targetMember.permissions;
+	missingPermissions(identifier: Message | GuildChannel, permissions: PermissionString[], member?: GuildMember | 'self') {
+		const author = identifier instanceof BaseMessage ? identifier.member! : null;
+		if (identifier instanceof BaseMessage) {
+			if (identifier.channel instanceof GuildChannel) identifier = identifier.channel;
+			else return;
+		}
+		const targetMember = member === 'self' ? identifier.guild.me! : member || author || identifier.guild.me!;
+		const allPermissions = identifier.permissionsFor(targetMember) || targetMember.permissions;
 		const missing = permissions.filter(p => !allPermissions?.has(p));
 		return missing.length ? missing : undefined;
 	}

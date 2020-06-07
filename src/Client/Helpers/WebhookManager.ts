@@ -1,24 +1,32 @@
-import { Message } from '..';
-import { Util } from './util';
+import { Message, Client } from '..';
 import { TextChannel, MessageEmbed } from 'discord.js';
 
-export class WebhookManager extends Util {
+export class WebhookManager {
+	private client: Client;
+	constructor(client: Client) {
+		this.client = client;
+	}
+
 	sendFirst = async (msg: Message, text: string, channel?: TextChannel, name?: string, pfp?: string) => {
 		if (msg.channel.type !== 'text') return;
-		if (!channel) channel = msg.channel;
-		if (!name) name = msg.member?.displayName || msg.author.username;
-		if (!pfp) pfp = msg.author.displayAvatarURL();
+		channel = channel || msg.channel;
+		name = name || msg.member?.displayName || msg.author.username;
+		pfp = pfp || msg.author.displayAvatarURL();
 
 		const webhook = await this.fetchFirst(channel);
-		return webhook?.send(text, {
-			username: name,
-			avatarURL: pfp
-		});
+		if (!webhook) return;
+
+		if (this.client.helpers.missingPermissions(channel, ['MANAGE_WEBHOOKS'], 'self')) channel.send(text);
+		else
+			webhook.send(text, {
+				username: name,
+				avatarURL: pfp
+			});
 	};
 
 	fetchFirst = async (channel: TextChannel) => {
-		const webhooks = await channel.fetchWebhooks();
-		const webhook = webhooks.first() || (await channel.createWebhook('basic', { reason: 'Automatic creation' }));
+		const webhooks = await channel.fetchWebhooks().catch(() => null);
+		const webhook = webhooks?.first() || (await channel.createWebhook('basic', { reason: 'Automatic creation' }).catch(() => null));
 		return webhook;
 	};
 
@@ -29,25 +37,30 @@ export class WebhookManager extends Util {
 		}
 		return await channel.fetchWebhooks();
 	};
-	// called _fetch cuz fetch already exist or smtg like that.
-	_fetch = async (channel: TextChannel) => {
+
+	fetch = async (channel: TextChannel) => {
 		return await channel.fetchWebhooks();
 	};
 
 	send = async (id: string, text?: string, embeds?: MessageEmbed, name?: string, pfp?: string) => {
-		const webhook = await this.client.fetchWebhook(id);
-		if (embeds) {
-			return webhook.send(text, {
+		const webhook = await this.client.fetchWebhook(id).catch(() => null);
+		if (!webhook) return;
+
+		const channel = this.client.channels.cache.get(webhook.channelID) as TextChannel;
+		if (!channel) return;
+
+		if (this.client.helpers.missingPermissions(channel, ['MANAGE_WEBHOOKS'], 'self')) channel.send(text, { embed: embeds });
+		else if (embeds)
+			webhook.send(text, {
 				username: name,
 				avatarURL: pfp,
 				embeds: [embeds]
 			});
-		} else {
-			return webhook.send(text, {
+		else
+			webhook.send(text, {
 				username: name,
 				avatarURL: pfp
 			});
-		}
 	};
 
 	create = async (msg: Message, channel?: TextChannel, name?: string, pfp?: string, reason?: string) => {
@@ -56,16 +69,17 @@ export class WebhookManager extends Util {
 			if (!(msg.channel instanceof TextChannel)) return;
 			channel = msg.channel;
 		}
-		if (!name) name = msg.member?.displayName || msg.author.username;
-		if (!pfp) pfp = msg.author.displayAvatarURL();
 
-		const webhook = await channel.createWebhook(name, { avatar: pfp, reason });
-		return webhook.id;
+		name = name || msg.member?.displayName || msg.author.username;
+		pfp = pfp || msg.author.displayAvatarURL();
+
+		const webhook = await channel.createWebhook(name, { avatar: pfp, reason }).catch(() => null);
+		return webhook?.id;
 	};
 
 	delete = async (id: string, reason?: string) => {
 		const webhook = await this.client.fetchWebhook(id).catch(() => null);
 		if (!webhook) return;
-		webhook.delete(reason);
+		webhook.delete(reason).catch(() => null);
 	};
 }

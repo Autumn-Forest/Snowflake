@@ -3,30 +3,40 @@ import { TextChannel } from 'discord.js';
 
 const callback = async (msg: Message, _args: string[]) => {
 	const regex = msg.client.constants.regex.snowflake;
-	const channel = msg.mentions.channels.first()?.id || regex.exec(msg.content)?.[0] || '';
+	const channelID = msg.mentions.channels.first()?.id || regex.exec(msg.content)?.[0];
+	if (!channelID) return;
+
 	const settings = await msg.client.cache.getGuild(msg);
-	if (!settings) return;
-	if (!channel) {
-		await msg.client.webhooks.delete(settings.channels.messageLogWebhook, `Message logs got desactivated by ${msg.author.tag}`);
-		settings.channels.messageLogWebhook = channel;
+
+	if (!channelID) {
+		await msg.client.webhooks.delete(settings.channels.messageLogWebhook, `Message logs disabled by ${msg.author.tag}`);
+		settings.channels.messageLogWebhook = '';
 	} else {
-		const leChannel = await msg.client.channels.fetch(channel);
-		if (!leChannel) return;
-		if (!(leChannel instanceof TextChannel)) return;
-		if (!leChannel.permissionsFor(msg.author)?.has(['MANAGE_WEBHOOKS', 'MANAGE_CHANNELS']))
+		const channel = await msg.client.channels.fetch(channelID);
+		if (!(channel instanceof TextChannel)) return;
+
+		if (!channel.permissionsFor(msg.author)?.has(['MANAGE_WEBHOOKS', 'MANAGE_CHANNELS']))
 			return msg.client.helpers.wrongSyntax(msg, "You don't have required perms on this guild");
+
 		const webhookID = await msg.client.webhooks.create(
 			msg,
-			leChannel,
+			channel,
 			'Snowflake Logger',
-			'https://cdn.discordapp.com/avatars/709570149107367966/5a788241e762a89bae17019bcdcbec75.webp?size=2048',
-			`${msg.author.tag} created a logger for messages.`
+			msg.client.user!.displayAvatarURL(),
+			`Message logs enabled by ${msg.author.tag}.`
 		);
-		if (!webhookID) return;
+
+		if (!webhookID)
+			return msg.client.helpers.wrongSyntax(
+				msg,
+				'Failed to create the log webhook. Please make sure I have permissions to create webhook in the target channel!'
+			);
+
 		settings.channels.messageLogWebhook = webhookID;
 	}
+
 	settings.save();
-	return msg.channel.send(`The message log ${channel ? `channel has successfully been set to <#${channel}>` : 'has successfully been disabled'}!`);
+	return msg.channel.send(`The message log ${channelID ? `channel has successfully been set to <#${channelID}>` : 'has successfully been disabled'}!`);
 };
 
 export const command: Command = {
