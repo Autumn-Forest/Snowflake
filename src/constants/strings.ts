@@ -1,4 +1,6 @@
-export const actionStrings = {
+import '../interfaces/Array';
+
+export const actionStrings: Record<string, Array<string>> = {
 	tickle: [
 		'hihi, {{USER}} tickles you, {{MEMBER}}!',
 		'hey {{MEMBER}} be aware! {{USER}} is trying to tickle you :P',
@@ -32,5 +34,6 @@ export const actionStrings = {
 		'Are you alright {{MEMBER}}? Well {{USER}} is here for you, with a huge hug!',
 		'{{USER}} jumps on {{MEMBER}} to hug them!',
 		"Eeep- {{MEMBER}}! You're getting hugged by {{USER}}!"
-	]
+	],
+	pat: ['{{USER}} pats {{MEMBER}}', '{{USER}} notices your effort {{MEMBER}} and headpats you :3']
 };

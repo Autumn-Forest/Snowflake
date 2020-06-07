@@ -1,8 +1,7 @@
 import { Command, Message } from '../../Client';
 
 const callback = async (msg: Message, args: string[]) => {
-	const cuddles = msg.client.constants.actionStrings.cuddle;
-	return msg.client.nekos.sendImage(msg, args, 'cuddle', cuddles[Math.floor(Math.random() * cuddles.length)]);
+	return msg.client.nekos.sendImage(msg, args, 'cuddle', msg.client.constants.actionStrings.cuddle.random());
 };
 
 export const command: Command = {
