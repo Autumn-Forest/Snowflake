@@ -1,6 +1,4 @@
-import '../interfaces/Array';
-
-export const actionStrings: Record<string, Array<string>> = {
+export const actionStrings = {
 	tickle: [
 		'hihi, {{USER}} tickles you, {{MEMBER}}!',
 		'hey {{MEMBER}} be aware! {{USER}} is trying to tickle you :P',

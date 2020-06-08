@@ -19,14 +19,6 @@ export class Util {
 		}
 	}
 
-	codeBlock(str: string, lang = 'js') {
-		return '```' + `${lang || ''}\n${str}` + '```';
-	}
-
-	trimString(str: string, len = 2000) {
-		return str.length > len ? str.slice(0, len - 3) + '...' : str;
-	}
-
 	async fetch(requestInfo: RequestInfo, requestOptions?: RequestInit) {
 		const result = await nodeFetch(requestInfo, requestOptions)
 			.then(response => {
@@ -80,19 +72,6 @@ export class Util {
 		return missing.length ? missing : undefined;
 	}
 
-	titleCase(str: PermissionString): string;
-	titleCase(str: PermissionString[]): string[];
-	titleCase(str: string): string;
-	titleCase(str: string[]): string[];
-	titleCase(str: string | string[]) {
-		const transformWord = (word: string) =>
-			word
-				.split('_')
-				.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-				.join(' ');
-		return Array.isArray(str) ? str.map(w => transformWord(w)) : transformWord(str);
-	}
-
 	numToOrdinal(num: number) {
 		return ordinal(num);
 	}
@@ -100,6 +79,7 @@ export class Util {
 	numToMonth(num: number) {
 		return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][num];
 	}
+
 	nicerDates(date: Date | number = new Date()) {
 		if (!(date instanceof Date)) date = new Date(date);
 		return `${this.numToMonth(date.getMonth())} ${ordinal(date.getDate())} ${date.getFullYear()}`;

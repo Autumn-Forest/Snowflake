@@ -53,7 +53,7 @@ const callback = async (msg: Message, args: string[]) => {
 			{ name: 'Description', value: command.description },
 			{
 				name: 'Usage',
-				value: client.helpers.codeBlock(`${prefix}${command.name}${command.usage ? ' ' + command.usage : ''}`, 'json')
+				value: `${prefix}${command.name}${command.usage ? ' ' + command.usage : ''}`.toCodeblock()
 			},
 			{ name: 'Aliases', value: command.aliases.join(', ') || `${command.name} has no aliases.` }
 		])
@@ -62,9 +62,7 @@ const callback = async (msg: Message, args: string[]) => {
 				Guild only: ${command.guildOnly ? client.constants.emojis.success : client.constants.emojis.fail}
 				NSFW: ${command.nsfw ? client.constants.emojis.success : client.constants.emojis.fail}
 				Requires arguments: ${command.args || client.constants.emojis.fail}
-				Requires Permissions: ${
-					command.memberPermission.length ? command.memberPermission.map(p => client.helpers.titleCase(p)).join(', ') : client.constants.emojis.fail
-				}
+				Requires Permissions: ${command.memberPermission.length ? command.memberPermission.map(p => p.toTitleCase()).join(', ') : client.constants.emojis.fail}
 		`
 		);
 

@@ -92,7 +92,10 @@ export class Getters extends Util {
 		const prompt = new this.client.prompt(message);
 		const choice = await prompt.message(
 			'I found multiple targets. Please select one from below by typing only the number!' +
-				this.client.helpers.codeBlock(options.map(o => `${o.index} | ${this.getName(o.choice)}`).join('\n'), 'h'),
+				options
+					.map(o => `${o.index} | ${this.getName(o.choice)}`)
+					.join('\n')
+					.toCodeblock('css'),
 			options.map(o => o.index.toString()),
 			'That was not a valid option! Please try again.'
 		);

@@ -1,5 +1,9 @@
 import { Client } from './Client';
 
+// Load extensions
+import './interfaces/Array';
+import './interfaces/String';
+
 const client = new Client({
 	debug: false
 });

@@ -46,7 +46,7 @@ const callback = async (msg: Message, args: string[]) => {
 			'Permissions',
 			member.permissions
 				.toArray()
-				.map(p => client.helpers.titleCase(p))
+				.map(p => p.toTitleCase())
 				.join(', ')
 		);
 

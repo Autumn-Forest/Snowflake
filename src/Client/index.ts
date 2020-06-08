@@ -174,10 +174,10 @@ export class Client extends BaseClient {
 		const errorEmbed = new MessageEmbed()
 			.setColor(this.colours.ERROR)
 			.setTitle(err.name)
-			.setDescription(this.helpers.codeBlock(this.helpers.trimString(err.stack || 'No Error.', 2048), 'js'));
+			.setDescription((err.stack || 'No Error.').shorten(2000).toCodeblock());
 		if (message) {
 			errorEmbed.addFields([
-				{ name: 'Message', value: this.helpers.codeBlock(this.helpers.trimString(message.content || 'Empty message', 1024)) },
+				{ name: 'Message', value: (message.content || 'Empty message').shorten(1024) },
 				{
 					name: 'Message Info',
 					value: stripIndents`

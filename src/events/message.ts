@@ -62,26 +62,25 @@ export const listener = async (client: Client, msg: Message) => {
 					: `NSFW commands are not enabled on this server! Tell an Admin to run \`${guildPrefix}setnsfw\``
 			);
 
-		if (command.memberPermission.length && msg.client.helpers.missingPermissions(msg, command.memberPermission))
+		const memberMissing = command.memberPermission ? msg.client.helpers.missingPermissions(msg, command.memberPermission) : null;
+		const botMissing = command.botPermission ? msg.client.helpers.missingPermissions(msg, command.botPermission, 'self') : null;
+
+		if (memberMissing)
 			return msg.client.helpers.wrongSyntax(
 				msg,
-				`You require the following permissions to use this command: ${msg.client.helpers
-					.missingPermissions(msg, command.memberPermission)!
-					.map(perm => msg.client.helpers.titleCase(perm))
-					.join(', ')}`
+				`You require the following permissions to use this command: ${memberMissing.map(ele => ele.toTitleCase()).join(', ')}`
 			);
-		if (command.botPermission.length && msg.client.helpers.missingPermissions(msg, command.botPermission, 'self'))
+
+		if (botMissing)
 			return msg.client.helpers.wrongSyntax(
 				msg,
-				`I require the following permissions to run this command: ${msg.client.helpers
-					.titleCase(msg.client.helpers.missingPermissions(msg, command.botPermission, 'self')!)
-					.join(', ')}`
+				`I require the following permissions to run this command: ${botMissing.map(ele => ele.toTitleCase()).join(', ')}`
 			);
 
 		if (args.length < command.args)
 			return msg.client.helpers.wrongSyntax(
 				msg,
-				`This command requires ${command.args} arguments, but you only provided ${args.length}.\nPlease use it like this: \`${prefix}${command.name} ${command.usage}\``
+				`This command requires ${command.args} arguments, but you only provided ${args.length}.\nPlease try again: \`${prefix}${command.name} ${command.usage}\``
 			);
 	}
 

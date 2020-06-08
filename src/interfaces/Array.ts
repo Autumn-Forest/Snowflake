@@ -5,6 +5,7 @@ interface Array<T> {
 	 */
 	random(): T;
 	random(n: number): T[];
+	titleCase(): T[];
 }
 
 Array.prototype.random = function (n = 1) {

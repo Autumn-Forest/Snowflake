@@ -55,14 +55,13 @@ const callback = async (msg: Message, args: string[]) => {
 
 	const consoleOutput = console._formatLines();
 	let response = stripIndents`
-		${msg.client.helpers.codeBlock(result)}
-		${msg.client.helpers.codeBlock(asyncTime ? `⏱ ${asyncTime}<${syncTime}>` : `⏱ ${syncTime}`)}
+		${result.toCodeblock()}
+		${(asyncTime ? `⏱ ${asyncTime}<${syncTime}>` : `⏱ ${syncTime}`).toCodeblock()}
 	`;
-	if (consoleOutput) response += `\nConsole Output:${msg.client.helpers.codeBlock(consoleOutput)}`;
+	if (consoleOutput) response += `\nConsole Output:${consoleOutput.toCodeblock()}`;
 
 	if (response.length > 2000)
-		response =
-			(await msg.client.helpers.uploadHaste(result)) + '\n\n' + msg.client.helpers.codeBlock(asyncTime ? `⏱ ${asyncTime}<${syncTime}>` : `⏱ ${syncTime}`);
+		response = (await msg.client.helpers.uploadHaste(result)) + '\n\n' + (asyncTime ? `⏱ ${asyncTime}<${syncTime}>` : `⏱ ${syncTime}`).toCodeblock();
 
 	return msg.channel.send(response);
 };

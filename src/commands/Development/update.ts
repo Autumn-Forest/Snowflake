@@ -6,9 +6,9 @@ const callback = async (msg: Message, args: string[]) => {
 	if (args.length && ['yes', 'restart', '1', 'y'].includes(args[0].toLowerCase())) command += ' && pm2 restart Snowflake';
 
 	exec(command, (err, stdout, stderr) => {
-		if (err) msg.channel.send(msg.client.helpers.codeBlock(msg.client.helpers.trimString(err.stack || err.message, 2048)));
-		if (stderr) msg.channel.send(msg.client.helpers.codeBlock(msg.client.helpers.trimString(stderr, 2048)));
-		if (stdout) msg.channel.send(msg.client.helpers.codeBlock(msg.client.helpers.trimString(stdout, 2048)));
+		if (err) msg.channel.send((err.stack || err.message).shorten(2000).toCodeblock());
+		if (stderr) msg.channel.send(stderr.shorten(2000).toCodeblock());
+		if (stdout) msg.channel.send(stdout.shorten(2000).toCodeblock());
 		if (!err && !stderr) {
 			msg.client.getCommand('reload')?.callback(msg, []);
 		}

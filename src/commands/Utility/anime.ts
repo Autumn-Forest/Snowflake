@@ -33,13 +33,13 @@ const callback = async (msg: Message, args: string[]) => {
 		.setURL(media.siteUrl)
 		.setThumbnail(media.coverImage.extraLarge)
 		.setImage(media.bannerImage)
-		.setDescription(`${msg.client.helpers.trimString(media.description.replace(/<[^>]*>/gi, ''), 2048)}\n[More Info can be found here!](${media.siteUrl})`)
+		.setDescription(`${media.description.replace(/<[^>]*>/gi, '').shorten(2000)}\n[More Info can be found here!](${media.siteUrl})`)
 		.addFields([
 			{ name: 'Other Names', value: names.join('\n') || '-' },
 			{ name: '🎲 Genres', value: media.genres.join(', ') || '-' },
-			{ name: '⏳ Status', value: msg.client.helpers.titleCase(media.status || '-'), inline: true },
+			{ name: '⏳ Status', value: (media.status || '-').toTitleCase(), inline: true },
 			{ name: '⭐ Average Rating', value: media.averageScore ? media.averageScore + '%' : '-', inline: true },
-			{ name: '🎬 Format', value: msg.client.helpers.titleCase(media.format || '-'), inline: true },
+			{ name: '🎬 Format', value: (media.format || '-').toTitleCase(), inline: true },
 			{ name: '💽 Episodes', value: media.episodes || media.chapters || '-', inline: true },
 			{
 				name: '🗓️ Started on',
