@@ -1,16 +1,16 @@
 import { Client, Message } from '../Client';
 
 export const listener = async (client: Client, oldMsg: Message, newMsg: Message) => {
+	if (oldMsg.partial) return;
+
+	if (oldMsg.author.bot || oldMsg.content === newMsg.content) return;
+
 	const lastCommand = client.recentCommands.get(oldMsg.author.id);
 
 	if (lastCommand && lastCommand.channelID === newMsg.channel.id && lastCommand.msgID === oldMsg.id) {
 		lastCommand.res.delete().catch(() => null);
 	}
 	client.emit('message', newMsg);
-
-	if (oldMsg.partial) return;
-
-	if (oldMsg.author.bot || oldMsg.content === newMsg.content) return;
 
 	const settings = await client.cache.getGuild(newMsg);
 	if (!settings) return;
