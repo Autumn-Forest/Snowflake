@@ -2,23 +2,26 @@ import { Command, Message } from '../../Client';
 import Canvas from 'canvas';
 
 const callback = async (msg: Message, args: string[]) => {
-	const user = args.length && args[0].toLowerCase() !== 'server' ? await msg.client.helpers.getUser(msg, args) : msg.author;
+	let url = args.length && msg.client.helpers.isImageUrl(args.join(' ')) ? args.join(' ') : null;
+	const user = !url && args.length && args[0].toLowerCase() !== 'server' ? await msg.client.helpers.getUser(msg, args) : msg.author;
 	if (!user) return;
 
-	const iconURL =
-		args[0]?.toLowerCase() === 'server' && msg.guild
+	url =
+		url ||
+		(args[0]?.toLowerCase() === 'server' && msg.guild
 			? msg.guild.iconURL({ format: 'png', size: 512 })
-			: user.displayAvatarURL({ format: 'png', size: 512 });
+			: user.displayAvatarURL({ format: 'png', size: 512 }));
 
-	if (!iconURL) return msg.client.helpers.wrongSyntax(msg, 'The user or guild does not have an icon!');
+	if (!url) return msg.client.helpers.wrongSyntax(msg, 'The user or guild does not have an icon!');
 
-	const img = await Canvas.loadImage(iconURL);
+	const img = await Canvas.loadImage(url).catch(() => null);
+	if (!img) return msg.client.helpers.wrongSyntax(msg, 'You did not provide a valid image to invert!');
 
-	const canvas = Canvas.createCanvas(img.height, img.width);
+	const canvas = Canvas.createCanvas(img.width, img.height);
 	const ctx = canvas.getContext('2d');
 	ctx.drawImage(img, 0, 0);
 
-	const imageData = ctx.getImageData(0, 0, img.height, img.width);
+	const imageData = ctx.getImageData(0, 0, img.width, img.height);
 	const data = imageData.data;
 
 	for (let i = 0; i < data.length; i += 4) {
