@@ -1,6 +1,13 @@
 import { Client, Message } from '../Client';
 
 export const listener = async (client: Client, oldMsg: Message, newMsg: Message) => {
+	const lastCommand = client.recentCommands.get(oldMsg.author.id);
+
+	if (lastCommand && lastCommand.channelID === newMsg.channel.id && lastCommand.msgID === oldMsg.id) {
+		lastCommand.res.delete().catch(() => null);
+	}
+	client.emit('message', newMsg);
+
 	if (oldMsg.partial) return;
 
 	if (oldMsg.author.bot || oldMsg.content === newMsg.content) return;

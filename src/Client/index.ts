@@ -8,7 +8,8 @@ import {
 	TextChannel,
 	MessageEmbed,
 	User,
-	ClientEvents
+	ClientEvents,
+	Snowflake
 } from 'discord.js';
 import { config } from '../config';
 import constants from '../constants';
@@ -63,6 +64,12 @@ export interface Command {
 	callback(message: Message, args: string[]): Promise<BaseMessage | void>;
 }
 
+export interface RecentCommand {
+	channelID: string;
+	msgID: Snowflake;
+	res: Message;
+}
+
 export class Client extends BaseClient {
 	private _on = this.on;
 	private _emit = this.emit;
@@ -86,6 +93,7 @@ export class Client extends BaseClient {
 		listeners: join(__dirname, '../events'),
 		commands: join(__dirname, '../commands')
 	};
+	recentCommands: Collection<Snowflake, RecentCommand> = new Collection();
 	prompt = PromptManager;
 	nhentai = NHentaiWrapper;
 	nekos = new Nekos(this);

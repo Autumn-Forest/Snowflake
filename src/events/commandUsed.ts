@@ -6,6 +6,8 @@ export const listener = async (client: Client, msg: Message, _command: Command, 
 	if (s?.settings.deleteCommandTriggers) msg.delete({ timeout: 1000 }).catch(() => null);
 
 	if (res) {
+		client.recentCommands.set(msg.author.id, { channelID: msg.channel.id, msgID: msg.id, res: res });
+
 		const t = client.constants.emojis.trash;
 
 		const success = await res.react(t).catch(() => false);
@@ -19,6 +21,10 @@ export const listener = async (client: Client, msg: Message, _command: Command, 
 		if (reacted.size) {
 			if (res.deletable) res.delete({ reason: 'Cancelled by user' }).catch(() => null);
 			if (msg.deletable) msg.delete({ reason: 'Cancelled by user' }).catch(() => null);
-		} else res.reactions.cache.get(t)?.users.remove(client.user!.id);
+		} else
+			res.reactions.cache
+				.get(t)
+				?.users.remove(client.user!.id)
+				.catch(() => null);
 	}
 };
