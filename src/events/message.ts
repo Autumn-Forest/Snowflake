@@ -60,6 +60,9 @@ export const listener = async (client: Client, msg: Message) => {
 	if (!msg.content.endsWith('--force') || !msg.client.config.developers.includes(msg.author.id)) {
 		if (command.devOnly && !msg.client.config.developers.includes(msg.author.id)) return;
 
+		if (args.some(w => msg.client.constants.bannedWords.severe.includes(w)))
+			return msg.client.helpers.wrongSyntax(msg, 'I refuse to run this command, because profanity like this is against our ToS.');
+
 		if (command.guildOnly && !msg.guild) return msg.client.helpers.wrongSyntax(msg, `\`${prefix}${command.name}\` can only be used on a server!`);
 
 		if (command.nsfw && !(await msg.client.helpers.isNSFW(msg)))

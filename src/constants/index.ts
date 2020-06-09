@@ -4,6 +4,7 @@ import animeQuery from './animeQuery';
 import { actionStrings } from './strings';
 import { emojis } from './emojis';
 import { bannedTags } from './banned';
+import { bannedWords } from './bannedWords';
 
 export default {
 	regex,
@@ -11,5 +12,6 @@ export default {
 	animeQuery,
 	actionStrings,
 	emojis,
-	bannedTags
+	bannedTags,
+	bannedWords
 };
