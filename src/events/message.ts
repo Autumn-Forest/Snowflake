@@ -37,6 +37,7 @@ export const listener = async (client: Client, msg: Message) => {
 	const commandName = args.shift();
 	if (!commandName) return;
 
+	const settings = await msg.client.cache.getGuild(msg);
 	const command = client.getCommand(commandName);
 	if (!command) {
 		if (msg.guild) return;
@@ -47,7 +48,14 @@ export const listener = async (client: Client, msg: Message) => {
 
 	if (msg.client.helpers.missingPermissions(msg, ['EMBED_LINKS'], 'self')) return msg.channel.send('I require the `Embed Links` permission to run commands!');
 
-	if (args.length === 1 && args[0].toLowerCase() === 'help') return client.getCommand('help')!.callback(msg, [command.name]);
+	if (settings?.settings.disabledCommands.includes(command.name) && msg.client.helpers.missingPermissions(msg, ['MANAGE_GUILD'], msg.member!)) return;
+
+	if (args.length === 1 && args[0].toLowerCase() === 'help')
+		return client
+			.getCommand('help')!
+			.callback(msg, [command.name])
+			.then(res => client.emit('commandUsed', msg, command, res))
+			.catch(err => client.handleError(err, msg));
 
 	if (!msg.content.endsWith('--force') || !msg.client.config.developers.includes(msg.author.id)) {
 		if (command.devOnly && !msg.client.config.developers.includes(msg.author.id)) return;
