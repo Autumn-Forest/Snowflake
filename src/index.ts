@@ -4,6 +4,7 @@ import { Client } from './Client';
 import './interfaces/Array';
 import './interfaces/String';
 import './interfaces/Date';
+import './interfaces/Number';
 
 const client = new Client({
 	debug: false

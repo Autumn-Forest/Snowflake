@@ -1,5 +1,3 @@
-const ordinal = require('ordinal');
-
 interface Date {
 	formatDate(): string;
 	formatTime(): string;
@@ -7,13 +5,13 @@ interface Date {
 }
 
 Date.prototype.formatDate = function () {
-	return `${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][this.getMonth()]} ${ordinal(
-		this.getDate()
-	)} ${this.getFullYear()}`;
+	return `${
+		['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][this.getMonth()]
+	} ${this.getDate().toOrdinal()} ${this.getFullYear()}`;
 };
 
 Date.prototype.formatTime = function () {
-	return `${this.getUTCHours()}:${this.getUTCMinutes()}:${this.getUTCSeconds()} UTC`;
+	return `${this.getUTCHours().addZero()}:${this.getUTCMinutes().addZero()}:${this.getUTCSeconds().addZero()} UTC`;
 };
 
 Date.prototype.age = function () {
