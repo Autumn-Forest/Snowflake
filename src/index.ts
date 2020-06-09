@@ -3,6 +3,7 @@ import { Client } from './Client';
 // Load extensions
 import './interfaces/Array';
 import './interfaces/String';
+import './interfaces/Date';
 
 const client = new Client({
 	debug: false
