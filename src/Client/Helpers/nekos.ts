@@ -56,8 +56,8 @@ export class Nekos extends NekoClient {
 
 		output.setDescription(
 			`*${description
-				.replace('{{USER}}', `**${message.member!.displayName.replace(/\*/g, '\\*')}**`)
-				.replace('{{MEMBER}}', `**${member.displayName.replace(/\*/g, '\\*')}**`)}*`
+				.replace('{{USER}}', `**${message.member!.displayName.escapeMarkdown()}**`)
+				.replace('{{MEMBER}}', `**${member.displayName.escapeMarkdown()}**`)}*`
 		);
 		return message.channel.send(output);
 	};

@@ -11,6 +11,8 @@ interface String {
 	toCodeblock(language?: string): string;
 
 	toTitleCase(): string;
+
+	escapeMarkdown(): string;
 }
 
 String.prototype.shorten = function (length: number) {
@@ -25,4 +27,8 @@ String.prototype.toTitleCase = function () {
 	return this.split(/[\s_]+/)
 		.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
 		.join(' ');
+};
+
+String.prototype.escapeMarkdown = function () {
+	return this.replace(/\\(\*|_|`|~|\\)/g, '$1').replace(/(\*|_|`|~|\\)/g, '\\$1');
 };
