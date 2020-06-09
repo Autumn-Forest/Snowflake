@@ -25,7 +25,15 @@ export class CacheManager {
 
 		let cache = this.guildCache.get(id);
 		if (!cache) {
-			cache = (await this.client.database.guildSettings.findOne({ guild: id })) || (await this.client.database.guildSettings.create({ guild: id }));
+			cache =
+				(await this.client.database.guildSettings.findOne({ guild: id })) ||
+				(await this.client.database.guildSettings.create({
+					guild: id,
+					channels: {} as any,
+					roles: {} as any,
+					settings: {} as any,
+					welcome: {} as any
+				}));
 			this.guildCache.set(id, cache);
 		}
 
@@ -44,7 +52,8 @@ export class CacheManager {
 
 		let cache = this.userCache.get(id);
 		if (!cache) {
-			cache = (await this.client.database.userSettings.findOne({ user: id })) || (await this.client.database.userSettings.create({ user: id }));
+			cache =
+				(await this.client.database.userSettings.findOne({ user: id })) || (await this.client.database.userSettings.create({ user: id, prefixes: [] }));
 			this.userCache.set(id, cache);
 		}
 
