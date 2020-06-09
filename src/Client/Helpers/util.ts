@@ -88,4 +88,15 @@ export class Util {
 	isImageUrl(str: string) {
 		return this.client.constants.regex.links.test(str) && str.match(/.(png|jpe?g|gif|web[pm])(?:\?.*)?$/i) !== null;
 	}
+	msToHuman(ms: number) {
+		const seconds = Math.round(ms / 1000),
+			minutes = Math.round(ms / (1000 * 60)),
+			hours = Math.round(ms / (1000 * 60 * 60)),
+			days = Math.round(ms / (1000 * 60 * 60 * 24));
+
+		if (seconds < 60) return seconds + ' Seconds';
+		else if (minutes < 60) return minutes + ' Minutes';
+		else if (hours < 24) return hours + ' Hours';
+		else return days + ' Days';
+	}
 }
