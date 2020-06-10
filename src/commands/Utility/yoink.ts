@@ -7,9 +7,9 @@ const callback = async (msg: Message, args: string[]) => {
 		.join(' ')
 		.match(msg.client.constants.regex.emotes)
 		?.map(e => {
-			const match = e.match(/<a?:(\w+):(\d+)>/);
-			if (!match) return null;
-			return { name: match[1], id: match[2], animated: e.startsWith('<a') };
+			const [, animated, name, id] = e.match(/<(a?):(\w+):(\d+)>/) || [];
+			if (!name) return null;
+			return { name: name, id: id, animated: !!animated };
 		})
 		.filter(e => !!e && !!e.name && !!e.id);
 	if (!emotes || !emotes.length) return msg.client.helpers.wrongSyntax(msg, 'You did not provide any valid emotes!');
