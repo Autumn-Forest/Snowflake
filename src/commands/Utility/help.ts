@@ -53,7 +53,7 @@ const callback = async (msg: Message, args: string[]) => {
 			{ name: 'Description', value: command.description },
 			{
 				name: 'Usage',
-				value: `${prefix}${command.name}${command.usage ? ' ' + command.usage : ''}`.toCodeblock()
+				value: `${prefix}${command.name}${command.usage ? ' ' + command.usage : ''}`.toCodeblock('css')
 			},
 			{ name: 'Aliases', value: command.aliases.join(', ') || `${command.name} has no aliases.` }
 		])

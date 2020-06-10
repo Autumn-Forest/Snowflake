@@ -20,7 +20,7 @@ String.prototype.shorten = function (length: number) {
 };
 
 String.prototype.toCodeblock = function (language = 'ts') {
-	return '```' + language + '\n' + this.escapeMarkdown() + '```';
+	return '```' + language + '\n' + this + '```';
 };
 
 String.prototype.toTitleCase = function () {
