@@ -2,4 +2,7 @@
 
 ## A multi purpose Discord bot
 
-This will be the top.gg page
+<p color="blue">Lol</p> 
+
+
+<p style="font-size:2px" color="pink">This will be the top.gg page</p
