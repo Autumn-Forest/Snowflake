@@ -55,5 +55,6 @@ const images = [
 	'https://cdn.discordapp.com/attachments/719333414586548285/719333520815816784/cerberus3.gif',
 	'https://cdn.discordapp.com/attachments/719333414586548285/719333502453284905/cerberus3.jpg',
 	'https://cdn.discordapp.com/attachments/719333414586548285/719333486250688612/cerberus2.jpg',
-	'https://cdn.discordapp.com/attachments/719333414586548285/719333485524811856/cerberus1.png'
+	'https://cdn.discordapp.com/attachments/719333414586548285/719333485524811856/cerberus1.png',
+	'https://cdn.discordapp.com/attachments/719333414586548285/720465688367464528/EaIm7e5U8AMg0uZ.png'
 ];
