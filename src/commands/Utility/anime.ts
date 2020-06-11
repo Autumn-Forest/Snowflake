@@ -62,8 +62,6 @@ const callback = async (msg: Message, args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'anime',
-	category: 'Utility',
 	aliases: ['manga', 'animelist', 'anilist', 'ani'],
 	description: 'Look up your favourite Anime or Manga!',
 	usage: '<name>',

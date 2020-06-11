@@ -41,8 +41,6 @@ const callback = async (msg: Message, _args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'messagelog',
-	category: 'Settings',
 	aliases: ['log', 'setmessagelog'],
 	description: 'Set the modlog-channel',
 	usage: '[Channel]',

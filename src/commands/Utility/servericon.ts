@@ -26,8 +26,6 @@ const callback = async (msg: Message, _args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'servericon',
-	category: 'Utility',
 	aliases: ['guildicon', 'serverlogo', 'icon'],
 	description: 'View the server icon',
 	usage: '',

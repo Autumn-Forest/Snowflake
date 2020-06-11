@@ -21,8 +21,6 @@ const callback = async (msg: Message, args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'svg',
-	category: 'Dev',
 	aliases: [],
 	description: "I am lazy so here's a svg to png thingie",
 	usage: '<link / code>',

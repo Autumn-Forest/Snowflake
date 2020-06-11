@@ -16,8 +16,6 @@ const callback = async (msg: Message, args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'update',
-	category: 'Dev',
 	aliases: [],
 	description: 'Apply the latest changes. git pull > tsc > reload',
 	usage: '[restart?]',

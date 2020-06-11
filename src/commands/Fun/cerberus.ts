@@ -46,8 +46,6 @@ const callback = async (msg: Message, _args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'cerberus',
-	category: 'Fun',
 	aliases: ['cerb'],
 	description: 'Get a [Cerberus](https://helltakergame.fandom.com/wiki/Cerberus) image!',
 	usage: '',

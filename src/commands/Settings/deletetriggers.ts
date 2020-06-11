@@ -13,8 +13,6 @@ const callback = async (msg: Message, args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'deletetriggers',
-	category: 'Settings',
 	aliases: ['deltriggers', 'dt'],
 	description: 'Delete command triggers',
 	usage: '',

@@ -42,8 +42,6 @@ const callback = async (msg: Message, args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'nhentai',
-	category: 'NSFW',
 	aliases: ['hentai', 'nh'],
 	description: 'Get hentai from nhentai.net',
 	usage: '<ID/Tags/Name>',

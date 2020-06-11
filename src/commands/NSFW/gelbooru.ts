@@ -30,8 +30,6 @@ const fetch = async (url: string) =>
 		.catch(() => null);
 
 export const command: Command = {
-	name: 'gelbooru',
-	category: 'NSFW',
 	aliases: ['gelb'],
 	description: 'Search randomly a content on gelbooru (with tags or not)',
 	usage: '[tag(s)]',

@@ -13,8 +13,6 @@ const callback = async (msg: Message, _args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'emoji',
-	category: 'Utility',
 	aliases: ['e', 'emote'],
 	description: "Get an emoji's url",
 	usage: '<Emoji> (You can include as many as you want)',

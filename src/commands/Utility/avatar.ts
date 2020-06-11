@@ -25,8 +25,6 @@ const callback = async (msg: Message, args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'avatar',
-	category: 'Utility',
 	aliases: ['av', 'pfp', 'userlogo', 'usericon', 'useravatar'],
 	description: "See a user's avatar",
 	usage: '[User] (Defaults to self)',

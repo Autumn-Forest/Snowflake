@@ -12,7 +12,7 @@ const callback = async (msg: Message, args: string[]) => {
 	if (!prefix)
 		return msg.client.helpers.wrongSyntax(
 			msg,
-			`This command requires ${command.args} arguments, but you only provided ${args.length}.\nPlease use it like this: \`${prefix}${command.name} ${command.usage}\``
+			`This command requires ${command.args} arguments, but you only provided ${args.length}.\nPlease use it like this: \`${prefix}prefix ${command.usage}\``
 		);
 
 	if (!['server', 'user'].includes(scope.toLowerCase()))
@@ -84,8 +84,6 @@ const callback = async (msg: Message, args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'prefix',
-	category: 'Settings',
 	aliases: ['p', 'pref', 'setprefix'],
 	description: 'Set my prefix. You can either set it for a server or only for yourself',
 	usage: '<Server | User> <set | add | remove> <prefix>',

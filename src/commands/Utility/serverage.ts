@@ -8,8 +8,6 @@ const callback = async (msg: Message, _args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'serverage',
-	category: 'Utility',
 	aliases: ['guildage'],
 	description: "Check the server's age",
 	usage: '',

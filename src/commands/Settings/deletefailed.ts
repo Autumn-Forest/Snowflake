@@ -12,8 +12,6 @@ const callback = async (msg: Message, args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'deletefailed',
-	category: 'Settings',
 	aliases: ['delfailed', 'df'],
 	description: 'Delete failed commands',
 	usage: '',

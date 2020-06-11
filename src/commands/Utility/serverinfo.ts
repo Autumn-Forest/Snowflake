@@ -41,8 +41,6 @@ const callback = async (msg: Message, _args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'serverinfo',
-	category: 'Utility',
 	aliases: ['server', 'si'],
 	description: 'Display a bunch of info about the server',
 	usage: '',

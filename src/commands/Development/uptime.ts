@@ -12,8 +12,6 @@ const callback = async (msg: Message, _args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'uptime',
-	category: 'Dev',
 	aliases: ['up'],
 	description: 'Check the bot uptime',
 	usage: '',

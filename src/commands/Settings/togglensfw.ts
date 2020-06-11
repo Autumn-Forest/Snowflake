@@ -14,8 +14,6 @@ const callback = async (msg: Message, args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'togglensfw',
-	category: 'Settings',
 	aliases: ['nsfw', 'tn', 'setnsfw'],
 	description: 'Toggle NSFW commands',
 	usage: '[on|off]',

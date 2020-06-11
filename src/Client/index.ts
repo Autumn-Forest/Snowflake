@@ -50,8 +50,6 @@ interface ClientCategories extends ClientEvents {
 }
 
 export interface Command {
-	name: string;
-	category: CommandCategories;
 	aliases: string[];
 	description: string;
 	args: number;
@@ -62,6 +60,11 @@ export interface Command {
 	memberPermission: PermissionString[];
 	botPermission: PermissionString[];
 	callback(message: Message, args: string[]): Promise<BaseMessage | void>;
+}
+
+export interface FullCommand extends Command {
+	name: string;
+	category: string;
 }
 
 export interface RecentCommand {
@@ -82,7 +85,7 @@ export class Client extends BaseClient {
 	config = config;
 	constants = constants;
 	database = database;
-	commands: Collection<string, Command> = new Collection();
+	commands: Collection<string, FullCommand> = new Collection();
 	prompts: Collection<string, string> = new Collection();
 	colours: { [key in ClientColours]: string } = {
 		ERROR: 'FF403C',
@@ -125,7 +128,10 @@ export class Client extends BaseClient {
 		readdirSync(this.paths.commands).forEach(dir => {
 			readdirSync(join(this.paths.commands, dir)).forEach(file => {
 				const path = join(this.paths.commands, dir, file);
-				const command: Command = require(path).command;
+				const command: FullCommand = require(path).command;
+				command.name = file.replace('.js', '');
+				command.category = dir as any;
+
 				this.commands.set(command.name, command);
 				delete require.cache[path];
 				amount++;

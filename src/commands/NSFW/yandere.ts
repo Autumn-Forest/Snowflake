@@ -27,8 +27,6 @@ const callback = async (msg: Message, args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'yandere',
-	category: 'NSFW',
 	aliases: ['yan'],
 	description: 'Get images from yande.re',
 	usage: '<search>',

@@ -39,8 +39,6 @@ const callback = async (msg: Message, args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'invert',
-	category: 'Fun',
 	aliases: ['negate'],
 	description: 'Invert an image',
 	usage: '[User | "Server" | URL]',

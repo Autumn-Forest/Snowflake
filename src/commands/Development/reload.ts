@@ -10,8 +10,6 @@ const callback = async (msg: Message, _args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'reload',
-	category: 'Dev',
 	aliases: [],
 	description: 'Reload the command and listener',
 	usage: '',

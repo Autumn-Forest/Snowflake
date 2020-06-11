@@ -5,8 +5,6 @@ const callback = async (msg: Message, args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'slap',
-	category: 'Fun',
 	aliases: ['slaps'],
 	description: 'Slaps the means baka!',
 	usage: '[Member]',

@@ -9,8 +9,6 @@ const callback = async (msg: Message, args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'userage',
-	category: 'Utility',
 	aliases: ['accountage', 'creationdate', 'createdat', 'howold', 'age'],
 	description: 'Check a users account age',
 	usage: '[User]',

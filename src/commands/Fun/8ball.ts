@@ -14,8 +14,6 @@ const callback = async (msg: Message, _args: string[]) => {
 };
 
 export const command: Command = {
-	name: '8ball',
-	category: 'Fun',
 	aliases: ['8b', 'eightball', 'fortune'],
 	description: 'Let the magic 8ball predict your fate 🎱',
 	usage: '<question>',

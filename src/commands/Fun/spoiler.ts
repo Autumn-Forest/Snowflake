@@ -9,8 +9,6 @@ const callback = async (msg: Message, args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'spoiler',
-	category: 'Fun',
 	aliases: ['spoilers'],
 	description: 'Spoilify your text',
 	usage: '<text>',

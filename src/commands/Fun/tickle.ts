@@ -5,8 +5,6 @@ const callback = async (msg: Message, args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'tickle',
-	category: 'Fun',
 	aliases: ['tickles'],
 	description: 'Tickle your friends :P',
 	usage: '[Member]',

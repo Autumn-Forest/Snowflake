@@ -13,8 +13,6 @@ const callback = async (msg: Message, args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'disablecommand',
-	category: 'Settings',
 	aliases: ['disable', 'deactivate', 'off'],
 	description: 'Disable one or more commands',
 	usage: '<Command> (You can supply multiple)',

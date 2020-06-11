@@ -49,8 +49,6 @@ const callback = async (msg: Message, args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'bio',
-	category: 'Utility',
 	aliases: ['discordbio'],
 	description: 'Show your or someone Discord.bio profile.',
 	usage: "[user|discord.bio's slug]",

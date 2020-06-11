@@ -70,8 +70,6 @@ const callback = async (msg: Message, args: string[]) => {
 };
 
 export const command: Command = {
-	name: 'help',
-	category: 'Utility',
 	aliases: ['h', 'info', 'commands'],
 	description: 'Get a list of all commands or info on a specific command',
 	usage: '[command name]',
