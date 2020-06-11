@@ -104,4 +104,21 @@ export class PromptManager {
 		this.sendQuestion((error || `That is not a valid choice! Please try again.`) + `\n\n${question}`);
 		return this.reaction(question, options, react, error, timeout, false);
 	}
+
+	async chooseOne<T>(question: string, choices: Array<T>): Promise<T | void> {
+		const choice = await this.message(
+			question +
+				choices
+					.map((c, i) => `${i} | ${c}`)
+					.join('\n')
+					.toCodeblock('css'),
+			choices.map((_, i) => i.toString()),
+			'That was not a valid option! Please try again.'
+		);
+
+		if (!choice) return;
+
+		const result = choices[parseInt(choice)];
+		return result;
+	}
 }
