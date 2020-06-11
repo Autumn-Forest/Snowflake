@@ -1,5 +1,27 @@
 import { Command, Message } from '../../Client';
 
+const callback = async (msg: Message, _args: string[]) => {
+	const embed = msg.client
+		.newEmbed('BASIC')
+		.setImage(images.random())
+		.setAuthor('Cerberus', msg.author.displayAvatarURL({ dynamic: true }));
+
+	return msg.channel.send(embed);
+};
+
+export const command: Command = {
+	aliases: ['cerb'],
+	description: 'Get a [Cerberus](https://helltakergame.fandom.com/wiki/Cerberus) image!',
+	usage: '',
+	args: 0,
+	devOnly: false,
+	guildOnly: false,
+	nsfw: false,
+	memberPermission: [],
+	botPermission: [],
+	callback: callback
+};
+
 const images = [
 	'https://cdn.discordapp.com/attachments/719333414586548285/719333805931888670/cerberus20.jpg',
 	'https://cdn.discordapp.com/attachments/719333414586548285/719333789989339196/cerberus7.png',
@@ -35,25 +57,3 @@ const images = [
 	'https://cdn.discordapp.com/attachments/719333414586548285/719333486250688612/cerberus2.jpg',
 	'https://cdn.discordapp.com/attachments/719333414586548285/719333485524811856/cerberus1.png'
 ];
-
-const callback = async (msg: Message, _args: string[]) => {
-	const embed = msg.client
-		.newEmbed('BASIC')
-		.setImage(images.random())
-		.setAuthor('Cerberus', msg.author.displayAvatarURL({ dynamic: true }));
-
-	return msg.channel.send(embed);
-};
-
-export const command: Command = {
-	aliases: ['cerb'],
-	description: 'Get a [Cerberus](https://helltakergame.fandom.com/wiki/Cerberus) image!',
-	usage: '',
-	args: 0,
-	devOnly: false,
-	guildOnly: false,
-	nsfw: false,
-	memberPermission: [],
-	botPermission: [],
-	callback: callback
-};

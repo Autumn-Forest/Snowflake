@@ -18,7 +18,7 @@ const callback = async (msg: Message, args: string[]) => {
 
 export const command: Command = {
 	aliases: ['enable', 'activate', 'on'],
-	description: 'enable one or more commands',
+	description: 'Enable one or more commands',
 	usage: '<Command> (You can supply multiple)',
 	args: 1,
 	devOnly: false,

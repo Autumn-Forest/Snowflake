@@ -6,9 +6,13 @@ export const emojis = {
 	loading: '<a:loading:699715156371832960>',
 	leave: '<:leave:699715142891601991>',
 	nitro: '<:NitroBoost:699715144862662666>',
+	discordLove: '<:discordlove:720463172074471426>',
 	speech: '💬',
 	user: '👤',
 	users: '👥',
+	male: '♂️',
+	female: '♀️',
+	'non-binary': '<:nonbinary_pride_flag:720461130018848818>',
 	bot: '🤖',
 	hash: '#️⃣',
 	cake: '🎂',
@@ -23,5 +27,9 @@ export const emojis = {
 	crown: '👑',
 	globe: '🌐',
 	smiley: '😃',
-	trash: '🗑️'
+	trash: '🗑️',
+	email: '📧',
+	clipboard: '📋',
+	thumbsUp: '👍',
+	thumbsDown: '👎'
 };

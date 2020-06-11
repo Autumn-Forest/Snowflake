@@ -7,7 +7,7 @@ const callback = async (msg: Message, _args: string[]) => {
 
 export const command: Command = {
 	aliases: ['heartbeat', 'ms'],
-	description: 'Give the ping of the bot',
+	description: 'Check my ping',
 	usage: '',
 	devOnly: false,
 	guildOnly: false,

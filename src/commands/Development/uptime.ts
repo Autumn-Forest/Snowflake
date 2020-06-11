@@ -13,7 +13,7 @@ const callback = async (msg: Message, _args: string[]) => {
 
 export const command: Command = {
 	aliases: ['up'],
-	description: 'Check the bot uptime',
+	description: "Check the bot's uptime",
 	usage: '',
 	args: 0,
 	devOnly: true,

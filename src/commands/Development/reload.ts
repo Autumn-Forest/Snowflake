@@ -11,7 +11,7 @@ const callback = async (msg: Message, _args: string[]) => {
 
 export const command: Command = {
 	aliases: [],
-	description: 'Reload the command and listener',
+	description: 'Reload the commands and listeners',
 	usage: '',
 	args: 0,
 	devOnly: true,
