@@ -38,6 +38,12 @@ export const listener = async (client: Client, msg: Message) => {
 	if (!commandName) return;
 
 	const settings = await msg.client.cache.getGuild(msg);
+	if (
+		(settings?.settings.blockedChannels.includes(msg.channel.id) && !msg.member!.permissionsIn(msg.channel).has('MANAGE_CHANNELS')) ||
+		settings?.settings.blockedUsers.includes(msg.author.id)
+	)
+		return;
+
 	const command = client.getCommand(commandName);
 	if (!command) {
 		if (msg.guild) return;
