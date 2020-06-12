@@ -13,6 +13,8 @@ interface String {
 	toTitleCase(): string;
 
 	escapeMarkdown(): string;
+
+	substitute(obj: { [key: string]: string }): string;
 }
 
 String.prototype.shorten = function (length: number) {
@@ -31,4 +33,12 @@ String.prototype.toTitleCase = function () {
 
 String.prototype.escapeMarkdown = function () {
 	return this.replace(/\\(\*|_|`|~|\\)/g, '$1').replace(/(\*|_|`|~|\\)/g, '\\$1');
+};
+
+String.prototype.substitute = function (obj: { [key: string]: string }) {
+	let str = this.toString();
+	for (const prop in obj) {
+		str = str.replace(new RegExp('{' + prop + '}', 'g'), obj[prop]);
+	}
+	return str;
 };

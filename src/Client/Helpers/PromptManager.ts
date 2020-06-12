@@ -30,12 +30,13 @@ export class PromptManager {
 	 */
 	delete() {
 		this.client.prompts.delete(this.user.id);
-		this.msg?.delete();
+		if (this.msg?.deletable) this.msg?.delete();
 	}
 	/**
-	 * @param question The Question to send
+	 * Prompts for user input
+	 * @param question The Question to send.
 	 * @param options An array of accepted choices or a RegEx. Provide an empty array if anything is accepted
-	 * @param error A custom error message when invalid input is provided
+	 * @param error A custom error message when invalid input is provided. `{VALUE}` will be replaced with their invalid choice
 	 * @param timeout The prompt timeout (in min)
 	 * @returns The user choice (string)
 	 */
@@ -54,14 +55,14 @@ export class PromptManager {
 			return this.client.helpers.wrongSyntax(this.trigger, 'The prompt timed out!');
 		}
 
-		input.delete({ timeout: 1000 }).catch(() => null);
+		if (input.deletable) input.delete({ timeout: 1000 }).catch(() => null);
 
 		if ('quit'.startsWith(input.content.toLowerCase())) return this.client.helpers.wrongSyntax(this.trigger, 'Successfully cancelled the prompt!');
 
 		if (options instanceof RegExp && options.test(input.content)) return input.content;
 		else if (options instanceof Array && (!options.length || options.indexOf(input.content) !== -1)) return input.content;
 
-		this.sendQuestion((error || `\`${input.content}\` is not a valid choice! Please try again.`) + `\n\n${question}`);
+		this.sendQuestion((error?.substitute({ VALUE: input.content }) || `\`${input.content}\` is not a valid choice! Please try again.`) + `\n\n${question}`);
 		return this.message(question, options, error, timeout, false);
 	}
 
@@ -96,8 +97,6 @@ export class PromptManager {
 			return this.client.helpers.wrongSyntax(this.trigger, 'The prompt timed out!');
 		}
 
-		//if ('quit'.startsWith(input.content.toLowerCase())) return this.client.helpers.wrongSyntax(this.trigger, 'Successfully cancelled the prompt!');
-
 		if (options instanceof RegExp && options.test(input.emoji.name)) return input.emoji;
 		else if (options instanceof Array && (!options.length || options.indexOf(input.emoji.id || input.emoji.name) !== -1)) return input.emoji;
 
@@ -109,16 +108,16 @@ export class PromptManager {
 		const choice = await this.message(
 			question +
 				choices
-					.map((c, i) => `${i} | ${c}`)
+					.map((c, i) => `${i + 1} | ${c}`)
 					.join('\n')
 					.toCodeblock('css'),
-			choices.map((_, i) => i.toString()),
-			'That was not a valid option! Please try again.'
+			choices.map((_, i) => (i + 1).toString()),
+			'`{VALUE}` is not a valid option! Please try again.'
 		);
 
 		if (!choice) return;
 
-		const result = choices[parseInt(choice)];
+		const result = choices[parseInt(choice) - 1];
 		return result;
 	}
 }
