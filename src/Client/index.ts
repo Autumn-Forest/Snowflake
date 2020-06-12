@@ -222,4 +222,7 @@ export class Client extends BaseClient {
 	getCommand(commandName: string) {
 		return this.commands.find(cmd => cmd.name === commandName.toLowerCase() || cmd.aliases.includes(commandName.toLowerCase()));
 	}
+	async getDevelopers() {
+		return Promise.all(this.config.developers.map(d => this.users.fetch(d)));
+	}
 }

@@ -49,8 +49,6 @@ const callback = async (msg: Message, args: string[]) => {
 
 	stopwatch.stop();
 
-	if (!result) result = 'No output...';
-
 	if (typeof result !== 'string') result = inspect(result);
 
 	const consoleOutput = console._formatLines();

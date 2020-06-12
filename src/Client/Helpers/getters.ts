@@ -6,26 +6,24 @@ export class Getters extends Util {
 	async getUser(message: Message, args: string[], spot?: number) {
 		if (message.guild) {
 			const member = await this.getMember(message, args);
-			return member ? member.user : null;
+			return member ? member.user : void 0;
 		}
 
 		const input = spot ? args[spot].toLowerCase() : args.join(' ').toLowerCase();
 
-		const user = message.mentions.users?.first() || message.client.users.cache.get(input) || (await message.client.users.fetch(input).catch(() => null));
+		const user = message.mentions.users?.first() || (await message.client.users.fetch(input).catch(() => null));
 		if (user) return user;
 
 		const userSearch = message.client.users.cache.filter(user => user.tag.toLowerCase().includes(input));
 
 		if (userSearch.size === 0) {
-			this.wrongSyntax(message, 'You did not provide a valid user. Please run the command again and provide one.');
-			return null;
+			return this.wrongSyntax(message, 'You did not provide a valid user. Please run the command again and provide one.');
 		} else if (userSearch.size === 1) {
 			return userSearch.first();
 		} else if (userSearch.size < 11) {
 			return await this.chooseOne(message, userSearch);
 		} else {
-			this.wrongSyntax(message, `I found multiple users matching your input: ${userSearch.size}`);
-			return null;
+			return this.wrongSyntax(message, `I found multiple users matching your input: ${userSearch.size}`);
 		}
 	}
 
@@ -34,8 +32,7 @@ export class Getters extends Util {
 
 		const input = spot || spot === 0 ? args[spot].toLowerCase() : args.join(' ').toLowerCase();
 
-		const member =
-			message.mentions.members?.first() || message.guild.members.cache.get(input) || (await message.guild.members.fetch(input).catch(() => null));
+		const member = message.mentions.members?.first() || (await message.guild.members.fetch(input).catch(() => null));
 		if (member) return member;
 
 		const memberSearch = message.guild.members.cache.filter(
@@ -43,15 +40,13 @@ export class Getters extends Util {
 		);
 
 		if (memberSearch.size === 0) {
-			this.wrongSyntax(message, 'You did not provide a valid member. Please run the command again and provide one.');
-			return null;
+			return this.wrongSyntax(message, 'You did not provide a valid member. Please run the command again and provide one.');
 		} else if (memberSearch.size === 1) {
 			return memberSearch.first();
 		} else if (memberSearch.size < 11) {
 			return await this.chooseOne(message, memberSearch);
 		} else {
-			this.wrongSyntax(message, `I found multiple users matching your input: ${memberSearch.size}`);
-			return null;
+			return this.wrongSyntax(message, `I found multiple users matching your input: ${memberSearch.size}`);
 		}
 	}
 
@@ -66,15 +61,13 @@ export class Getters extends Util {
 		const roleSearch = message.guild.roles.cache.filter(role => role.name.toLowerCase().includes(input));
 
 		if (roleSearch.size === 0) {
-			this.wrongSyntax(message, 'You did not provide a valid role. Please run the command again and provide one.');
-			return null;
+			return this.wrongSyntax(message, 'You did not provide a valid role. Please run the command again and provide one.');
 		} else if (roleSearch.size === 1) {
 			return roleSearch.first();
 		} else if (roleSearch.size < 11) {
 			return await this.chooseOne(message, roleSearch);
 		} else {
-			this.wrongSyntax(message, `I found multiple roles matching your input: ${roleSearch.size}`);
-			return null;
+			return this.wrongSyntax(message, `I found multiple roles matching your input: ${roleSearch.size}`);
 		}
 	}
 
@@ -84,9 +77,8 @@ export class Getters extends Util {
 	private chooseOne(message: Message, choices: Collection<Snowflake, User>): Promise<User | void>;
 	private chooseOne(message: Message, choices: Collection<Snowflake, GuildMember>): Promise<GuildMember | void>;
 	private async chooseOne(message: Message, choices: Collection<Snowflake, Role | User | GuildMember>) {
-		let i = 0;
-		const options = choices.map(choice => {
-			return { index: ++i, choice: choice };
+		const options = choices.array().map((c, i) => {
+			return { index: i + 1, choice: c };
 		});
 
 		const prompt = new this.client.prompt(message);
