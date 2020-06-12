@@ -1,8 +1,9 @@
 import { Command, Message } from '../../Client';
 
 const callback = async (msg: Message, args: string[]) => {
+	if (!msg.client.helpers.isGuild(msg)) return;
+
 	const settings = await msg.client.cache.getGuild(msg);
-	if (!settings) return;
 
 	let arg = !settings.settings.deleteCommandTriggers;
 	if (args.length) arg = args[0].toLowerCase() === 'on' ? true : args[0].toLowerCase() === 'off' ? false : arg;

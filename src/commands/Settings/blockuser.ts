@@ -2,6 +2,7 @@ import { Command, Message } from '../../Client';
 
 const callback = async (msg: Message, args: string[]) => {
 	if (!msg.client.helpers.isGuild(msg)) return;
+
 	const member = await msg.client.helpers.getMember(msg, args, 0);
 	if (!member) return;
 

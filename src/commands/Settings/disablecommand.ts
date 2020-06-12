@@ -1,8 +1,9 @@
 import { Command, Message } from '../../Client';
 
 const callback = async (msg: Message, args: string[]) => {
+	if (!msg.client.helpers.isGuild(msg)) return;
+
 	const settings = await msg.client.cache.getGuild(msg);
-	if (!settings) return;
 
 	const commands = args.map(a => msg.client.getCommand(a)?.name).filter(e => !!e) as string[];
 	if (!commands.length) return msg.client.helpers.wrongSyntax(msg, 'You did not provide any valid commands!');
