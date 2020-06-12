@@ -1,7 +1,7 @@
 import { Command, Message } from '../../Client';
 
 const callback = async (msg: Message, args: string[]) => {
-	if (!msg.guild) return;
+	if (!msg.client.helpers.isGuild(msg)) return;
 
 	const emotes = args
 		.join(' ')
@@ -18,7 +18,7 @@ const callback = async (msg: Message, args: string[]) => {
 
 	const created = (
 		await Promise.all(
-			emotes.map(e => msg.guild!.emojis.create(`https://cdn.discordapp.com/emojis/${e!.id}.${e!.animated ? 'gif' : 'png'}`, e!.name).catch(() => null))
+			emotes.map(e => msg.guild.emojis.create(`https://cdn.discordapp.com/emojis/${e!.id}.${e!.animated ? 'gif' : 'png'}`, e!.name).catch(() => null))
 		).catch(() => null)
 	)?.filter(e => !!e);
 

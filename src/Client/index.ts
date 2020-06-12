@@ -18,6 +18,7 @@ import { join } from 'path';
 import { readdirSync } from 'fs';
 import { Getters, Nekos, WebhookManager, PromptManager, CacheManager, NHentaiWrapper } from './Helpers';
 import { stripIndents } from 'common-tags';
+import { GuildMessage } from '../interfaces/GuildMessage';
 
 const BaseClientOptions: BaseClientOptions = {
 	disableMentions: 'everyone',
@@ -208,10 +209,10 @@ export class Client extends BaseClient {
 		return channel.send((await Promise.all(this.config.developers.map(d => this.users.fetch(d)))).join(' '), errorEmbed);
 	};
 
-	async getPrefix(identifier: Message | GuildMember) {
+	async getPrefix(identifier: Message | GuildMember | GuildMessage) {
 		return (await this.cache.getGuild(identifier))?.settings.prefix || this.config.defaultPrefix;
 	}
-	async getPrefixes(identifier: Message | GuildMember) {
+	async getPrefixes(identifier: Message | GuildMember | GuildMessage) {
 		return (await this.cache.getGuild(identifier))?.settings.prefixes;
 	}
 	async getUserPrefixes(user: User) {

@@ -2,6 +2,7 @@ import { Message, Client } from '..';
 import nodeFetch, { RequestInfo, RequestInit } from 'node-fetch';
 import { PermissionString, GuildMember, Message as BaseMessage, GuildChannel } from 'discord.js';
 import ordinal from 'ordinal';
+import { GuildMessage } from '../../interfaces/GuildMessage';
 
 export class Util {
 	constructor(client: Client) {
@@ -98,5 +99,16 @@ export class Util {
 		else if (minutes < 60) return minutes + ' Minutes';
 		else if (hours < 24) return hours + ' Hours';
 		else return days + ' Days';
+	}
+
+	isGuild(msg: Message): msg is GuildMessage {
+		return !!msg.guild;
+	}
+
+	isMemberHigher(executor: GuildMember, target: GuildMember) {
+		return (
+			(executor.id !== target.id && executor.guild.ownerID === executor.id) ||
+			(target.guild.ownerID !== target.id && executor.roles.highest.position > target.roles.highest.position)
+		);
 	}
 }

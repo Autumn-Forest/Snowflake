@@ -3,7 +3,7 @@ import { AllowedImageFormat, ImageSize } from 'discord.js';
 import { stripIndents } from 'common-tags';
 
 const callback = async (msg: Message, _args: string[]) => {
-	if (!msg.guild) return;
+	if (!msg.client.helpers.isGuild(msg)) return;
 
 	if (!msg.guild.icon) return msg.client.helpers.wrongSyntax(msg, 'This Server does not have an icon!');
 
@@ -18,8 +18,8 @@ const callback = async (msg: Message, _args: string[]) => {
 		.setImage(msg.guild.iconURL({ size: 2048, dynamic: true })!)
 		.setDescription(
 			stripIndents`
-			${formats.map(f => `[${f}](${msg.guild!.iconURL({ size: 2048, format: f })})`).join(' | ')}
-			${sizes.map(s => `[${s}](${msg.guild!.iconURL({ size: s, dynamic: true })})`).join(' | ')}
+			${formats.map(f => `[${f}](${msg.guild.iconURL({ size: 2048, format: f })})`).join(' | ')}
+			${sizes.map(s => `[${s}](${msg.guild.iconURL({ size: s, dynamic: true })})`).join(' | ')}
 			`
 		);
 	return msg.channel.send(embed);

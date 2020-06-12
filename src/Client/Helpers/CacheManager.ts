@@ -2,6 +2,7 @@ import { Client, Message } from '..';
 import { Collection, GuildMember, User } from 'discord.js';
 import { GuildSettings } from '../../database/schemas/GuildSettings';
 import { UserSettings } from '../../database/schemas/UserSettings';
+import { GuildMessage } from '../../interfaces/GuildMessage';
 
 export class CacheManager {
 	constructor(client: Client) {
@@ -17,6 +18,9 @@ export class CacheManager {
 		return this.guildCache.size + this.userCache.size;
 	}
 
+	getGuild(identifier: GuildMessage | GuildMember, flush?: boolean, id?: undefined): Promise<GuildSettings>;
+	getGuild(identifier: GuildMessage | GuildMember, flush?: boolean, id?: string): Promise<GuildSettings | null>;
+	getGuild(identifier: Message | GuildMember, flush?: boolean, id?: string): Promise<GuildSettings | null>;
 	async getGuild(identifier: Message | GuildMember, flush = false, id?: string) {
 		id = id || identifier.guild?.id;
 		if (!id) return null;

@@ -1,5 +1,5 @@
 import { Message, Client } from '..';
-import { TextChannel, MessageEmbed } from 'discord.js';
+import { TextChannel, MessageEmbed, NewsChannel } from 'discord.js';
 
 export class WebhookManager {
 	private client: Client;
@@ -63,7 +63,7 @@ export class WebhookManager {
 			});
 	};
 
-	create = async (msg: Message, channel?: TextChannel, name?: string, pfp?: string, reason?: string) => {
+	create = async (msg: Message, channel?: TextChannel | NewsChannel, name?: string, pfp?: string, reason?: string) => {
 		if (msg.channel.type !== 'text') return;
 		if (!channel) {
 			if (!(msg.channel instanceof TextChannel)) return;
