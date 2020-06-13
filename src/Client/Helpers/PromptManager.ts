@@ -54,7 +54,7 @@ export class PromptManager {
 			return this.client.helpers.wrongSyntax(this.trigger, 'The prompt timed out!');
 		}
 
-		input.delete({ timeout: 20 }).catch(() => null);
+		input.delete({ timeout: 1000 }).catch(() => null);
 
 		if ('quit'.startsWith(input.content.toLowerCase())) return this.client.helpers.wrongSyntax(this.trigger, 'Successfully cancelled the prompt!');
 
