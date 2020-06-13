@@ -5,64 +5,9 @@ const callback = async (message: Message, _args: string[]): Promise<void | Messa
 	const e = message.client.constants.emojis;
 
 	const prompt = new PromptManager(message);
-
-	const letEmojis = [
-		`<:letterTealA:${e.letterTealA}>`,
-		`<:letterTealB:${e.letterTealB}>`,
-		`<:letterTealC:${e.letterTealC}>`,
-		`<:letterTealD:${e.letterTealD}>`,
-		`<:letterTealE:${e.letterTealE}>`,
-		`<:letterTealF:${e.letterTealF}>`,
-		`<:letterTealG:${e.letterTealG}>`,
-		`<:letterTealH:${e.letterTealH}>`,
-		`<:letterTealI:${e.letterTealI}>`,
-		`<:letterTealJ:${e.letterTealJ}>`,
-		`<:letterTealK:${e.letterTealK}>`,
-		`<:letterTealL:${e.letterTealL}>`,
-		`<:letterTealM:${e.letterTealM}>`,
-		`<:letterTealN:${e.letterTealN}>`,
-		`<:letterTealO:${e.letterTealO}>`,
-		`<:letterTealP:${e.letterTealP}>`,
-		`<:letterTealQ:${e.letterTealQ}>`,
-		`<:letterTealR:${e.letterTealR}>`,
-		`<:letterTealS:${e.letterTealS}>`,
-		`<:letterTealT:${e.letterTealT}>`,
-		`<:letterTealU:${e.letterTealU}>`,
-		`<:letterTealV:${e.letterTealV}>`,
-		`<:letterTealW:${e.letterTealW}>`,
-		`<:letterTealX:${e.letterTealX}>`,
-		`<:letterTealY:${e.letterTealY}>`,
-		`<:letterTealZ:${e.letterTealZ}>`
-	];
-
-	const letEmojiIds = [
-		e.letterTealA,
-		e.letterTealB,
-		e.letterTealC,
-		e.letterTealD,
-		e.letterTealE,
-		e.letterTealF,
-		e.letterTealG,
-		e.letterTealH,
-		e.letterTealI,
-		e.letterTealJ,
-		e.letterTealK,
-		e.letterTealL,
-		e.letterTealM,
-		e.letterTealN,
-		e.letterTealO,
-		e.letterTealP,
-		e.letterTealQ,
-		e.letterTealR,
-		e.letterTealS,
-		e.letterTealT,
-		e.letterTealU,
-		e.letterTealV,
-		e.letterTealW,
-		e.letterTealX,
-		e.letterTealY,
-		e.letterTealZ
-	];
+	const alph = 'ABCDEFGHIJKLMNOPQRSTUVWXY'.split('');
+	const letEmojis = alph.map(l => `<:letterTeal${l}:${e[('letterTeal' + l) as keyof typeof e]}>`);
+	const letEmojiIds = alph.map(l => e[('letterTeal' + l) as keyof typeof e]);
 
 	const pollType = await prompt.chooseOne('What kind of poll would you like to make?', ['Yes / No', 'Multiple Options']);
 	if (!pollType) return;
@@ -89,10 +34,8 @@ const callback = async (message: Message, _args: string[]): Promise<void | Messa
 
 	const options: string[] = [];
 
-	for (let i = 0; i < amount; i++) {
-		const a = i + 1;
-
-		const opt = await prompt.message(`What would you like question #${a} to be?`, /.*/);
+	while (options.length < amount) {
+		const opt = await prompt.message(`What would you like question #${options.length + 1} to be?`, /.*/);
 		if (!opt) return;
 
 		options.push(opt);
