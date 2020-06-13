@@ -5,6 +5,7 @@ const callback = async (message: Message, _args: string[]): Promise<void | Messa
 	const e = message.client.constants.emojis;
 
 	const prompt = new PromptManager(message);
+
 	const alph = 'ABCDEFGHIJKLMNOPQRSTUVWXY'.split('');
 	const letEmojis = alph.map(l => `<:letterTeal${l}:${e[('letterTeal' + l) as keyof typeof e]}>`);
 	const letEmojiIds = alph.map(l => e[('letterTeal' + l) as keyof typeof e]);
@@ -13,7 +14,6 @@ const callback = async (message: Message, _args: string[]): Promise<void | Messa
 	if (!pollType) return;
 
 	const question = await prompt.message('What topic/question would you like to poll?', /.*/);
-
 	if (!question) return;
 
 	if (pollType === 'Yes / No') {
@@ -28,7 +28,7 @@ const callback = async (message: Message, _args: string[]): Promise<void | Messa
 	}
 
 	let amount: string | number | void = await prompt.message('How many options would you like to have? (MAX: 20)', /^([01]?[0-9]|20)$/);
-	if (!amount || !parseInt(amount)) return;
+	if (!amount) return;
 
 	amount = parseInt(amount);
 
@@ -47,9 +47,9 @@ const callback = async (message: Message, _args: string[]): Promise<void | Messa
 
 	const msg = await message.channel.send(message.client.newEmbed('BASIC').setTitle(question).setDescription(optsStrings.join('\n\n')));
 
-	const e1 = options.map((_opt, i) => letEmojiIds[i]);
+	const reactions = options.map((_opt, i) => letEmojiIds[i]);
 
-	await Promise.all(e1.map(a => msg.react(a).catch(() => null)));
+	await Promise.all(reactions.map(e => msg.react(e).catch(() => null)));
 
 	return;
 };
