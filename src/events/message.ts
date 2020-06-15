@@ -9,6 +9,9 @@ export const listener = async (client: Client, msg: Message) => {
 
 	if (msg.client.helpers.missingPermissions(msg, ['SEND_MESSAGES', 'VIEW_CHANNEL'], 'self')) return;
 
+	if (msg.client.activeCommands.has(msg.author.id))
+		return msg.client.helpers.wrongSyntax(msg, 'Please complete your current command before using a new one!');
+
 	const guildPrefix = await client.getPrefix(msg);
 	const guildPrefixes = await client.getPrefixes(msg);
 	const userPrefixes = await client.getUserPrefixes(msg.author);
@@ -99,10 +102,15 @@ export const listener = async (client: Client, msg: Message) => {
 				msg,
 				`This command requires ${command.args} arguments, but you only provided ${args.length}.\nPlease try again: \`${prefix}${command.name} ${command.usage}\``
 			);
+
+		const cooldown = msg.client.cooldowns.get(msg.author.id, command);
+		if (cooldown) return msg.client.helpers.wrongSyntax(msg, `Please cool down! \`${cooldown.toFixed(1)}\`s remaining.`);
 	}
+
+	msg.client.activeCommands.add(msg.author.id);
 
 	command
 		.callback(msg, args)
 		.then(res => client.emit('commandUsed', msg, command, res))
-		.catch(err => client.handleError(err, msg));
+		.catch(err => client.emit('commandFailed', msg, command, err));
 };

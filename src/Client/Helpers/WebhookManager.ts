@@ -1,7 +1,7 @@
 import { Message, Client } from '..';
 import { TextChannel, MessageEmbed, NewsChannel } from 'discord.js';
 
-export class WebhookManager {
+export default class WebhookManager {
 	private client: Client;
 	constructor(client: Client) {
 		this.client = client;

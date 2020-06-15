@@ -1,7 +1,7 @@
 import { Client, Message } from '..';
 import { TextChannel, DMChannel, NewsChannel, User, MessageEmbed, GuildEmoji, ReactionEmoji, MessageReaction } from 'discord.js';
 
-export class PromptManager {
+export default class PromptManager {
 	readonly client: Client;
 	readonly channel: TextChannel | NewsChannel | DMChannel;
 	readonly user: User;

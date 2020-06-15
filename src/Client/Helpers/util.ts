@@ -3,7 +3,7 @@ import fetch, { RequestInfo, RequestInit } from 'node-fetch';
 import { PermissionString, GuildMember, Message as BaseMessage, GuildChannel } from 'discord.js';
 import { GuildMessage } from '../../interfaces/GuildMessage';
 
-export class Util {
+export default class Util {
 	constructor(client: Client) {
 		this.client = client;
 	}
@@ -103,7 +103,7 @@ export class Util {
 		else return days + ' Days';
 	}
 
-	isGuild(msg: Message): msg is GuildMessage {
+	isGuild(msg: Message | BaseMessage): msg is GuildMessage {
 		return !!msg.guild;
 	}
 

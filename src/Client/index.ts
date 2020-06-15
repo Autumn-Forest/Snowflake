@@ -16,7 +16,7 @@ import constants from '../constants';
 import { database } from '../database';
 import { join } from 'path';
 import { readdirSync } from 'fs';
-import { Getters, Nekos, WebhookManager, PromptManager, CacheManager, NHentaiWrapper } from './Helpers';
+import { Getters, Nekos, WebhookManager, PromptManager, CacheManager, NHentaiWrapper, Cooldowns } from './Helpers';
 import { stripIndents } from 'common-tags';
 import { GuildMessage } from '../interfaces/GuildMessage';
 
@@ -47,10 +47,12 @@ export interface Message extends BaseMessage {
 export type CommandCategories = 'Dev' | 'Fun' | 'Utility' | 'Settings' | 'NSFW';
 
 interface ClientCategories extends ClientEvents {
-	commandUsed: [Message, Command, BaseMessage | void];
+	commandUsed: [Message, FullCommand, BaseMessage | void];
+	commandFailed: [Message, FullCommand, any];
 }
 
 export interface Command {
+	cooldown?: number;
 	aliases: string[];
 	description: string;
 	args: number;
@@ -98,6 +100,8 @@ export class Client extends BaseClient {
 		commands: join(__dirname, '../commands')
 	};
 	recentCommands: Collection<Snowflake, RecentCommand> = new Collection();
+	activeCommands: Set<Snowflake> = new Set();
+	cooldowns = Cooldowns;
 	prompt = PromptManager;
 	nhentai = NHentaiWrapper;
 	nekos = new Nekos(this);

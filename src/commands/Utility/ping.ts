@@ -6,6 +6,7 @@ const callback = async (msg: Message, _args: string[]) => {
 };
 
 export const command: Command = {
+	cooldown: 10,
 	aliases: ['heartbeat', 'ms'],
 	description: 'Check my ping',
 	usage: '',

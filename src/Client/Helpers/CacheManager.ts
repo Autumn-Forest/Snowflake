@@ -4,7 +4,7 @@ import { GuildSettings } from '../../database/schemas/GuildSettings';
 import { UserSettings } from '../../database/schemas/UserSettings';
 import { GuildMessage } from '../../interfaces/GuildMessage';
 
-export class CacheManager {
+export default class CacheManager {
 	constructor(client: Client) {
 		this.client = client;
 	}

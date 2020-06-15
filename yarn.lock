@@ -1670,6 +1670,14 @@ path-type@^4.0.0:
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
+pfp.lgbt-wrapper@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/pfp.lgbt-wrapper/-/pfp.lgbt-wrapper-1.0.3.tgz#10845235f497bc9f2eb4a8f66a5dd600bd79c0a9"
+  integrity sha512-TSuamsp7w/jpIfzrSgAEFSexVqbBiO2TsMp7C/1bOGcw6uywYZdWvkeKnGnX6Qzo99zUEjVQFENJMy1PIJ8SbQ==
+  dependencies:
+    form-data "^3.0.0"
+    node-fetch "^2.6.0"
+
 pkg-dir@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/pkg-dir/-/pkg-dir-4.2.0.tgz#f099133df7ede422e81d1d8448270eeb3e4261f3"

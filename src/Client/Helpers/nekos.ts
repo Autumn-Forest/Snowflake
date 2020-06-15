@@ -4,7 +4,7 @@ import { TextChannel } from 'discord.js';
 import { Message, Client } from '../../Client';
 const neko = new NekoClient();
 
-export class Nekos extends NekoClient {
+export default class Nekos extends NekoClient {
 	client: Client;
 	constructor(client: Client) {
 		super();

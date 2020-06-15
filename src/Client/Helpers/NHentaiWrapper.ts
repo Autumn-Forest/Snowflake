@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 import { MessageEmbed } from 'discord.js';
 
-export class NHentaiWrapper {
+export default class NHentaiWrapper {
 	private readonly baseUrl = 'https://nhentai.net/api/';
 	private readonly thumbnailUrl = 'https://t.nhentai.net/galleries/{MEDIA_ID}/cover.jpg';
 	private readonly pageUrl = 'https://i.nhentai.net/galleries/{MEDIA_ID}/{PAGE}.jpg';

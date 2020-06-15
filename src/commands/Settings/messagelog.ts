@@ -7,7 +7,7 @@ const callback = async (msg: Message, args: string[]) => {
 
 	const settings = await msg.client.cache.getGuild(msg);
 
-	if (args.length && args[0].toLowerCase() === settings.channels.messageLogWebhook) {
+	if (args.length && args[0].toLowerCase() === 'disable') {
 		await msg.client.webhooks.delete(settings.channels.messageLogWebhook, `Message log disabled by ${msg.member.displayName}`);
 		settings.channels.messageLogWebhook = '';
 		settings.save();

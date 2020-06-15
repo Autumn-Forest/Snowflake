@@ -1,8 +1,8 @@
-import { Util } from './util';
+import Util from './util';
 import { Collection, Snowflake, Role, User, GuildMember } from 'discord.js';
 import { Message } from '../../Client';
 
-export class Getters extends Util {
+export default class Getters extends Util {
 	async getUser(message: Message, args: string[], spot?: number) {
 		if (message.guild) {
 			const member = await this.getMember(message, args);

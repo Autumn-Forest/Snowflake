@@ -1,7 +1,10 @@
-import { Client, Message, Command } from '../Client';
+import { Client, Message, FullCommand } from '../Client';
 import { MessageReaction, User } from 'discord.js';
 
-export const listener = async (client: Client, msg: Message, _command: Command, res: Message | void) => {
+export const listener = async (client: Client, msg: Message, command: FullCommand, res: Message | void) => {
+	msg.client.activeCommands.delete(msg.author.id);
+	msg.client.cooldowns.add(msg.author.id, command);
+
 	const s = await msg.client.cache.getGuild(msg);
 	if (s?.settings.deleteCommandTriggers) msg.delete({ timeout: 1000 }).catch(() => null);
 
