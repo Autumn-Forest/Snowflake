@@ -22,6 +22,7 @@ export const listener = async (client: Client, oldMsg: Message, newMsg: Message)
 		.setTitle('Message edited')
 		.setThumbnail(newMsg.author.displayAvatarURL({ dynamic: true }))
 		.addFields([
+			{ name: 'User', value: `${newMsg.author} - ${newMsg.author.tag} - ${newMsg.author.id}` },
 			{ name: 'Channel', value: newMsg.channel, inline: true },
 			{ name: 'Message ID', value: `[${newMsg.id}](${newMsg.url})`, inline: true },
 			{ name: 'Before', value: oldMsg.content.shorten(1024) || '-' },
