@@ -1,4 +1,4 @@
-export const emojis = {
+export default {
 	success: '<:check:699715117473988748>',
 	successId: '699715117473988748',
 	fail: '<:cross:699715122716737538>',

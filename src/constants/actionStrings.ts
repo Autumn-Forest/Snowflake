@@ -1,4 +1,4 @@
-export const actionStrings = {
+export default {
 	tickle: [
 		'hihi, {{USER}} tickles you, {{MEMBER}}!',
 		'hey {{MEMBER}} be aware! {{USER}} is trying to tickle you :P',

@@ -1,4 +1,4 @@
-export const statusIcons = {
+export default {
 	online: 'https://i.imgur.com/FS5nWDJ.png',
 	idle: 'https://i.imgur.com/7mC8AWy.png',
 	dnd: 'https://i.imgur.com/EdvCkvZ.png',
