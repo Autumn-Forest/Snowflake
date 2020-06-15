@@ -9,9 +9,6 @@ export const listener = async (client: Client, msg: Message) => {
 
 	if (msg.client.helpers.missingPermissions(msg, ['SEND_MESSAGES', 'VIEW_CHANNEL'], 'self')) return;
 
-	if (msg.client.activeCommands.has(msg.author.id))
-		return msg.client.helpers.wrongSyntax(msg, 'Please complete your current command before using a new one!');
-
 	const guildPrefix = await client.getPrefix(msg);
 	const guildPrefixes = await client.getPrefixes(msg);
 	const userPrefixes = await client.getUserPrefixes(msg.author);
@@ -54,6 +51,9 @@ export const listener = async (client: Client, msg: Message) => {
 		My prefix is \`${guildPrefix}\`
 		For a list of commands, type \`${guildPrefix}help\``);
 	}
+
+	if (msg.client.activeCommands.has(msg.author.id))
+		return msg.client.helpers.wrongSyntax(msg, 'Please complete your current command before using a new one!');
 
 	if (msg.client.helpers.missingPermissions(msg, ['EMBED_LINKS'], 'self')) return msg.channel.send('I require the `Embed Links` permission to run commands!');
 
