@@ -11,7 +11,7 @@ export default class Cooldowns {
 
 		const now = Date.now();
 
-		const cooldownAmount = (command.cooldown || 3) * 1000;
+		const cooldownAmount = command.cooldown * 1000;
 
 		const userCooldown = this.cooldowns.get(command.name)!.get(id);
 		if (!userCooldown) return false;

@@ -37,6 +37,7 @@ export interface ClientOptions {
 	debug?: boolean;
 	flushTime?: number;
 	promptTimeout?: number;
+	commandCooldown?: number;
 }
 
 export type ClientColours = 'ERROR' | 'INFO' | 'BASIC';
@@ -68,6 +69,7 @@ export interface Command {
 export interface FullCommand extends Command {
 	name: string;
 	category: string;
+	cooldown: number;
 }
 
 export interface RecentCommand {
@@ -82,19 +84,23 @@ export class Client extends BaseClient {
 	on = <K extends keyof ClientCategories>(event: K, listener: (...args: ClientCategories[K]) => void): this => this._on(event, listener);
 	emit = <K extends keyof ClientCategories>(event: K, ...args: ClientCategories[K]): boolean => this._emit(event, ...args);
 
-	debug = false;
-	flushTime = 1000 * 60 * 30;
-	promptTimeout = 3; // In minutes
+	settings = {
+		debug: false,
+		flushTime: 1000 * 60 * 30,
+		promptTimeout: 3, // In minutes
+		commandCooldown: 3, // In seconds
+		colours: {
+			ERROR: 'FF403C',
+			INFO: '0D7DFF',
+			BASIC: '75F1BD'
+		}
+	};
+
 	config = config;
 	constants = constants;
 	database = database;
 	commands: Collection<string, FullCommand> = new Collection();
 	prompts: Collection<string, string> = new Collection();
-	colours: { [key in ClientColours]: string } = {
-		ERROR: 'FF403C',
-		INFO: '0D7DFF',
-		BASIC: '75F1BD'
-	};
 	paths = {
 		listeners: join(__dirname, '../events'),
 		commands: join(__dirname, '../commands')
@@ -111,15 +117,7 @@ export class Client extends BaseClient {
 
 	constructor(options?: ClientOptions) {
 		super(BaseClientOptions);
-		if (options) {
-			this.debug = options.debug || this.debug;
-			this.flushTime = options.flushTime || this.flushTime;
-			this.promptTimeout = options.promptTimeout || this.promptTimeout;
-			if (options.colours)
-				Object.keys(options.colours).forEach(
-					key => (this.colours[key as ClientColours] = options.colours![key as ClientColours] || this.colours[key as ClientColours])
-				);
-		}
+		this.settings = { ...options, ...this.settings };
 	}
 
 	async start() {
@@ -136,6 +134,7 @@ export class Client extends BaseClient {
 				const command: FullCommand = require(path).command;
 				command.name = file.replace('.js', '');
 				command.category = dir as any;
+				if (!command.cooldown) command.cooldown = this.settings.commandCooldown;
 
 				this.commands.set(command.name, command);
 				delete require.cache[path];
@@ -160,7 +159,7 @@ export class Client extends BaseClient {
 	}
 
 	newEmbed(type?: 'INFO' | 'ERROR' | 'BASIC') {
-		return new MessageEmbed().setTimestamp().setColor(type ? this.colours[type] : 'RANDOM');
+		return new MessageEmbed().setTimestamp().setColor(type ? this.settings.colours[type] : 'RANDOM');
 	}
 
 	getChannel(channelType: 'info' | 'errors') {
@@ -191,7 +190,7 @@ export class Client extends BaseClient {
 		const channel = this.getChannel('errors');
 
 		const errorEmbed = new MessageEmbed()
-			.setColor(this.colours.ERROR)
+			.setColor(this.settings.colours.ERROR)
 			.setTitle(err.name)
 			.setDescription((err.stack || 'No Error.').shorten(2000).toCodeblock());
 		if (message) {
@@ -206,7 +205,7 @@ export class Client extends BaseClient {
 			]);
 			message.reply(
 				new MessageEmbed()
-					.setColor(this.colours.ERROR)
+					.setColor(this.settings.colours.ERROR)
 					.setDescription('Sadly, an error internal occurred. There is no need to report this, as all errors will automatically notify my devs!')
 			);
 		}

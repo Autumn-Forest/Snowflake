@@ -47,6 +47,8 @@ const callback = async (msg: Message, args: string[]) => {
 	// Make sure we can display this here
 	if ((command.devOnly && !isDev) || (command.nsfw && !isNsfw)) return;
 
+	const emojis = client.constants.emojis;
+
 	output
 		.setTitle(prefix + command.name)
 		.addFields([
@@ -59,10 +61,11 @@ const callback = async (msg: Message, args: string[]) => {
 		])
 		.setDescription(
 			stripIndents`
-				Guild only: ${command.guildOnly ? client.constants.emojis.success : client.constants.emojis.fail}
-				NSFW: ${command.nsfw ? client.constants.emojis.success : client.constants.emojis.fail}
-				Requires arguments: ${command.args || client.constants.emojis.fail}
-				Requires Permissions: ${command.memberPermission.length ? command.memberPermission.map(p => p.toTitleCase()).join(', ') : client.constants.emojis.fail}
+				Cooldown: ${command.cooldown ? `\`${command.cooldown}s\`` : emojis.fail}
+				Guild only: ${command.guildOnly ? emojis.success : emojis.fail}
+				NSFW: ${command.nsfw ? emojis.success : emojis.fail}
+				Requires arguments: ${command.args || emojis.fail}
+				Requires Permissions: ${command.memberPermission.length ? command.memberPermission.map(p => p.toTitleCase()).join(', ') : emojis.fail}
 		`
 		);
 

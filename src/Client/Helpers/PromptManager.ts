@@ -40,7 +40,13 @@ export default class PromptManager {
 	 * @param timeout The prompt timeout (in min)
 	 * @returns The user choice (string)
 	 */
-	async message(question: string, options: string[] | RegExp, error?: string, timeout = this.client.promptTimeout, initial = true): Promise<string | void> {
+	async message(
+		question: string,
+		options: string[] | RegExp,
+		error?: string,
+		timeout = this.client.settings.promptTimeout,
+		initial = true
+	): Promise<string | void> {
 		if (this.client.prompts.get(this.user.id)) return this.client.helpers.wrongSyntax(this.trigger, 'You already have another prompt open!');
 		else this.client.prompts.set(this.user.id, this.channel.id);
 
@@ -79,7 +85,7 @@ export default class PromptManager {
 		options: string[] | RegExp,
 		react?: boolean,
 		error?: string,
-		timeout = this.client.promptTimeout,
+		timeout = this.client.settings.promptTimeout,
 		initial = true
 	): Promise<GuildEmoji | ReactionEmoji | void> {
 		if (this.client.prompts.get(this.user.id)) return this.client.helpers.wrongSyntax(this.trigger, 'You already have another prompt open!');
