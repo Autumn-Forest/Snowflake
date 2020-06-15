@@ -3,12 +3,10 @@ import {
 	ClientOptions as BaseClientOptions,
 	Message as BaseMessage,
 	Collection,
-	PermissionString,
 	GuildMember,
 	TextChannel,
 	MessageEmbed,
 	User,
-	ClientEvents,
 	Snowflake
 } from 'discord.js';
 import { config } from '../config';
@@ -19,6 +17,8 @@ import { readdirSync } from 'fs';
 import { Getters, Nekos, WebhookManager, PromptManager, CacheManager, NHentaiWrapper, Cooldowns } from './Helpers';
 import { stripIndents } from 'common-tags';
 import { GuildMessage } from '../interfaces/GuildMessage';
+import { ClientEvents, ClientOptions, FullCommand, RecentCommand } from './Interfaces';
+export * from './Interfaces';
 
 const BaseClientOptions: BaseClientOptions = {
 	disableMentions: 'everyone',
@@ -32,57 +32,15 @@ const BaseClientOptions: BaseClientOptions = {
 	partials: ['MESSAGE', 'REACTION']
 };
 
-export interface ClientOptions {
-	colours?: { [key in ClientColours]?: string };
-	debug?: boolean;
-	flushTime?: number;
-	promptTimeout?: number;
-	commandCooldown?: number;
-}
-
-export type ClientColours = 'ERROR' | 'INFO' | 'BASIC';
 export interface Message extends BaseMessage {
 	client: Client;
-}
-
-export type CommandCategories = 'Dev' | 'Fun' | 'Utility' | 'Settings' | 'NSFW';
-
-interface ClientCategories extends ClientEvents {
-	commandUsed: [Message, FullCommand, BaseMessage | void];
-	commandFailed: [Message, FullCommand, any];
-}
-
-export interface Command {
-	cooldown?: number;
-	aliases: string[];
-	description: string;
-	args: number;
-	usage: string;
-	devOnly: boolean;
-	guildOnly: boolean;
-	nsfw: boolean;
-	memberPermission: PermissionString[];
-	botPermission: PermissionString[];
-	callback(message: Message, args: string[]): Promise<BaseMessage | void>;
-}
-
-export interface FullCommand extends Command {
-	name: string;
-	category: string;
-	cooldown: number;
-}
-
-export interface RecentCommand {
-	channelID: string;
-	msgID: Snowflake;
-	res: Message;
 }
 
 export class Client extends BaseClient {
 	private _on = this.on;
 	private _emit = this.emit;
-	on = <K extends keyof ClientCategories>(event: K, listener: (...args: ClientCategories[K]) => void): this => this._on(event, listener);
-	emit = <K extends keyof ClientCategories>(event: K, ...args: ClientCategories[K]): boolean => this._emit(event, ...args);
+	on = <K extends keyof ClientEvents>(event: K, listener: (...args: ClientEvents[K]) => void): this => this._on(event, listener);
+	emit = <K extends keyof ClientEvents>(event: K, ...args: ClientEvents[K]): boolean => this._emit(event, ...args);
 
 	settings = {
 		debug: false,

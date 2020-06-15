@@ -1,5 +1,5 @@
 import { GuildMember, User, Collection } from 'discord.js';
-import { FullCommand } from '../index';
+import { FullCommand } from '../';
 
 export default class Cooldowns {
 	private static cooldowns: Collection<string, Collection<string, number>> = new Collection();
