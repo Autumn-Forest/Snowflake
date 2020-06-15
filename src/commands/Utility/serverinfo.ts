@@ -19,7 +19,7 @@ const callback = async (msg: Message, _args: string[]) => {
             ${emojis.crown} ${g.owner || (await msg.client.users.fetch(g.ownerID))}
             ${emojis.hash} ${g.id}
             ${emojis.globe} ${g.region}
-            ${emojis.cake} ${msg.client.helpers.nicerDates(g.createdAt)}
+            ${emojis.cake} ${g.createdAt.formatDate()}
             ${emojis.speech} ${g.description || '-'}
             ${emojis.users} ${g.memberCount}
             ${emojis.smiley} ${g.emojis.cache.size}

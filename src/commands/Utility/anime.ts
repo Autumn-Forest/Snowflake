@@ -44,16 +44,14 @@ const callback = async (msg: Message, args: string[]) => {
 			{
 				name: '🗓️ Started on',
 				value: media.endDate.month
-					? `${msg.client.helpers.numToMonth(media.startDate.month - 1)} ${msg.client.helpers.numToOrdinal(media.startDate.day)} ${
-							media.startDate.year
-					  }`
+					? `${msg.client.helpers.numToMonth(media.startDate.month - 1)} ${media.startDate.day.toOrdinal()} ${media.startDate.year}`
 					: '-',
 				inline: true
 			},
 			{
 				name: '🗓️ Finished on',
 				value: media.endDate.month
-					? `${msg.client.helpers.numToMonth(media.endDate.month - 1)} ${msg.client.helpers.numToOrdinal(media.endDate.day)} ${media.endDate.year}`
+					? `${msg.client.helpers.numToMonth(media.endDate.month - 1)} ${media.endDate.day.toOrdinal()} ${media.endDate.year}`
 					: '-',
 				inline: true
 			}

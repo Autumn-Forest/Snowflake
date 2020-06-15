@@ -14,7 +14,7 @@ const callback = async (msg: Message, args: string[]) => {
 	const description = stripIndents`
 		${user.bot ? emojis.bot : emojis.user} ${user.username}
 		${emojis.hash} ${user.id}
-		${emojis.cake} ${client.helpers.nicerDates(user.createdAt)}
+		${emojis.cake} ${user.createdAt.formatDate()}
 	`;
 	const memberDescription = !member
 		? ''
@@ -26,7 +26,7 @@ const callback = async (msg: Message, args: string[]) => {
 					.sort((x, y) => x.position - y.position)
 					.last()?.hexColor || 'No Colour!'
 		  }
-		${emojis.nitro} ${member.premiumSince ? `Since ${client.helpers.nicerDates(member.premiumSince)}` : emojis.fail}
+		${emojis.nitro} ${member.premiumSince ? `Since ${member.premiumSince.formatDate()}` : emojis.fail}
 	`;
 
 	const embed = client
