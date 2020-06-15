@@ -1,7 +1,6 @@
 import { Message, Client } from '..';
-import nodeFetch, { RequestInfo, RequestInit } from 'node-fetch';
+import fetch, { RequestInfo, RequestInit } from 'node-fetch';
 import { PermissionString, GuildMember, Message as BaseMessage, GuildChannel } from 'discord.js';
-import ordinal from 'ordinal';
 import { GuildMessage } from '../../interfaces/GuildMessage';
 
 export class Util {
@@ -20,38 +19,50 @@ export class Util {
 		}
 	}
 
-	async fetch(requestInfo: RequestInfo, requestOptions?: RequestInit) {
-		const result = await nodeFetch(requestInfo, requestOptions)
-			.then(response => {
-				return response.json().then(json => {
-					return response.ok ? json : Promise.reject(json);
-				});
-			})
-			.catch(this.client.handleError);
-		return result;
+	async fetch(requestInfo: RequestInfo, requestOptions?: RequestInit): Promise<any> {
+		return new Promise((resolve, reject) => {
+			fetch(requestInfo, requestOptions)
+				.then(async res => {
+					if (res.status > 299 || res.status < 200) reject(`${res.status} | ${res.statusText}`);
+
+					try {
+						const contentType = res.headers.get('content-type') || 'application/json';
+
+						let result;
+						if (contentType.includes('image')) result = await res.buffer();
+						else if (contentType.includes('text')) result = await res.text();
+						else result = await res.json();
+						resolve(result);
+					} catch (error) {
+						reject(error);
+					}
+				})
+				.catch(reject);
+		});
 	}
 
 	async uploadHaste(text: string) {
-		let url = 'https://hastebin.com/';
-
-		let result = await this.fetch(url + 'documents', {
-			method: 'POST',
-			headers: { 'Content-Type': 'text/plain' },
-			body: text,
-			redirect: 'follow'
-		}).catch(() => null);
-
-		if (!result || !result.key) {
-			url = 'https://hasteb.in/';
-			result = await this.fetch(url + 'documents', {
+		const init: RequestInit = {
 				method: 'POST',
 				headers: { 'Content-Type': 'text/plain' },
 				body: text,
-				redirect: 'follow'
-			}).catch(() => null);
-		}
+				redirect: 'follow',
+				timeout: 3000
+			},
+			urls = ['https://hasteb.in/', 'https://hastebin.com/'];
+		let url: string | null = urls[0];
 
-		return result?.key ? url + result.key : 'Failed uploading to hastebin!';
+		const res =
+			(await this.fetch(url + 'documents', init).catch(() => {
+				url = urls[1];
+				return null;
+			})) ||
+			(await this.fetch(url + 'documents', init).catch(() => {
+				url = null;
+				return null;
+			}));
+
+		return url && res && res.key ? url + res.key : 'Failed to upload to hastebin';
 	}
 
 	async isNSFW(message: Message) {
@@ -73,17 +84,8 @@ export class Util {
 		return missing.length ? missing : undefined;
 	}
 
-	numToOrdinal(num: number) {
-		return ordinal(num);
-	}
-
 	numToMonth(num: number) {
 		return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][num];
-	}
-
-	nicerDates(date: Date | number = new Date()) {
-		if (!(date instanceof Date)) date = new Date(date);
-		return `${this.numToMonth(date.getMonth())} ${ordinal(date.getDate())} ${date.getFullYear()}`;
 	}
 
 	isImageUrl(str: string) {

@@ -45,7 +45,7 @@ export class Nekos extends NekoClient {
 		}
 
 		const url = await this.getImage(type);
-		if (!url) return; // TODO ERROR HERE
+		if (!url) return message.client.helpers.wrongSyntax(message, 'Something went wrong and I was not able to fetch an image!');
 
 		const output = message.client
 			.newEmbed('BASIC')
