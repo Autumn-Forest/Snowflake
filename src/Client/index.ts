@@ -3,12 +3,10 @@ import {
 	ClientOptions as BaseClientOptions,
 	Message as BaseMessage,
 	Collection,
-	PermissionString,
 	GuildMember,
 	TextChannel,
 	MessageEmbed,
 	User,
-	ClientEvents,
 	Snowflake
 } from 'discord.js';
 import { config } from '../config';
@@ -19,6 +17,8 @@ import { readdirSync } from 'fs';
 import { Getters, Nekos, WebhookManager, PromptManager, CacheManager, NHentaiWrapper, Cooldowns } from './Helpers';
 import { stripIndents } from 'common-tags';
 import { GuildMessage } from '../interfaces/GuildMessage';
+import { ClientEvents, ClientOptions, FullCommand, RecentCommand } from './Interfaces';
+export * from './Interfaces';
 
 const BaseClientOptions: BaseClientOptions = {
 	disableMentions: 'everyone',
@@ -32,69 +32,33 @@ const BaseClientOptions: BaseClientOptions = {
 	partials: ['MESSAGE', 'REACTION']
 };
 
-export interface ClientOptions {
-	colours?: { [key in ClientColours]?: string };
-	debug?: boolean;
-	flushTime?: number;
-	promptTimeout?: number;
-}
-
-export type ClientColours = 'ERROR' | 'INFO' | 'BASIC';
 export interface Message extends BaseMessage {
 	client: Client;
-}
-
-export type CommandCategories = 'Dev' | 'Fun' | 'Utility' | 'Settings' | 'NSFW';
-
-interface ClientCategories extends ClientEvents {
-	commandUsed: [Message, FullCommand, BaseMessage | void];
-	commandFailed: [Message, FullCommand, any];
-}
-
-export interface Command {
-	cooldown?: number;
-	aliases: string[];
-	description: string;
-	args: number;
-	usage: string;
-	devOnly: boolean;
-	guildOnly: boolean;
-	nsfw: boolean;
-	memberPermission: PermissionString[];
-	botPermission: PermissionString[];
-	callback(message: Message, args: string[]): Promise<BaseMessage | void>;
-}
-
-export interface FullCommand extends Command {
-	name: string;
-	category: string;
-}
-
-export interface RecentCommand {
-	channelID: string;
-	msgID: Snowflake;
-	res: Message;
 }
 
 export class Client extends BaseClient {
 	private _on = this.on;
 	private _emit = this.emit;
-	on = <K extends keyof ClientCategories>(event: K, listener: (...args: ClientCategories[K]) => void): this => this._on(event, listener);
-	emit = <K extends keyof ClientCategories>(event: K, ...args: ClientCategories[K]): boolean => this._emit(event, ...args);
+	on = <K extends keyof ClientEvents>(event: K, listener: (...args: ClientEvents[K]) => void): this => this._on(event, listener);
+	emit = <K extends keyof ClientEvents>(event: K, ...args: ClientEvents[K]): boolean => this._emit(event, ...args);
 
-	debug = false;
-	flushTime = 1000 * 60 * 30;
-	promptTimeout = 3; // In minutes
+	settings = {
+		debug: false,
+		flushTime: 1000 * 60 * 30,
+		promptTimeout: 3, // In minutes
+		commandCooldown: 3, // In seconds
+		colours: {
+			ERROR: 'FF403C',
+			INFO: '0D7DFF',
+			BASIC: '75F1BD'
+		}
+	};
+
 	config = config;
 	constants = constants;
 	database = database;
 	commands: Collection<string, FullCommand> = new Collection();
 	prompts: Collection<string, string> = new Collection();
-	colours: { [key in ClientColours]: string } = {
-		ERROR: 'FF403C',
-		INFO: '0D7DFF',
-		BASIC: '75F1BD'
-	};
 	paths = {
 		listeners: join(__dirname, '../events'),
 		commands: join(__dirname, '../commands')
@@ -111,15 +75,7 @@ export class Client extends BaseClient {
 
 	constructor(options?: ClientOptions) {
 		super(BaseClientOptions);
-		if (options) {
-			this.debug = options.debug || this.debug;
-			this.flushTime = options.flushTime || this.flushTime;
-			this.promptTimeout = options.promptTimeout || this.promptTimeout;
-			if (options.colours)
-				Object.keys(options.colours).forEach(
-					key => (this.colours[key as ClientColours] = options.colours![key as ClientColours] || this.colours[key as ClientColours])
-				);
-		}
+		this.settings = { ...options, ...this.settings };
 	}
 
 	async start() {
@@ -136,6 +92,7 @@ export class Client extends BaseClient {
 				const command: FullCommand = require(path).command;
 				command.name = file.replace('.js', '');
 				command.category = dir as any;
+				if (!command.cooldown) command.cooldown = this.settings.commandCooldown;
 
 				this.commands.set(command.name, command);
 				delete require.cache[path];
@@ -160,7 +117,7 @@ export class Client extends BaseClient {
 	}
 
 	newEmbed(type?: 'INFO' | 'ERROR' | 'BASIC') {
-		return new MessageEmbed().setTimestamp().setColor(type ? this.colours[type] : 'RANDOM');
+		return new MessageEmbed().setTimestamp().setColor(type ? this.settings.colours[type] : 'RANDOM');
 	}
 
 	getChannel(channelType: 'info' | 'errors') {
@@ -191,7 +148,7 @@ export class Client extends BaseClient {
 		const channel = this.getChannel('errors');
 
 		const errorEmbed = new MessageEmbed()
-			.setColor(this.colours.ERROR)
+			.setColor(this.settings.colours.ERROR)
 			.setTitle(err.name)
 			.setDescription((err.stack || 'No Error.').shorten(2000).toCodeblock());
 		if (message) {
@@ -206,7 +163,7 @@ export class Client extends BaseClient {
 			]);
 			message.reply(
 				new MessageEmbed()
-					.setColor(this.colours.ERROR)
+					.setColor(this.settings.colours.ERROR)
 					.setDescription('Sadly, an error internal occurred. There is no need to report this, as all errors will automatically notify my devs!')
 			);
 		}

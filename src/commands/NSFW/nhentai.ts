@@ -42,6 +42,7 @@ const callback = async (msg: Message, args: string[]) => {
 };
 
 export const command: Command = {
+	cooldown: 10,
 	aliases: ['hentai', 'nh'],
 	description: 'Get hentai from nhentai.net',
 	usage: '<ID/Tags/Name>',

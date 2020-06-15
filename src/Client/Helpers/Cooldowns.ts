@@ -1,5 +1,5 @@
 import { GuildMember, User, Collection } from 'discord.js';
-import { FullCommand } from '../index';
+import { FullCommand } from '../';
 
 export default class Cooldowns {
 	private static cooldowns: Collection<string, Collection<string, number>> = new Collection();
@@ -11,7 +11,7 @@ export default class Cooldowns {
 
 		const now = Date.now();
 
-		const cooldownAmount = (command.cooldown || 3) * 1000;
+		const cooldownAmount = command.cooldown * 1000;
 
 		const userCooldown = this.cooldowns.get(command.name)!.get(id);
 		if (!userCooldown) return false;

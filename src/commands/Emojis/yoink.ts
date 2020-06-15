@@ -30,6 +30,7 @@ const callback = async (msg: Message, args: string[]) => {
 };
 
 export const command: Command = {
+	cooldown: 30,
 	aliases: ['yoinkemotes', 'yoinkemojis'],
 	description: 'Upload emotes from another server to yours',
 	usage: '<Emotes>',

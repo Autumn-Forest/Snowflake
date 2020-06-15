@@ -19,6 +19,7 @@ const callback = async (msg: Message, args: string[]) => {
 };
 
 export const command: Command = {
+	cooldown: 30,
 	aliases: ['gnomes', 'minesweeper', 'mines', 'gs'],
 	description: 'Play a game of gnomesweeper©️',
 	usage: '',

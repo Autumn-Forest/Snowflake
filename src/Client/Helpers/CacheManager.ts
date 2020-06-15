@@ -44,7 +44,7 @@ export default class CacheManager {
 		this.flushQueue.delete(id);
 		this.flushQueue.set(
 			id,
-			setTimeout(() => this.flush('Guild', id), this.client.flushTime)
+			setTimeout(() => this.flush('Guild', id), this.client.settings.flushTime)
 		);
 		return cache;
 	}
@@ -64,7 +64,7 @@ export default class CacheManager {
 		this.flushQueue.delete(id);
 		this.flushQueue.set(
 			id,
-			setTimeout(() => this.flush('User', id), this.client.flushTime)
+			setTimeout(() => this.flush('User', id), this.client.settings.flushTime)
 		);
 		return cache;
 	}
