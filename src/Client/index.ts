@@ -1,14 +1,4 @@
-import {
-	Client as BaseClient,
-	ClientOptions as BaseClientOptions,
-	Message as BaseMessage,
-	Collection,
-	GuildMember,
-	TextChannel,
-	MessageEmbed,
-	User,
-	Snowflake
-} from 'discord.js';
+import { Client as BaseClient, Message as BaseMessage, Collection, GuildMember, TextChannel, MessageEmbed, User, Snowflake } from 'discord.js';
 import { config } from '../config';
 import constants from '../constants';
 import { database } from '../database';
@@ -19,18 +9,6 @@ import { stripIndents } from 'common-tags';
 import { GuildMessage } from '../interfaces/GuildMessage';
 import { ClientEvents, ClientOptions, FullCommand, RecentCommand } from './Interfaces';
 export * from './Interfaces';
-
-const BaseClientOptions: BaseClientOptions = {
-	disableMentions: 'everyone',
-	presence: {
-		activity: {
-			name: `${config.defaultPrefix}help`,
-			type: 'STREAMING',
-			url: 'https://www.twitch.tv/.'
-		}
-	},
-	partials: ['MESSAGE', 'REACTION']
-};
 
 export interface Message extends BaseMessage {
 	client: Client;
@@ -74,7 +52,7 @@ export class Client extends BaseClient {
 	cache = new CacheManager(this);
 
 	constructor(options?: ClientOptions) {
-		super(BaseClientOptions);
+		super(options?.baseOptions);
 		this.settings = { ...options, ...this.settings };
 	}
 

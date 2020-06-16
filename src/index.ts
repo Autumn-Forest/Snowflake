@@ -7,7 +7,18 @@ import './interfaces/Date';
 import './interfaces/Number';
 
 const client = new Client({
-	debug: false
+	debug: false,
+	baseOptions: {
+		disableMentions: 'everyone',
+		presence: {
+			activity: {
+				name: `@Snowflake#2926`,
+				type: 'LISTENING',
+				url: 'https://www.twitch.tv/.'
+			}
+		},
+		partials: ['MESSAGE', 'REACTION']
+	}
 });
 
 client.start();
