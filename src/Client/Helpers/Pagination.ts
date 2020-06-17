@@ -9,7 +9,7 @@ export default class Pagination {
 
 	static async add(message: Message, embeds: Array<MessageEmbed>, initPage = 0) {
 		if (embeds.length < 2) throw new Error('1 or 0 pages provided!');
-		if (embeds.length < initPage - 1) throw new Error('InitPage out of range!');
+		if (embeds.length < initPage) throw new Error('InitPage out of range!');
 
 		embeds.forEach((e, i) => e.setFooter(`Page ${i + 1}/${embeds.length}`));
 
