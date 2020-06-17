@@ -4,7 +4,7 @@ import constants from '../constants';
 import { database } from '../database';
 import { join } from 'path';
 import { readdirSync } from 'fs';
-import { Getters, Nekos, WebhookManager, PromptManager, CacheManager, NHentaiWrapper, Cooldowns } from './Helpers';
+import { Getters, Nekos, WebhookManager, PromptManager, CacheManager, NHentaiWrapper, Cooldowns, Pagination } from './Helpers';
 import { stripIndents } from 'common-tags';
 import { GuildMessage } from '../interfaces/GuildMessage';
 import { ClientEvents, ClientOptions, FullCommand, RecentCommand } from './Interfaces';
@@ -46,6 +46,7 @@ export class Client extends BaseClient {
 	cooldowns = Cooldowns;
 	prompt = PromptManager;
 	nhentai = NHentaiWrapper;
+	pagination = Pagination;
 	nekos = new Nekos(this);
 	webhooks = new WebhookManager(this);
 	helpers = new Getters(this);
