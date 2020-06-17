@@ -1,7 +1,7 @@
 import { Command, Message } from '../../Client';
 
 const callback = async (msg: Message, _args: string[]) => {
-	msg.client.pagination.add(
+	msg.client.pagination.create(
 		msg,
 		[1, 2, 3].map(n => msg.client.newEmbed('BASIC').setDescription(n))
 	);
