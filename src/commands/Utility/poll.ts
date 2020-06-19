@@ -1,10 +1,9 @@
 import { Command, Message } from '../../Client';
-import { PromptManager } from '../../Client/Helpers';
 
 const callback = async (message: Message, _args: string[]): Promise<void | Message> => {
 	const e = message.client.constants.emojis;
 
-	const prompt = new PromptManager(message);
+	const prompt = new message.client.prompt(message);
 
 	const alph = 'ABCDEFGHIJKLMNOPQRSTUVWXY'.split('');
 	const letEmojis = alph.map(l => `<:letterTeal${l}:${e[('letterTeal' + l) as keyof typeof e]}>`);
@@ -27,16 +26,18 @@ const callback = async (message: Message, _args: string[]): Promise<void | Messa
 		return;
 	}
 
-	let amount: string | number | void = await prompt.message('How many options would you like to have? (MAX: 20)', /^([01]?[0-9]|20)$/);
-	if (!amount) return;
-
-	amount = parseInt(amount);
-
 	const options: string[] = [];
 
-	while (options.length < amount) {
-		const opt = await prompt.message(`What would you like question #${options.length + 1} to be?`, /.*/);
-		if (!opt) return;
+	while (options.length < 20) {
+		const opt = await prompt.message(
+			`What would you like question #${
+				options.length + 1
+			} to be?\n Reply "quit" if you don't want to add another question. After 5 minutes this prompt will close and you wont be able to add questions `,
+			/.*/,
+			undefined,
+			5
+		);
+		if (!opt) break;
 
 		options.push(opt);
 	}
@@ -63,6 +64,6 @@ export const command: Command = {
 	guildOnly: false,
 	nsfw: false,
 	memberPermission: ['MANAGE_MESSAGES', 'ADD_REACTIONS'],
-	botPermission: ['ADD_REACTIONS', 'SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'ADD_REACTIONS'],
+	botPermission: ['ADD_REACTIONS', 'ADD_REACTIONS'],
 	callback: callback
 };
