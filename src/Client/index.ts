@@ -49,7 +49,7 @@ export class Client extends BaseClient {
 	pagination = Pagination;
 	nekos = new Nekos(this);
 	webhooks = new WebhookManager(this);
-	helpers = new Getters(this);
+	helpers = Getters;
 	cache = new CacheManager(this);
 
 	constructor(options?: ClientOptions) {

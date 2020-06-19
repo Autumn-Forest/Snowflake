@@ -21,9 +21,15 @@ export default class Pagination {
 
 		embeds.forEach((e, i) => e.setFooter(`Page ${i + 1}/${embeds.length}`));
 
-		const msg = (await message.channel.send(embeds[initPage])) as Message;
-		const success = await Promise.all((customEmojis || this.defaultEmojis).map(r => msg.react(r))).catch(() => null);
-		if (!success) return message.client.helpers.wrongSyntax(message, 'Sorry, something went wrong and I was not able to initialise the multi pages menu!');
+		const msg = (await message.channel.send(`${message.client.constants.emojis.loading} Please wait while I initialise this menu`)) as Message;
+		const success = await Promise.all((customEmojis || this.defaultEmojis).map(r => msg.react(r)))
+			.then(() => msg.edit(embeds[initPage]))
+			.catch(() => null);
+
+		if (!success) {
+			msg.delete().catch(() => null);
+			return message.client.helpers.wrongSyntax(message, 'Sorry, something went wrong and I was not able to initialise the multi pages menu!');
+		}
 
 		this.pages.set(msg.id, {
 			pages: embeds,
@@ -64,7 +70,8 @@ export default class Pagination {
 		)
 			return;
 
-		reaction.users.remove(user);
+		reaction.users.remove(user).catch(() => null);
+
 		if (pagination.customEmojis) {
 			if (pagination.currentPage === pagination.customEmojis.indexOf(reaction.emoji.id || reaction.emoji.name)) return;
 			pagination.currentPage = pagination.customEmojis.indexOf(reaction.emoji.id || reaction.emoji.name);
