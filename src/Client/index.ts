@@ -47,14 +47,14 @@ export class Client extends BaseClient {
 	prompt = PromptManager;
 	nhentai = NHentaiWrapper;
 	pagination = Pagination;
+	helpers = Getters;
 	nekos = new Nekos(this);
 	webhooks = new WebhookManager(this);
-	helpers = Getters;
 	cache = new CacheManager(this);
 
 	constructor(options?: ClientOptions) {
 		super(options?.baseOptions);
-		this.settings = { ...options, ...this.settings };
+		this.settings = { ...this.settings, ...options };
 	}
 
 	async start() {
@@ -146,7 +146,7 @@ export class Client extends BaseClient {
 					.setDescription('Sadly, an error internal occurred. There is no need to report this, as all errors will automatically notify my devs!')
 			);
 		}
-		return channel.send((await Promise.all(this.config.developers.map(d => this.users.fetch(d)))).join(' '), errorEmbed);
+		return channel.send((await this.getDevelopers()).join(' '), errorEmbed);
 	};
 
 	async getPrefix(identifier: Message | GuildMember | GuildMessage) {

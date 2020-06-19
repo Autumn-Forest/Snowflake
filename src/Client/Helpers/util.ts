@@ -104,9 +104,10 @@ export default class Util {
 	}
 
 	static isMemberHigher(executor: GuildMember, target: GuildMember) {
-		return (
-			(executor.id !== target.id && executor.guild.ownerID === executor.id) ||
-			(target.guild.ownerID !== target.id && executor.roles.highest.position > target.roles.highest.position)
-		);
+		if (executor.id === target.id) return false;
+		if (target.id === target.guild.ownerID) return false;
+		if (executor.id === executor.guild.ownerID) return true;
+		if (executor.roles.highest.position > target.roles.highest.position) return true;
+		return false;
 	}
 }
