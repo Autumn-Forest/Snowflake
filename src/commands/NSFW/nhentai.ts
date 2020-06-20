@@ -4,7 +4,9 @@ import fetch from 'node-fetch';
 const callback = async (msg: Message, args: string[]) => {
 	const bannedTags = args.filter(arg => msg.client.constants.bannedTags.includes(arg));
 	if (bannedTags.length)
-		return msg.client.helpers.wrongSyntax(msg, `One or more of the provided tags are blacklisted as they break Discord ToS: ${bannedTags.join(', ')}`);
+		if (bannedTags.includes('loli') || bannedTags.includes('lolicon'))
+			return msg.channel.send(msg.client.newEmbed('ERROR').setImage('https://cdn.autumn-forest.net/sfw/assets/lolice.png').setTitle('Oop! No loli :P'));
+		else return msg.client.helpers.wrongSyntax(msg, `One or more of the provided tags are blacklisted as they break Discord ToS: ${bannedTags.join(', ')}`);
 
 	let query = args.join('%20');
 	if (!query) {
@@ -16,10 +18,13 @@ const callback = async (msg: Message, args: string[]) => {
 	await nhentai.fetch();
 
 	if (nhentai.banned[0])
-		return msg.client.helpers.wrongSyntax(
-			msg,
-			`One or more tags of the hentai you provided (or the random selected 😱) are blacklisted as they break Discord ToS : ${nhentai.banned.join(', ')}`
-		);
+		if (nhentai.banned.includes('loli') || nhentai.banned.includes('lolicon'))
+			return msg.channel.send(msg.client.newEmbed('ERROR').setImage('https://cdn.autumn-forest.net/sfw/assets/lolice.png').setTitle('Oop! No loli :P'));
+		else
+			return msg.client.helpers.wrongSyntax(
+				msg,
+				`One or more of the tags of the provided hentai (or random one) are blacklisted as they break Discord ToS: ${nhentai.banned.join(', ')}`
+			);
 	if (!nhentai.exists) return msg.client.helpers.wrongSyntax(msg, 'I was not able to find a doujin matching your search term.');
 
 	const m = await msg.channel.send({ embed: nhentai.embed });
