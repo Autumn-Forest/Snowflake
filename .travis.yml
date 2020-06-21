@@ -7,6 +7,7 @@ cache:
         - ./.yarn/cache
 
 before_install:
-    - yarn set version berry
+    - yarn policies set-version berry
 
-install: yarn install
+install:
+    - yarn install
