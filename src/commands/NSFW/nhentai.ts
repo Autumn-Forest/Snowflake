@@ -2,6 +2,10 @@ import { Command, Message } from '../../Client';
 import fetch from 'node-fetch';
 
 const callback = async (msg: Message, args: string[]) => {
+	const bannedTags = args.filter(arg => msg.client.constants.bannedTags.includes(arg));
+	if (bannedTags.length)
+		return msg.client.helpers.wrongSyntax(msg, `One or more of the provided tags are blacklisted as they break Discord ToS: ${bannedTags.join(', ')}`);
+
 	let query = args.join('%20');
 	if (!query) {
 		const random = (await fetch('https://nhentai.net/random')).url.match(/\d+/);
@@ -11,6 +15,11 @@ const callback = async (msg: Message, args: string[]) => {
 	const nhentai = new msg.client.nhentai(query);
 	await nhentai.fetch();
 
+	if (nhentai.banned[0])
+		return msg.client.helpers.wrongSyntax(
+			msg,
+			`One or more tags of the hentai you provided (or the random selected 😱) are blacklisted as they break Discord ToS : ${nhentai.banned.join(', ')}`
+		);
 	if (!nhentai.exists) return msg.client.helpers.wrongSyntax(msg, 'I was not able to find a doujin matching your search term.');
 
 	const m = await msg.channel.send({ embed: nhentai.embed });
