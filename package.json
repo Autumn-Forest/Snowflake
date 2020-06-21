@@ -34,7 +34,7 @@
 	},
 	"husky": {
 		"hooks": {
-			"pre-commit": "precise-commits && npm run test"
+			"pre-commit": "yarn run test"
 		}
 	},
 	"dependencies": {
