@@ -1,11 +1,14 @@
 import { GuildMember, User, Collection } from 'discord.js';
 import { FullCommand } from '../';
+import { config } from '../../config/index';
 
 export default class Cooldowns {
 	private static cooldowns: Collection<string, Collection<string, number>> = new Collection();
 
 	static get(id: string | User | GuildMember, command: FullCommand) {
 		if (typeof id !== 'string') id = id.id;
+
+		if (config.developers.includes(id)) return false;
 
 		if (!this.cooldowns.has(command.name)) this.cooldowns.set(command.name, new Collection());
 
@@ -25,6 +28,7 @@ export default class Cooldowns {
 	static add(id: string | User | GuildMember, command: FullCommand) {
 		if (typeof id !== 'string') id = id.id;
 
+		if (config.developers.includes(id)) return;
 		if (!this.cooldowns.has(command.name)) this.cooldowns.set(command.name, new Collection());
 
 		const timestamps = this.cooldowns.get(command.name)!;
