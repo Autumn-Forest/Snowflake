@@ -2,7 +2,6 @@ dist
 src/config/development.ts
 yarn-error.log
 .yarn/*
-!.yarn/cache
 !.yarn/releases
 !.yarn/plugins
 !.yarn/sdks
