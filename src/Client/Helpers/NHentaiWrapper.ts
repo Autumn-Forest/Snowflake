@@ -1,5 +1,6 @@
 import fetch from 'node-fetch';
 import { MessageEmbed } from 'discord.js';
+import constants from '../../constants';
 
 export default class NHentaiWrapper {
 	private readonly baseUrl = 'https://nhentai.net/api/';
@@ -9,6 +10,7 @@ export default class NHentaiWrapper {
 	private readonly nHentaiLogo = 'https://i.imgur.com/uLAimaY.png';
 	url: string;
 	hentai?: NHentaiData = undefined;
+	banned: string[] = [];
 	currentPage = 0;
 	totalPages = 0;
 	embed = new MessageEmbed().setColor(this.nHentaiColour).setAuthor('nHentai', this.nHentaiLogo);
@@ -22,7 +24,7 @@ export default class NHentaiWrapper {
 
 	/**
 	 * This fetches the hentai. ALWAYS run this after creating the object!!
-	 * @returns true if successful or false if no hentai was found
+	 * @returns true if successful or false if no hentai was found (or if an invalid tag is used if an id is directly precised/random)
 	 */
 	async fetch() {
 		let res: NHentaiData = await fetch(this.url).then(res => res.json());
@@ -32,7 +34,11 @@ export default class NHentaiWrapper {
 		//@ts-ignore cause jeez this would be very inconvenient to implement types for xD
 		if (res.result) res = res.result.length ? res.result[Math.floor(Math.random() * res.result.length)] : null;
 		if (!res || !res.id) return false;
-
+		const bannedTags = res.tags.map(tag => tag.name).filter(arg => constants.bannedTags.includes(arg));
+		if (bannedTags.length) {
+			this.banned = bannedTags;
+			return false;
+		}
 		this.hentai = res;
 		this.totalPages = res.num_pages;
 
