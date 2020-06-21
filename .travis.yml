@@ -2,6 +2,9 @@ language: node_js
 node_js:
     - '13.6.0'
 cache:
-    npm: false
+    yarn: true
     directories:
         - ./.yarn/cache
+
+before_install:
+    - yarn policies set-version berry
