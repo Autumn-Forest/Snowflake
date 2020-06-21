@@ -16,6 +16,7 @@ Date.prototype.formatTime = function () {
 
 Date.prototype.age = function () {
 	const age = Date.now() - this.getTime();
+	// eslint-disable-next-line @typescript-eslint/no-use-before-define
 	return msToHuman(age);
 };
 

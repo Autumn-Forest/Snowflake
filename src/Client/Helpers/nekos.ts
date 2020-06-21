@@ -11,6 +11,7 @@ export default class Nekos extends NekoClient {
 	}
 
 	async getImage(type: NekoSfwEndpoints) {
+		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 		// @ts-ignore
 		return (await this.sfw[type]())?.url;
 	}

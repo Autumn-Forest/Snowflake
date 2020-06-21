@@ -12,6 +12,7 @@ const callback = async (msg: Message, args: string[]) => {
 	if (!prefix)
 		return msg.client.helpers.wrongSyntax(
 			msg,
+			// eslint-disable-next-line @typescript-eslint/no-use-before-define
 			`This command requires ${command.args} arguments, but you only provided ${args.length}.\nPlease use it like this: \`${prefix}prefix ${command.usage}\``
 		);
 

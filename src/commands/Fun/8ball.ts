@@ -1,12 +1,14 @@
 import { Command, Message } from '../../Client';
 
 const callback = async (msg: Message, _args: string[]) => {
+	// eslint-disable-next-line @typescript-eslint/no-use-before-define
 	const smartResponse = smartResponses.find(r => r.regex.test(msg.content))?.responses;
 
 	const output = msg.client
 		.newEmbed('BASIC')
 		.setAuthor(msg.member?.displayName || msg.author.username, msg.author.displayAvatarURL({ dynamic: true }))
 		.setDescription(
+			// eslint-disable-next-line @typescript-eslint/no-use-before-define
 			smartResponse ? smartResponse[Math.floor(Math.random() * smartResponse.length)] : responses[Math.floor(Math.random() * responses.length)]
 		);
 
