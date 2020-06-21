@@ -5,5 +5,3 @@ cache:
     npm: false
     directories:
         - ./.yarn/cache
-
-install: yarn install
