@@ -8,3 +8,5 @@ cache:
 
 before_install:
     - yarn set version berry
+
+install: yarn install
