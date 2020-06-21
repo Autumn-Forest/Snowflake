@@ -6,7 +6,4 @@ cache:
     directories:
         - ./.yarn/cache
 
-before_install:
-    - yarn policies set-version berry
-
-install: yarn
+install: yarn install
