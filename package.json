@@ -17,19 +17,19 @@
 		".vscode"
 	],
 	"scripts": {
-		"dev": "npm run build && export NODE_ENV=development && node .",
-		"prod": "npm run build && export NODE_ENV=production && node .",
+		"dev": "yarn run build && NODE_ENV=development && yarn node .",
+		"prod": "yarn run build && NODE_ENV=production && yarn node .",
 		"start": "pm2 start --name Snowflake npm -- run prod",
 		"pm2": "pm2 start --name Snowflake npm -- run dev --ignore-watch dist/*",
-		"test": "tsc -p tsconfig.test.json && npm run lint",
+		"test": "yarn tsc -p tsconfig.test.json && yarn run lint",
 		"lint": "eslint ./src/**/*.ts --fix",
 		"clean": "rm -rf dist/*",
-		"reinstall": "npm run cleanCache && npm run deleteModules && npm run deleteLock && npm run installModules",
-		"build": "tsc",
-		"cleanCache": "npm cache clean --force",
+		"reinstall": "yarn run cleanCache && yarn run deleteModules && yarn run deleteLock && yarn run installModules",
+		"build": "yarn tsc",
+		"cleanCache": "yarn cache clean",
 		"deleteModules": "rm -rf node_modules/*",
 		"deleteLock": "rm yarn.lock",
-		"installModules": "yarn install",
+		"installModules": "yarn install && yarn pnpify --sdk",
 		"push": "func() { git add . && git commit -m \"$1\" && git push; }; func"
 	},
 	"husky": {
@@ -39,13 +39,15 @@
 	},
 	"dependencies": {
 		"@klasa/stopwatch": "^0.0.1",
+		"@yarnpkg/pnpify": "^2.0.0-rc.25",
 		"canvas": "^2.6.1",
 		"common-tags": "^1.8.0",
-		"discord.bio": "^6.0.1",
+		"discord.bio": "^6.2.1",
 		"discord.js": "^12.2.0",
 		"discord.js-minesweeper": "^1.0.5",
 		"mongoose": "^5.9.15",
 		"nekos.life": "^2.0.7",
+		"node-fetch": "^2.6.0",
 		"ordinal": "^1.0.3",
 		"pfp.lgbt-wrapper": "^1.0.3",
 		"sharp": "^0.25.4"
