@@ -32,7 +32,7 @@ const callback = async (message: Message, _args: string[]): Promise<void | Messa
 		const opt = await prompt.message(
 			`What would you like question #${
 				options.length + 1
-			} to be?\n Reply "done" if you don't want to add another question. After 5 minutes this prompt will close and you wont be able to add questions `,
+			} to be?\n Reply "done" if you don't want to add another question. Please note that this prompt will close in 5 minutes.`,
 			/.*/,
 			undefined,
 			5
