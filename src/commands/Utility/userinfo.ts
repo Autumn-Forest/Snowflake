@@ -54,7 +54,7 @@ const callback = async (msg: Message, args: string[]) => {
 };
 
 export const command: Command = {
-	aliases: ['user', 'ui', 'whois'],
+	aliases: ['user', 'ui'],
 	description: 'Get a lot of info about a user',
 	usage: '[User] (defaults to self)',
 	args: 0,
