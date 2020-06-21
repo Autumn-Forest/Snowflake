@@ -3,6 +3,7 @@ import { Command, Message } from '../../Client';
 const callback = async (msg: Message, _args: string[]) => {
 	const embed = msg.client
 		.newEmbed('BASIC')
+		// eslint-disable-next-line @typescript-eslint/no-use-before-define
 		.setImage(images.random())
 		.setAuthor('Cerberus', msg.author.displayAvatarURL({ dynamic: true }));
 

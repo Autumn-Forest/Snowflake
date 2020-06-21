@@ -30,6 +30,7 @@ export default class NHentaiWrapper {
 		let res: NHentaiData = await fetch(this.url).then(res => res.json());
 		if (res.error) return false;
 
+		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 		//@ts-ignore cause jeez this would be very inconvenient to implement types for xD
 		if (res.result) res = res.result.length ? res.result[Math.floor(Math.random() * res.result.length)] : null;
 		if (!res || !res.id) return false;

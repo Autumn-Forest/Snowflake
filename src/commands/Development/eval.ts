@@ -4,6 +4,7 @@ import { Stopwatch } from '@klasa/stopwatch';
 import { stripIndents } from 'common-tags';
 
 const callback = async (msg: Message, args: string[]) => {
+	// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 	// @ts-ignore
 	const [message, client, commands, database, guild, channel] = [msg, msg.client, msg.client.commands, msg.client.database, msg.guild, msg.channel];
 
