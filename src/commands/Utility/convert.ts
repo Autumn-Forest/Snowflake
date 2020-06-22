@@ -60,7 +60,7 @@ const callback = async (msg: Message, args: string[]) => {
 				}
 			]);
 
-		return msg.channel.send(msg.author, embed);
+		return msg.channel.send(embed);
 	} catch (error) {
 		msg.channel.send(`Something went wrong. Please try again`);
 	}
