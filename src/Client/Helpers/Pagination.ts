@@ -6,7 +6,7 @@ export default class Pagination {
 	 * A collection of all messages requiring pagination, mapped by their messageID
 	 */
 	private static pages: Collection<string, Page> = new Collection();
-	private static defaultEmojis = ['⏮️', '⬅️', '⏹️', '➡️', '⏭️'];
+	private static defaultEmojis = ['⏮️', '⬅️', '⏹️', '🔢', '➡️', '⏭️'];
 	/**
 	 * Create a multi page embed
 	 * @param message The message that called the command that initialises this. **This will automatically send the first page as message!**
@@ -36,6 +36,7 @@ export default class Pagination {
 			currentPage: initPage,
 			user: message.author.id,
 			msg: msg,
+			trigger: message,
 			customEmojis: customEmojis
 		});
 		return msg;
@@ -60,7 +61,7 @@ export default class Pagination {
 	 * @param reaction The reaction
 	 * @param user The user
 	 */
-	static browse(reaction: MessageReaction, user: User) {
+	static async browse(reaction: MessageReaction, user: User) {
 		const msg = reaction.message as Message;
 		const pagination = this.pages.get(msg.id);
 		if (
@@ -89,6 +90,17 @@ export default class Pagination {
 				case '⏹️':
 					this.delete(msg);
 					break;
+				case '🔢':
+					const prompt = new msg.client.prompt(pagination.trigger);
+					const page = await prompt.message(
+						`Which page would you like to jump to?`,
+						pagination.pages.map((_p, i) => (i + 1).toString()),
+						`{VALUE} is not a valid page! Please try again`
+					);
+					if (!page) return;
+					prompt.delete();
+
+					pagination.currentPage = parseInt(page) - 2;
 				case '➡️':
 					if (pagination.currentPage === pagination.pages.length - 1) return;
 					pagination.currentPage += 1;
@@ -113,5 +125,6 @@ interface Page {
 	currentPage: number;
 	user: string;
 	msg: Message;
+	trigger: Message;
 	customEmojis?: Array<string>;
 }
