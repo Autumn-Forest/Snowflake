@@ -9,9 +9,10 @@ export const listener = (client: Client, guild: Guild) => {
 		.setTitle('I was added to a guild!')
 		.setDescription(
 			stripIndents`
-        **Guild:** ${guild.name} - ${guild.id}
-        **Owner:** ${guild.owner?.user.tag} - ${guild.ownerID}
-        **Members:** ${guild.memberCount}`
+        		**Guild:** ${guild.name} - ${guild.id}
+        		**Owner:** ${guild.owner?.user.tag} - ${guild.ownerID}
+				**Members:** ${guild.memberCount}
+				`
 		);
 	return channel.send(embed);
 };

@@ -17,8 +17,8 @@
 		".vscode"
 	],
 	"scripts": {
-		"dev": "yarn run build && export NODE_ENV=development && yarn node .",
-		"prod": "yarn run build && export NODE_ENV=production && yarn node .",
+		"dev": "yarn run build && NODE_ENV=development && yarn node .",
+		"prod": "yarn run build && NODE_ENV=production && yarn node .",
 		"start": "pm2 start --name Snowflake npm -- run prod",
 		"pm2": "pm2 start --name Snowflake npm -- run dev --ignore-watch dist/*",
 		"test": "yarn tsc -p tsconfig.test.json && yarn run lint",
@@ -51,7 +51,8 @@
 		"node-fetch": "^2.6.0",
 		"ordinal": "^1.0.3",
 		"pfp.lgbt-wrapper": "^1.0.3",
-		"sharp": "^0.25.4"
+		"sharp": "^0.25.4",
+		"tinycolor2": "^1.4.1"
 	},
 	"devDependencies": {
 		"@types/common-tags": "^1.8.0",
@@ -59,6 +60,7 @@
 		"@types/node": "^14.0.1",
 		"@types/node-fetch": "^2.5.7",
 		"@types/sharp": "^0.25.0",
+		"@types/tinycolor2": "^1.4.2",
 		"@types/ws": "^7.2.5",
 		"@typescript-eslint/eslint-plugin": "^2.34.0",
 		"@typescript-eslint/parser": "^2.34.0",
