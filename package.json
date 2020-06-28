@@ -20,7 +20,7 @@
 		"dev": "yarn run build && NODE_ENV=development && yarn node .",
 		"prod": "yarn run build && NODE_ENV=production && yarn node .",
 		"start": "pm2 start --name Snowflake npm -- run prod",
-		"pm2": "pm2 start --name Snowflake npm -- run dev --ignore-watch dist/*",
+		"pm2": "pm2 start --name Snowflake yarn -- run dev --ignore-watch dist/*",
 		"test": "yarn tsc -p tsconfig.test.json && yarn run lint",
 		"lint": "eslint ./src/**/*.ts --fix",
 		"clean": "rm -rf dist/*",
