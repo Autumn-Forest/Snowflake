@@ -14,7 +14,7 @@ const callback = async (msg: Message, args: string[]) => {
 
 	const output = msg.client.newEmbed('BASIC').setTitle('gelbooru');
 
-	const file = (await msg.client.helpers.fetch(baseReq + (args.length ? args.join('+') : '&limit=100')))?.filter(
+	const file = (await msg.client.helpers.fetch(baseReq + (args.length ? args.join('+') : '&limit=100')).catch(() => null))?.filter(
 		(item: { [key: string]: string }) => !msg.client.constants.bannedTags.some(word => item.tags.includes(word))
 	);
 
