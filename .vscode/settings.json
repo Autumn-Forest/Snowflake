@@ -1,12 +1,12 @@
 {
-	"editor.formatOnPaste": true,
-	"editor.formatOnSave": true,
-	"editor.formatOnType": true,
-	"prettier.useTabs": true,
-	"editor.defaultFormatter": "esbenp.prettier-vscode",
-	"files.autoSave": "afterDelay",
-	"eslint.nodePath": ".yarn/sdks",
-	"prettier.prettierPath": ".yarn/sdks/prettier/index.js",
-	"typescript.tsdk": ".yarn/sdks/typescript/lib",
-	"typescript.enablePromptUseWorkspaceTsdk": true
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "prettier.useTabs": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.autoSave": "afterDelay",
+  "eslint.nodePath": ".yarn/sdks",
+  "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
+  "typescript.tsdk": ".yarn/sdks/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }
