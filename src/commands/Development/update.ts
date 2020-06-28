@@ -2,7 +2,7 @@ import { Command, Message } from '../../Client';
 import { exec } from 'child_process';
 
 const callback = async (msg: Message, args: string[]) => {
-	let command = 'git pull && tsc';
+	let command = 'git pull && yarn tsc';
 	if (args.length && ['yes', 'restart', '1', 'y'].includes(args[0].toLowerCase())) command += ' && pm2 restart Snowflake';
 
 	exec(command, (err, stdout, stderr) => {
