@@ -21,7 +21,7 @@ export default class Pagination {
 
 		embeds.forEach((e, i) => e.setFooter(`Page ${i + 1}/${embeds.length}`));
 
-		const msg = (await message.channel.send(`${message.client.constants.emojis.loading} Please wait while I initialise this menu`)) as Message;
+		const msg = (await message.channel.send(message.client.constants.emojis.loading, embeds[initPage])) as Message;
 		const success = await Promise.all((customEmojis || this.defaultEmojis).map(r => msg.react(r)))
 			.then(() => msg.edit(embeds[initPage]))
 			.catch(() => null);

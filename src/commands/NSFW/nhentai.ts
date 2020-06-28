@@ -2,7 +2,7 @@ import { Command, Message } from '../../Client';
 import fetch from 'node-fetch';
 
 const callback = async (msg: Message, args: string[]) => {
-	const bannedTags = args.filter(arg => msg.client.constants.bannedTags.includes(arg));
+	let bannedTags = args.filter(arg => msg.client.constants.bannedTags.some(tag => tag.toLowerCase() === arg.toLowerCase()));
 	if (bannedTags.length)
 		return msg.client.helpers.wrongSyntax(msg, `One or more of the provided tags are blacklisted as they break Discord ToS: ${bannedTags.join(', ')}`);
 
@@ -12,42 +12,41 @@ const callback = async (msg: Message, args: string[]) => {
 		if (!random) return;
 		query = random[0];
 	}
-	const nhentai = new msg.client.nhentai(query);
-	await nhentai.fetch();
+	let hentai = await msg.client.helpers
+		.fetch('https://nhentai.net/api/' + (parseInt(query) ? `gallery/${query}` : `galleries/search?query=${query.replace(/ +/, '%20')}`))
+		.catch(() => null);
 
-	if (nhentai.banned[0])
+	if (!hentai || hentai.error) return msg.client.helpers.wrongSyntax(msg, 'I was not able to find a doujin matching your search term.');
+
+	if (hentai.result) hentai = hentai.result.length ? hentai.result.random() : null;
+	if (!hentai || !hentai.id) return msg.client.helpers.wrongSyntax(msg, 'I was not able to find a doujin matching your search term.');
+
+	bannedTags = hentai.tags.map((tag: Record<string, string>) => tag.name).filter((arg: string) => msg.client.constants.bannedTags.includes(arg));
+	if (bannedTags.length)
 		return msg.client.helpers.wrongSyntax(
 			msg,
-			`One or more tags of the hentai you provided (or the random selected 😱) are blacklisted as they break Discord ToS : ${nhentai.banned.join(', ')}`
+			`One or more tags of the hentai you provided are blacklisted as they break Discord ToS: ${bannedTags.join(', ')}`
 		);
-	if (!nhentai.exists) return msg.client.helpers.wrongSyntax(msg, 'I was not able to find a doujin matching your search term.');
 
-	const m = await msg.channel.send({ embed: nhentai.embed });
-	await Promise.all(['⬅️', '⏹️', '➡️'].map(e => m.react(e)));
-	const menu = m.createReactionCollector((_r, u) => u.id === msg.author.id);
+	const embed = msg.client
+		.newEmbed('INFO')
+		.setTitle(hentai.title.pretty || hentai.title.english || hentai.title.japanese)
+		.setURL(`https://nhentai.net/g/${hentai.id}`)
+		.setDescription(hentai.tags.map((tag: Record<string, string>) => tag.name).join(', '))
+		.setImage('https://t.nhentai.net/galleries/{MEDIA_ID}/cover.jpg'.substitute({ MEDIA_ID: hentai.media_id }));
 
-	let stopped = false;
-	menu.on('collect', async e => {
-		e.users.remove(msg.author);
-
-		if (e.emoji.name === '➡️') {
-			const page = nhentai.nextPage;
-			if (!page) return;
-			m.edit({ embed: page });
-		} else if (e.emoji.name === '⬅️') {
-			const page = nhentai.previousPage;
-			if (!page) return;
-			m.edit({ embed: page });
-		} else if (e.emoji.name === '⏹️') {
-			m.reactions.removeAll();
-			stopped = true;
-			menu.stop();
-		}
-	});
-
-	menu.on('end', () => {
-		return msg.channel.send(stopped ? 'Successfully closed the menu!' : 'The menu timed out!');
-	});
+	const pages = [embed];
+	for (let i = 1; i < hentai.num_pages; i++) {
+		pages.push(
+			msg.client
+				.newEmbed('BASIC')
+				.setTitle(hentai.title.pretty || hentai.title.english || hentai.title.japanese)
+				.setURL(`https://nhentai.net/g/${hentai.id}`)
+				.setImage('https://i.nhentai.net/galleries/{MEDIA_ID}/{PAGE}.jpg'.substitute({ MEDIA_ID: hentai.media_id, PAGE: i.toString() }))
+				.setDescription('')
+		);
+	}
+	msg.client.pagination.create(msg, pages, 0);
 };
 
 export const command: Command = {
