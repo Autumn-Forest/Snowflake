@@ -5,7 +5,9 @@ const callback = async (msg: Message, args: string[]) => {
 	const bannedTags = args.filter(arg => msg.client.constants.bannedTags.includes(arg));
 
 	if (bannedTags.length)
-		return msg.client.helpers.wrongSyntax(msg, `One or more of the provided tags are blacklisted as they break Discord ToS: ${bannedTags.join(', ')}`);
+		if (bannedTags.includes('loli') || bannedTags.includes('lolicon'))
+			return msg.channel.send(msg.client.newEmbed('ERROR').setImage('https://cdn.autumn-forest.net/sfw/assets/lolice.png').setTitle('Oop! No loli :P'));
+		else return msg.client.helpers.wrongSyntax(msg, `One or more of the provided tags are blacklisted as they break Discord ToS: ${bannedTags.join(', ')}`);
 
 	const result = (await msg.client.helpers.fetch('https://yande.re/post.json?limit=100&tags=' + args.join('%20')))?.filter(
 		(item: { [key: string]: string }) => !msg.client.constants.bannedTags.some(word => item.tags.includes(word))

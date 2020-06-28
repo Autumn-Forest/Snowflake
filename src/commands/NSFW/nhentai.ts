@@ -4,7 +4,9 @@ import fetch from 'node-fetch';
 const callback = async (msg: Message, args: string[]) => {
 	let bannedTags = args.filter(arg => msg.client.constants.bannedTags.some(tag => tag.toLowerCase() === arg.toLowerCase()));
 	if (bannedTags.length)
-		return msg.client.helpers.wrongSyntax(msg, `One or more of the provided tags are blacklisted as they break Discord ToS: ${bannedTags.join(', ')}`);
+		if (bannedTags.includes('loli') || bannedTags.includes('lolicon'))
+			return msg.channel.send(msg.client.newEmbed('ERROR').setImage('https://cdn.autumn-forest.net/sfw/assets/lolice.png').setTitle('Oop! No loli :P'));
+		else return msg.client.helpers.wrongSyntax(msg, `One or more of the provided tags are blacklisted as they break Discord ToS: ${bannedTags.join(', ')}`);
 
 	let query = args.join('%20');
 	if (!query) {
