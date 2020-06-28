@@ -2,6 +2,8 @@ import { Command, Message } from '../../Client';
 import { stripIndents } from 'common-tags';
 
 const callback = async (msg: Message, args: string[]) => {
+	if (!args.length) return msg.client.getCommand('prefixes')!.callback(msg, args);
+
 	let [scope, action, prefix] = args;
 	if (!action) {
 		prefix = scope;
@@ -12,6 +14,7 @@ const callback = async (msg: Message, args: string[]) => {
 	if (!prefix)
 		return msg.client.helpers.wrongSyntax(
 			msg,
+			// eslint-disable-next-line @typescript-eslint/no-use-before-define
 			`This command requires ${command.args} arguments, but you only provided ${args.length}.\nPlease use it like this: \`${prefix}prefix ${command.usage}\``
 		);
 
@@ -87,7 +90,7 @@ export const command: Command = {
 	aliases: ['p', 'pref', 'setprefix'],
 	description: 'Set my prefix. You can either set it for a server or only for yourself',
 	usage: '<Server | User> <set | add | remove> <prefix>',
-	args: 1,
+	args: 0,
 	devOnly: false,
 	guildOnly: false,
 	nsfw: false,

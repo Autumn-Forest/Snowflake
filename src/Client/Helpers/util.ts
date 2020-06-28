@@ -1,15 +1,11 @@
-import { Message, Client } from '..';
+import { Message } from '..';
 import fetch, { RequestInfo, RequestInit } from 'node-fetch';
 import { PermissionString, GuildMember, Message as BaseMessage, GuildChannel } from 'discord.js';
 import { GuildMessage } from '../../interfaces/GuildMessage';
+import Regex from '../../constants/regex';
 
 export default class Util {
-	constructor(client: Client) {
-		this.client = client;
-	}
-	client: Client;
-
-	async wrongSyntax(message: Message, text: string) {
+	static async wrongSyntax(message: Message, text: string) {
 		const msg = await message.reply(text);
 		if (!msg.guild) return;
 		const settings = await message.client.cache.getGuild(message);
@@ -19,7 +15,7 @@ export default class Util {
 		}
 	}
 
-	async fetch(requestInfo: RequestInfo, requestOptions?: RequestInit): Promise<any> {
+	static async fetch(requestInfo: RequestInfo, requestOptions?: RequestInit): Promise<any> {
 		return new Promise((resolve, reject) => {
 			fetch(requestInfo, requestOptions)
 				.then(async res => {
@@ -41,7 +37,7 @@ export default class Util {
 		});
 	}
 
-	async uploadHaste(text: string) {
+	static async uploadHaste(text: string) {
 		const init: RequestInit = {
 				method: 'POST',
 				headers: { 'Content-Type': 'text/plain' },
@@ -65,14 +61,14 @@ export default class Util {
 		return url && res && res.key ? url + res.key : 'Failed to upload to hastebin';
 	}
 
-	async isNSFW(message: Message) {
+	static async isNSFW(message: Message) {
 		if (message.channel.type !== 'text') return false;
 
-		const settings = await this.client.cache.getGuild(message);
+		const settings = await message.client.cache.getGuild(message);
 		return settings?.settings.nsfw && message.channel.nsfw;
 	}
 
-	missingPermissions(identifier: Message | GuildChannel, permissions: PermissionString[], member?: GuildMember | 'self') {
+	static missingPermissions(identifier: Message | GuildChannel, permissions: PermissionString[], member?: GuildMember | 'self') {
 		const author = identifier instanceof BaseMessage ? identifier.member! : null;
 		if (identifier instanceof BaseMessage) {
 			if (identifier.channel instanceof GuildChannel) identifier = identifier.channel;
@@ -84,14 +80,14 @@ export default class Util {
 		return missing.length ? missing : undefined;
 	}
 
-	numToMonth(num: number) {
+	static numToMonth(num: number) {
 		return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][num];
 	}
 
-	isImageUrl(str: string) {
-		return this.client.constants.regex.links.test(str) && str.match(/.(png|jpe?g|gif|web[pm])(?:\?.*)?$/i) !== null;
+	static isImageUrl(str: string) {
+		return Regex.links.test(str) && str.match(/.(png|jpe?g|gif|web[pm])(?:\?.*)?$/i) !== null;
 	}
-	msToHuman(ms: number) {
+	static msToHuman(ms: number) {
 		const seconds = Math.round(ms / 1000),
 			minutes = Math.round(ms / (1000 * 60)),
 			hours = Math.round(ms / (1000 * 60 * 60)),
@@ -103,14 +99,15 @@ export default class Util {
 		else return days + ' Days';
 	}
 
-	isGuild(msg: Message | BaseMessage): msg is GuildMessage {
+	static isGuild(msg: Message | BaseMessage): msg is GuildMessage {
 		return !!msg.guild;
 	}
 
-	isMemberHigher(executor: GuildMember, target: GuildMember) {
-		return (
-			(executor.id !== target.id && executor.guild.ownerID === executor.id) ||
-			(target.guild.ownerID !== target.id && executor.roles.highest.position > target.roles.highest.position)
-		);
+	static isMemberHigher(executor: GuildMember, target: GuildMember) {
+		if (executor.id === target.id) return false;
+		if (target.id === target.guild.ownerID) return false;
+		if (executor.id === executor.guild.ownerID) return true;
+		if (executor.roles.highest.position > target.roles.highest.position) return true;
+		return false;
 	}
 }

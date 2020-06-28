@@ -1,5 +1,4 @@
 import { Command, Message } from '../../Client';
-import nodeFetch from 'node-fetch';
 
 const callback = async (msg: Message, args: string[]) => {
 	const baseReq = `https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&api_key=${msg.client.config.apiKeys.gelbooru.key}&user_id=${msg.client.config.apiKeys.gelbooru.id}&tags=sort:random+`;
@@ -15,7 +14,7 @@ const callback = async (msg: Message, args: string[]) => {
 
 	const output = msg.client.newEmbed('BASIC').setTitle('gelbooru');
 
-	const file = (await fetch(baseReq + (args.length ? args.join('+') : '&limit=100')))?.filter(
+	const file = (await msg.client.helpers.fetch(baseReq + (args.length ? args.join('+') : '&limit=100')))?.filter(
 		(item: { [key: string]: string }) => !msg.client.constants.bannedTags.some(word => item.tags.includes(word))
 	);
 
@@ -25,11 +24,6 @@ const callback = async (msg: Message, args: string[]) => {
 
 	return msg.channel.send(output.setURL(`${baseView}${res.id}`).setImage(res.file_url));
 };
-
-const fetch = async (url: string) =>
-	await nodeFetch(url)
-		.then(res => res.json())
-		.catch(() => null);
 
 export const command: Command = {
 	cooldown: 5,
