@@ -1182,9 +1182,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"discord.bio@npm:^6.2.1":
-  version: 6.2.1
-  resolution: "discord.bio@npm:6.2.1"
+"discord.bio@npm:^6.3.0":
+  version: 6.3.0
+  resolution: "discord.bio@npm:6.3.0"
   dependencies:
     "@types/node": ^13.13.10
     "@types/node-fetch": ^2.5.4
@@ -1196,7 +1196,7 @@ __metadata:
     node-fetch: ^2.6.0
   bin:
     dbio: dist/cli/cli.js
-  checksum: d0681835abcc84653220e892a28f07605996cbb6fe14655e773c2ae4b1268b548149d40a02723dd4c7f3410eedfc18d3941322474f09702402404d5d310c8c72
+  checksum: f7443670d0d0fb0bff5c1ee112a8c905fc666260105d2231c960d3b59df05d3199ee2105c2e58e8e0dc5ea68ea7f1bf73f494f73f1dccc2fbea956e04d43c980
   languageName: node
   linkType: hard
 
@@ -3650,7 +3650,7 @@ __metadata:
     "@yarnpkg/pnpify": ^2.0.0-rc.25
     canvas: ^2.6.1
     common-tags: ^1.8.0
-    discord.bio: ^6.2.1
+    discord.bio: ^6.3.0
     discord.js: ^12.2.0
     discord.js-minesweeper: ^1.0.5
     eslint: ^7.2.0

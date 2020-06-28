@@ -42,7 +42,7 @@
 		"@yarnpkg/pnpify": "^2.0.0-rc.25",
 		"canvas": "^2.6.1",
 		"common-tags": "^1.8.0",
-		"discord.bio": "^6.2.1",
+		"discord.bio": "^6.3.0",
 		"discord.js": "^12.2.0",
 		"discord.js-minesweeper": "^1.0.5",
 		"mongoose": "^5.9.15",
