@@ -17,8 +17,8 @@
 		".vscode"
 	],
 	"scripts": {
-		"dev": "yarn run build && NODE_ENV=development && yarn node .",
-		"prod": "yarn run build && NODE_ENV=production && yarn node .",
+		"dev": "yarn run build && export NODE_ENV=development && yarn node .",
+		"prod": "yarn run build && export NODE_ENV=production && yarn node .",
 		"start": "pm2 start --name Snowflake npm -- run prod",
 		"pm2": "pm2 start --name Snowflake npm -- run dev --ignore-watch dist/*",
 		"test": "yarn tsc -p tsconfig.test.json && yarn run lint",
