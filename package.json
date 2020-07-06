@@ -34,7 +34,12 @@
 	},
 	"husky": {
 		"hooks": {
-			"pre-commit": "precise-commits && yarn run test"
+			"pre-commit": "precise-commits && yarn run test",
+			"pre-push" : "git lfs pre-push \"$@\"",
+			"post-checkout": "git lfs post-checkout \"$@\"",
+			"post-commit": "git lfs post-commit \"$@\"",
+			"post-merge": "git lfs post-merge \"$@\""
+
 		}
 	},
 	"dependencies": {
