@@ -12,5 +12,6 @@ export default {
 			key: process.env.GELBOORU_KEY,
 			id: process.env.GELBOORU_ID
 		}
-	}
+	},
+	YoutubeDlPath: '/home/ubuntu/Bots/Snowflake/src/bin/youtube-dl' //ultimate path of custom youtube-dl (or use default one)
 };

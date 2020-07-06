@@ -2,18 +2,17 @@
 
 const EventEmitter = require('events').EventEmitter;
 const execFile = require('child_process').execFile;
-
+import { config } from '../config';
 import https from 'https';
-
 const Readable = require('stream').Readable;
 const spawn = require('child_process').spawn;
 
 export default class YoutubeDlWrap {
 	progressRegex: RegExp;
 	binaryPath: any;
-	constructor(binaryPath: any) {
+	constructor() {
 		this.progressRegex = /\[download\] *(.*) of (.*) at (.*) ETA (.*)/;
-		this.setBinaryPath(binaryPath ? binaryPath : 'youtube-dl');
+		this.setBinaryPath(config.youtubeDlPath ? config.youtubeDlPath : 'youtube-dl');
 	}
 
 	getBinaryPath() {
@@ -49,24 +48,23 @@ export default class YoutubeDlWrap {
 		return youtubeDlStdout;
 	}
 
-	/*async getVideoInfo(youtubeDlArguments: string[]) {
-	*	if (typeof youtubeDlArguments == 'string') youtubeDlArguments = [youtubeDlArguments];
-	*	if (!youtubeDlArguments.includes('-f') && !youtubeDlArguments.includes('--format')) youtubeDlArguments = youtubeDlArguments.concat(['-f', 'best']);
-	*
-	*	const youtubeDlStdout = await this.execPromise(youtubeDlArguments.concat(['--dump-json']));
-	*	try {
-	*		return JSON.parse(youtubeDlStdout);
-	*	} catch (e) {
-	*		return JSON.parse('[' + youtubeDlStdout.replace(/\n/g, ',').slice(0, -1) + ']');
-	*	}
-	}*/
+	async getVideoInfo(youtubeDlArguments: string[] | string) {
+		if (typeof youtubeDlArguments == 'string') youtubeDlArguments = [youtubeDlArguments];
+
+		const youtubeDlStdout = await this.execPromise(youtubeDlArguments.concat(['--dump-json', '-s']));
+		try {
+			return JSON.parse(youtubeDlStdout);
+		} catch (e) {
+			return JSON.parse('[' + youtubeDlStdout.replace(/\n/g, ',').slice(0, -1) + ']');
+		}
+	}
 
 	setDefaultOptions(options: { maxBuffer?: any }) {
 		if (!options.maxBuffer) options.maxBuffer = 1024 * 1024 * 1024;
 		return options;
 	}
 
-	exec(youtubeDlArguments = [], options = {}) {
+	exec(youtubeDlArguments: string[] | string, options = {}) {
 		options = this.setDefaultOptions(options);
 		const execEventEmitter = new EventEmitter();
 		const youtubeDlProcess = spawn(this.binaryPath, youtubeDlArguments, options);
@@ -99,20 +97,20 @@ export default class YoutubeDlWrap {
 		return execEventEmitter;
 	}
 
-	execPromise(youtubeDlArguments: string[], options = {}) {
-		return new Promise((resolve, reject) => {
+	async execPromise(youtubeDlArguments: string[], options = {}) {
+		return await new Promise<string>((resolve, reject) => {
 			options = this.setDefaultOptions(options);
 			execFile(this.binaryPath, youtubeDlArguments, options, (error: any, stdout: any, stderr: any) => {
 				if (error) reject({ processError: error, stderr: stderr });
-				return resolve(stdout);
+				resolve(stdout);
 			});
 		});
 	}
-
+	//'-x',
 	execStream(youtubeDlArguments: string[], options = {}) {
 		const readStream = new Readable();
 		options = this.setDefaultOptions(options);
-		youtubeDlArguments = youtubeDlArguments.concat(['-o', '-']);
+		youtubeDlArguments = youtubeDlArguments.concat(['--audio-format', 'opus', '-o', '-']);
 		// eslint-disable-next-line @typescript-eslint/no-empty-function
 		readStream._read = function () {};
 		const youtubeDlProcess = spawn(this.binaryPath, youtubeDlArguments, options);
