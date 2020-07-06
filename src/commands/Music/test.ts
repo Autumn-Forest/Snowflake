@@ -15,7 +15,7 @@ const callback = async (msg: Message, args: string[]) => {
 	const embed = msg.client
 		.newEmbed('BASIC')
 		.setDescription(`[${info.title}](${info.webpage_url})\n${info.uploader ? `[${info.uploader}](${info.uploader_url})` : 'No info on uploader.'}`)
-		.setImage(info.thumbnail);
+		.setThumbnail(info.thumbnail);
 	msg.channel.send(embed);
 };
 
@@ -24,7 +24,7 @@ export const command: Command = {
 	description: '',
 	usage: '',
 	args: 1,
-	devOnly: true,
+	devOnly: false,
 	guildOnly: false,
 	nsfw: false,
 	memberPermission: [],
