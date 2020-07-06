@@ -10,13 +10,13 @@ const callback = async (msg: Message, args: string[]) => {
 	if (!msg.member) return;
 	if (msg.member.voice.channel) voice = await msg.member.voice.channel.join();
 	else return;
+	voice.play(youtubeDlWrap.execStream([`${args[0]}`]));
 	const info = await youtubeDlWrap.getVideoInfo(args);
 	const embed = msg.client
 		.newEmbed('BASIC')
 		.setDescription(`[${info.title}](${info.webpage_url})\n${info.uploader ? `[${info.uploader}](${info.uploader_url})` : 'No info on uploader.'}`)
 		.setImage(info.thumbnail);
 	msg.channel.send(embed);
-	voice.play(youtubeDlWrap.execStream([`${args[0]}`]));
 };
 
 export const command: Command = {
