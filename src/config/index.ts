@@ -16,5 +16,5 @@ interface Config {
 			id: string;
 		};
 	};
-	youtubeDlPath: string;
+	youtubeDlPath: string | undefined;
 }
