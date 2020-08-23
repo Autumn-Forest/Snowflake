@@ -13,7 +13,7 @@ export const command: Command = {
 	description: '',
 	usage: '',
 	args: 0,
-	devOnly: false,
+	devOnly: true,
 	guildOnly: false,
 	nsfw: false,
 	memberPermission: [],

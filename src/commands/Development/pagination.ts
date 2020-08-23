@@ -14,7 +14,7 @@ export const command: Command = {
 	description: 'Test the pagination',
 	usage: '[custom]',
 	args: 0,
-	devOnly: false,
+	devOnly: true,
 	guildOnly: false,
 	nsfw: false,
 	memberPermission: [],

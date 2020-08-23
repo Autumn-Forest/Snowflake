@@ -12,7 +12,7 @@ export const command: Command = {
 	description: 'Ban a member',
 	usage: '<Member> [Reason]',
 	args: 1,
-	devOnly: false,
+	devOnly: true,
 	guildOnly: true,
 	nsfw: false,
 	memberPermission: ['BAN_MEMBERS'],
