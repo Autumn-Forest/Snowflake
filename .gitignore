@@ -1,9 +1,3 @@
 dist
-src/config/development.ts
-yarn-error.log
-.yarn/*
-!.yarn/releases
-!.yarn/plugins
-!.yarn/sdks
-!.yarn/versions
-.pnp.*
+node_modules
+development.ts

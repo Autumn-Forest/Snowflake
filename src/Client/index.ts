@@ -7,12 +7,32 @@ import { readdirSync } from 'fs';
 import { Getters, Nekos, WebhookManager, PromptManager, CacheManager, Cooldowns, Pagination } from './Helpers';
 import { stripIndents } from 'common-tags';
 import { GuildMessage } from '../interfaces/GuildMessage';
-import { ClientEvents, ClientOptions, FullCommand, RecentCommand } from './Interfaces';
+import { ClientEvents, ClientOptions, FullCommand, RecentCommand, Command } from './Interfaces';
 export * from './Interfaces';
 
 export interface Message extends BaseMessage {
 	client: Client;
 }
+
+export const handleError = (): any => {
+	return async function <T>(
+		this: Command,
+		_target: T,
+		propertyKey: string,
+		descriptor: TypedPropertyDescriptor<(...args: unknown[]) => unknown | Promise<unknown>>
+	) {
+		const fn = descriptor.value;
+
+		descriptor.value = async (...args) => {
+			try {
+				const res = await fn?.apply(this, args);
+				return res;
+			} catch (e) {
+				console.error(`An error occurred!\nFunction: ${propertyKey}\nError: ${e}`);
+			}
+		};
+	};
+};
 
 export class Client extends BaseClient {
 	private _on = this.on;
