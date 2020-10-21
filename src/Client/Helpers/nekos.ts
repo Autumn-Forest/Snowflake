@@ -40,7 +40,7 @@ export default class Nekos extends NekoClient {
 	async sendImage(message: Message, args: string[], type: NekoSfwEndpoints, description: string) {
 		let member;
 		if (args.length && message.guild) {
-			member = await message.client.helpers.getMember(message, args);
+			member = await message.client.helpers.getMember(message, args, undefined, true);
 			if (!member) return;
 		}
 

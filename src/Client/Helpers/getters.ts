@@ -27,7 +27,7 @@ export default class Getters extends Util {
 		}
 	}
 
-	static async getMember(message: Message, args: string[], spot?: number) {
+	static async getMember(message: Message, args: string[], spot?: number, ignoreError?: boolean) {
 		if (!message.guild) throw new SyntaxError('getMember was used in a DmChannel.');
 
 		const input = spot || spot === 0 ? args[spot].toLowerCase() : args.join(' ').toLowerCase();
@@ -40,6 +40,7 @@ export default class Getters extends Util {
 		);
 
 		if (memberSearch.size === 0) {
+			if (ignoreError) return;
 			return Util.wrongSyntax(message, 'You did not provide a valid member. Please run the command again and provide one.');
 		} else if (memberSearch.size === 1) {
 			return memberSearch.first();
