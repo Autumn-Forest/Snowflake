@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import { Message } from '..';
 import { Collection, MessageEmbed, MessageReaction, User } from 'discord.js';
 

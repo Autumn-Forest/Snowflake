@@ -15,6 +15,7 @@ const callback = async (msg: Message, args: string[]) => {
 	const slug = await msg.client.helpers.fetch(`https://api.discord.bio/v1/user/details/${info.discord.id}`).then(user => user.payload.user.details.slug);
 
 	const e = msg.client.constants.emojis;
+	// ${e.thumbsUp} ${info.user.details.upvotes} seems upvote info isn't avalaible anymore
 	const embed = msg.client
 		.newEmbed('BASIC')
 		.setAuthor(info.discord.username, user.displayAvatarURL({ dynamic: true }), `https://discord.bio/p/${slug}`)
@@ -25,7 +26,6 @@ const callback = async (msg: Message, args: string[]) => {
 		.setDescription(
 			stripIndents`
 				${e.speech} ${info.user.details.description}
-				${e.thumbsUp} ${info.user.details.upvotes}
 				${e.globe} ${info.user.details.location || '-'}
 				${e.cake} ${info.user.details.birthday?.formatDate() || '-'}
 				${e[info.user.details.gender || 'non-binary']} ${info.user.details.gender || '-'}

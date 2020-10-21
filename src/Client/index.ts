@@ -11,6 +11,7 @@ import { ClientEvents, ClientOptions, FullCommand, RecentCommand } from './Inter
 export * from './Interfaces';
 
 export interface Message extends BaseMessage {
+	// eslint-disable-next-line @typescript-eslint/no-use-before-define
 	client: Client;
 }
 
