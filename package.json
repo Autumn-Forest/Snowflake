@@ -39,7 +39,7 @@
 	},
 	"dependencies": {
 		"@klasa/stopwatch": "^0.0.1",
-		"@yarnpkg/pnpify": "^2.0.0-rc.25",
+		"@yarnpkg/pnpify": "^2.3.3",
 		"canvas": "^2.6.1",
 		"common-tags": "^1.8.0",
 		"convert-units": "^2.3.4",
