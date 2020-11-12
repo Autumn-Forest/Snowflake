@@ -266,12 +266,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/sharp@npm:^0.25.0":
-  version: 0.25.0
-  resolution: "@types/sharp@npm:0.25.0"
+"@types/sharp@npm:^0.26.1":
+  version: 0.26.1
+  resolution: "@types/sharp@npm:0.26.1"
   dependencies:
     "@types/node": "*"
-  checksum: 755e50036738c7af062bac9f654fc4fe783ce188e1027258a368bf4d1c41db3fcd98078675499a7d9e28f3a4337ad36d62efd80f06f6613651dc2af37a320688
+  checksum: 703931659d3c3b2a0fcd401baf4c8b30da4ffda2ee149cb254c18dca292f7abcb622b581bd2220ead33959b53ab5b995c5754501ce0e387c8feae10187a15d5a
   languageName: node
   linkType: hard
 
@@ -3988,7 +3988,7 @@ __metadata:
     "@types/mongoose": ^5.7.36
     "@types/node": ^14.14.0
     "@types/node-fetch": ^2.5.7
-    "@types/sharp": ^0.25.0
+    "@types/sharp": ^0.26.1
     "@types/tinycolor2": ^1.4.2
     "@types/ws": ^7.2.7
     "@typescript-eslint/eslint-plugin": ^2.34.0
