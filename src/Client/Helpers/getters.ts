@@ -40,8 +40,8 @@ export default class Getters extends Util {
 		);
 
 		if (memberSearch.size === 0) {
-			if (silentError) return;
-			return Util.wrongSyntax(message, 'You did not provide a valid member. Please run the command again and provide one.');
+			if (silentError === true) return;
+			else return Util.wrongSyntax(message, 'You did not provide a valid member. Please run the command again and provide one.');
 		} else if (memberSearch.size === 1) {
 			return memberSearch.first();
 		} else if (memberSearch.size < 11) {
