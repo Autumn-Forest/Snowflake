@@ -34,6 +34,7 @@ export default class Getters extends Util {
 		if (input.charAt(input.length - 1) === '*' || input.charAt(input.length - 1) === '_') input = input.slice(0, -1);
 
 		const member = message.mentions.members?.first() || (await message.guild.members.fetch(input).catch(() => null));
+
 		if (member) return member;
 		const memberSearch = message.guild.members.cache.filter(
 			member => member.displayName.toLowerCase().includes(input) || member.user.tag.toLowerCase().includes(input)

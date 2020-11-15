@@ -2,6 +2,8 @@ import { Command, Message } from '../../Client';
 
 const callback = async (msg: Message, _args: string[]) => {
 	const all = await msg.client.helpers.fetch('https://srhpyqt94yxb.statuspage.io/api/v2/summary.json').catch(() => null);
+	const incidents = await msg.client.helpers.fetch('https://srhpyqt94yxb.statuspage.io/api/v2/incidents.json').catch(() => null);
+
 	if (!all) return msg.client.helpers.wrongSyntax(msg, "An error happened while trying to join statuspage.io's api.");
 	const embed = msg.client.newEmbed('INFO').setTitle(all.status.description).setURL('https://discordstatus.com');
 	const description = [];
@@ -14,7 +16,7 @@ const callback = async (msg: Message, _args: string[]) => {
 		);
 	}
 	embed.setDescription(description.join('\n'));
-	embed.addField('Latest Incident', `[${all.incidents[0].name}](${all.incidents[0].shortlink}) (${all.incidents[0].status})`);
+	embed.addField('Latest Incident', `[${incidents.incidents[0].name}](${incidents.incidents[0].shortlink}) (${incidents.incidents[0].status})`);
 	return msg.channel.send(embed);
 };
 
