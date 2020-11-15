@@ -2,7 +2,7 @@ export default {
 	defaultPrefix: '*',
 	token: process.env.SNOWFLAKE_TOKEN,
 	mongoString: process.env.SNOWFLAKE_DATABASE,
-	developers: ['343383572805058560', '390977127153139733', '279910519467671554'],
+	developers: ['343383572805058560', '390977127153139733', '279910519467671554', '335055032204656642'],
 	channels: {
 		info: '711228013265813524',
 		errors: '711228030982422529'
