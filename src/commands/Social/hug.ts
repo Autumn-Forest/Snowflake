@@ -6,7 +6,7 @@ const callback = async (msg: Message, args: string[]) => {
 
 export const command: Command = {
 	cooldown: 5,
-	aliases: ['huggu', 'hugs'],
+	aliases: ['huggu', 'hugs', 'hugu', 'huggus'],
 	description: 'Hug your friends!',
 	usage: '[Member]',
 	args: 0,
