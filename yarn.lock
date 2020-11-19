@@ -1333,14 +1333,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"discord.js-minesweeper@npm:^1.0.5":
-  version: 1.0.5
-  resolution: "discord.js-minesweeper@npm:1.0.5"
-  checksum: 272d68d9e9a71659b79983bd1358946127b97835cda69c1a3f95bd4c6047c1c47c5c568af75d58f737bdaa82591766568e1a849c241398621112d5800cf6a382
+"discord.js-minesweeper@npm:^1.0.6":
+  version: 1.0.6
+  resolution: "discord.js-minesweeper@npm:1.0.6"
+  checksum: 94253c07da2e2d02407567168bb3d6cc70d9102d8e5fc0f6bf831d9cfc56cd6c9b45f11fb4ba462b92a70b25187b3fe86e4c475cf07931e683c9b9e5bfebc085
   languageName: node
   linkType: hard
 
-"discord.js@npm:12.2.0, discord.js@npm:^12.2.0":
+"discord.js@npm:12.2.0":
   version: 12.2.0
   resolution: "discord.js@npm:12.2.0"
   dependencies:
@@ -4014,8 +4014,8 @@ __metadata:
     common-tags: ^1.8.0
     convert-units: ^2.3.4
     discord.bio: ^10.1.0
-    discord.js: ^12.2.0
-    discord.js-minesweeper: ^1.0.5
+    discord.js: 12.2.0
+    discord.js-minesweeper: ^1.0.6
     eslint: ^7.13.0
     eslint-config-prettier: ^6.15.0
     eslint-plugin-prettier: ^3.1.4
@@ -4029,7 +4029,7 @@ __metadata:
     prettier: ^2.1.2
     sharp: ^0.26.2
     tinycolor2: ^1.4.1
-    typescript: ^4.0.3
+    typescript: ^4.0.5
   languageName: unknown
   linkType: soft
 
@@ -4403,23 +4403,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-typescript@^4.0.3:
-  version: 4.0.3
-  resolution: "typescript@npm:4.0.3"
+typescript@^4.0.5:
+  version: 4.0.5
+  resolution: "typescript@npm:4.0.5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 5c892e132756a83d22030d7fb38be47cde27613f71d233dbe7faf79e4a92852c5146bfddcaf8c2da1a37d35ae8bf7b8c888fdcd763d5ad184cea6b21e7466838
+  checksum: ce94d4bbb914cc9d6fbd42e1476ab18c3292b262b8ba7ba76cd167a858545207a604e75bf1efbb75b8654c8f85deaa19795c3ef00098d7612855139b4ecc0240
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.0.3#builtin<compat/typescript>":
-  version: 4.0.3
-  resolution: "typescript@patch:typescript@npm%3A4.0.3#builtin<compat/typescript>::version=4.0.3&hash=64df9d"
+"typescript@patch:typescript@^4.0.5#builtin<compat/typescript>":
+  version: 4.0.5
+  resolution: "typescript@patch:typescript@npm%3A4.0.5#builtin<compat/typescript>::version=4.0.5&hash=64df9d"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: f0618ad42626087f011fb56f842d55f567032028f1c02b18b9104f21f5557ad2bf834ff01f32871e4dc878e105ea1a90d256f8c5e996aad8483ff683455bbe5b
+  checksum: b1cfa4c7d5823c4d9f0e10021312b01826e84738e64b11a49e2c3005323fc2ab29a13b1704d9b1dad6a54cfa3094eb01d3fffd8c4402f115a8e921e792a862e4
   languageName: node
   linkType: hard
 
