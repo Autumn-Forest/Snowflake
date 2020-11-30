@@ -3,7 +3,7 @@ import { exec } from 'child_process';
 
 const callback = async (msg: Message, args: string[]) => {
 	let command = 'git pull && yarn tsc';
-	if (args.length && ['yes', 'restart', '1', 'y'].includes(args[0].toLowerCase())) command += ' && pm2 restart Snowflake';
+	if (args.length && ['yes', 'restart', '1', 'y'].includes(args[0].toLowerCase())) command += ' && pm2 restart snowflake';
 
 	exec(command, (err, stdout, stderr) => {
 		if (err) msg.channel.send((err.stack || err.message).shorten(2000).toCodeblock());
