@@ -5,30 +5,58 @@ const callback = async (msg: Message, args: string[]) => {
 	let bannedTags = args.filter(arg => msg.client.constants.bannedTags.some(tag => tag.toLowerCase() === arg.toLowerCase()));
 	if (bannedTags.length)
 		if (bannedTags.includes('loli') || bannedTags.includes('lolicon'))
-			return msg.channel.send(msg.client.newEmbed('ERROR').setImage('https://cdn.autumn-forest.net/sfw/assets/lolice.png').setTitle('Oop! No loli :P'));
+			return msg.channel.send(msg.client.newEmbed('ERROR').setImage('https://naia.eu.org/images/lolice.png').setTitle('Oop! No loli :P'));
 		else return msg.client.helpers.wrongSyntax(msg, `One or more of the provided tags are blacklisted as they break Discord ToS: ${bannedTags.join(', ')}`);
 
 	let query = args.join('%20');
 	if (!query) {
 		const random = (await fetch('https://nhentai.net/random')).url.match(/\d+/);
-		if (!random) return;
+		if (!random) return msg.client.helpers.wrongSyntax(msg, `An error happened!`);
 		query = random[0];
 	}
 	let hentai = await msg.client.helpers
 		.fetch('https://nhentai.net/api/' + (parseInt(query) ? `gallery/${query}` : `galleries/search?query=${query.replace(/ +/, '%20')}`))
 		.catch(() => null);
 
-	if (!hentai || hentai.error) return msg.client.helpers.wrongSyntax(msg, 'I was not able to find a doujin matching your search term.');
+	if (!hentai || hentai.error) return msg.client.helpers.wrongSyntax(msg, 'I was not able to find a doujin matching your search term. Or an error happened.');
 
 	if (hentai.result) hentai = hentai.result.length ? hentai.result.random() : null;
 	if (!hentai || !hentai.id) return msg.client.helpers.wrongSyntax(msg, 'I was not able to find a doujin matching your search term.');
 
 	bannedTags = hentai.tags.map((tag: Record<string, string>) => tag.name).filter((arg: string) => msg.client.constants.bannedTags.includes(arg));
-	if (bannedTags.length)
-		return msg.client.helpers.wrongSyntax(
-			msg,
-			`One or more tags of the hentai you provided are blacklisted as they break Discord ToS: ${bannedTags.join(', ')}`
-		);
+
+	if (bannedTags.length) {
+		if (parseInt(args[0])) {
+			return msg.client.helpers.wrongSyntax(msg, `The provided doujin contain blacklisted tags: ${bannedTags.join(', ')}`);
+		}
+
+		for (let i = 0; i < 5; i++) {
+			if (!args) {
+				const random = (await fetch('https://nhentai.net/random')).url.match(/\d+/);
+				if (!random) return msg.client.helpers.wrongSyntax(msg, `An error happened!`);
+				query = random[0];
+			}
+
+			hentai = await msg.client.helpers
+				.fetch('https://nhentai.net/api/' + (parseInt(query) ? `gallery/${query}` : `galleries/search?query=${query.replace(/ +/, '%20')}`))
+				.catch(() => null);
+
+			if (!hentai || hentai.error)
+				return msg.client.helpers.wrongSyntax(msg, 'I was not able to find a doujin matching your search term. Or an error happened');
+
+			if (hentai.result) hentai = hentai.result.length ? hentai.result.random() : null;
+
+			if (!hentai || !hentai.id) return msg.client.helpers.wrongSyntax(msg, 'I was not able to find a doujin matching your search term.');
+			bannedTags = hentai.tags.map((tag: Record<string, string>) => tag.name).filter((arg: string) => msg.client.constants.bannedTags.includes(arg));
+
+			if (!bannedTags.length) {
+				i = 11;
+				return;
+			}
+		}
+		if (bannedTags.length)
+			return msg.client.helpers.wrongSyntax(msg, `I could only fetch doujin with blacklisted tags, maybe try again or change your combination of tags.`);
+	}
 
 	const embed = msg.client
 		.newEmbed('INFO')
