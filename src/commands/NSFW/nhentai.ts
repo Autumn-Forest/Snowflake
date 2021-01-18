@@ -5,7 +5,7 @@ const callback = async (msg: Message, args: string[]) => {
 	let bannedTags = args.filter(arg => msg.client.constants.bannedTags.some(tag => tag.toLowerCase() === arg.toLowerCase()));
 	if (bannedTags.length)
 		if (bannedTags.includes('loli') || bannedTags.includes('lolicon'))
-			return msg.channel.send(msg.client.newEmbed('ERROR').setImage('https://media.naia.eu.org/lolice.png').setTitle('Oop! No loli :P'));
+			return msg.channel.send(msg.client.newEmbed('ERROR').setImage('https://naia-love.neocities.org/images/lolice.png').setTitle('Oop! No loli :P'));
 		else return msg.client.helpers.wrongSyntax(msg, `One or more of the provided tags are blacklisted as they break Discord ToS: ${bannedTags.join(', ')}`);
 
 	let query = args.join('%20');
