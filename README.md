@@ -1,9 +1,18 @@
-[![Join our Discord](https://img.shields.io/discord/711227640144723968.svg)](https://discord.gg/89uQ6cJ)
+# PROJECT DISCONTINUED
+
+This bot served as a tool to learn typescript and thus uses a lot of bad code practices. 
+Additionally, we all lost interest in it, so it will no longer be continued. 
+
+The bot is stable and will continue running for those who still want to use it. 
+
+___
+
+# Snowflake
+
+
 [![Build Status](https://travis-ci.org/Autumn-Forest/Snowflake.svg?branch=master)](https://travis-ci.org/Autumn-Forest/Snowflake)
 [![License](https://img.shields.io/github/license/Autumn-Forest/Snowflake.svg)](https://github.com/Autumn-Forest/Snowflake/blob/master/LICENSE)
 [![CodeFactor](https://www.codefactor.io/repository/github/autumn-forest/snowflake/badge)](https://www.codefactor.io/repository/github/autumn-forest/snowflake)
-
-<center> <h1>Snowflake</h1> </center>
 
 ## License
 
